@@ -247,7 +247,11 @@ site's own forms still work.
    anything written into the container is destroyed on redeploy. This is the most common way a
    self-hosted Payload install loses client uploads. The volume belongs in the backup set next to
    `pgdata`.
-4. **Migrations run on container start**, not at build time — there is no DB during the build.
+4. **Migrations apply themselves in production** via `prodMigrations` in `payload.config.ts` —
+   Payload runs any pending ones as it initialises. The runner image has no Payload CLI (only the
+   Next standalone bundle), so `payload migrate` cannot be shelled out to there; importing the
+   migrations into the config also makes Next's tracer ship them with the app. In development they
+   are applied explicitly with `npm run migrate`. Deploy runbook: [`DEPLOY.md`](DEPLOY.md).
 5. **ISR cache is per-container.** Correct at one replica. Scaling to two requires moving the cache
    to Redis or shared storage — don't add a replica without doing that first.
 6. **Secrets come from Dokploy env management** (`DATABASE_URI`, `PAYLOAD_SECRET`, mail

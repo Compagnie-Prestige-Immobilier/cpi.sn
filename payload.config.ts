@@ -26,6 +26,8 @@ import { SiteSettings } from './src/globals/SiteSettings'
 import { Navigation } from './src/globals/Navigation'
 import { HomePage } from './src/globals/HomePage'
 
+import { migrations } from './src/migrations'
+
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 if (!process.env.PAYLOAD_SECRET) {
@@ -115,10 +117,24 @@ export default buildConfig({
      * the real migration file is never marked applied and dev drifts away from
      * what production will actually execute.
      *
-     * Schema changes go through `npm run migrate:create` + `npm run migrate`,
-     * which is the same path the container runs at start-up.
+     * Schema changes go through `npm run migrate:create` + `npm run migrate`.
      */
     push: false,
+
+    /**
+     * Pending migrations run automatically when Payload initialises in
+     * production. This is what makes a container deploy work against an empty
+     * database: the runner image contains only the Next standalone bundle, not
+     * the Payload CLI, so `payload migrate` cannot be shelled out to there.
+     *
+     * Importing the migrations here also means Next's dependency tracer pulls
+     * them into that bundle — they ship with the app rather than needing a
+     * separate copy step.
+     *
+     * In development this does nothing; migrations are applied explicitly with
+     * `npm run migrate` so a schema change is a deliberate act.
+     */
+    prodMigrations: migrations,
   }),
 
   // Required for image resizing. Must also be present in the Docker runner
