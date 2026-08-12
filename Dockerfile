@@ -20,6 +20,16 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Fail here, legibly, rather than in the runner stage with an opaque buildx
+# "failed to calculate checksum … /app/public: not found". The usual cause is
+# an unanchored .gitignore rule (a bare `brand` also matches `public/brand`),
+# so the assets exist locally but were never committed and CI has no copy.
+RUN test -d public || { \
+      echo "ERROR: public/ is missing from the build context."; \
+      echo "It is probably untracked — check .gitignore anchoring (use /brand, not brand)."; \
+      exit 1; \
+    }
+
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # The build never touches the database: migrations run at container start. These

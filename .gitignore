@@ -19,9 +19,12 @@ npm-debug.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
-brand
-content-audit
-ombarahtml-10
+# Reference material, kept out of the repo. LEADING SLASH IS REQUIRED: a bare
+# `brand` also matches `public/brand/`, which silently excluded the logos the
+# app actually serves — the Docker build then fails on `COPY /app/public`.
+/brand
+/content-audit
+/ombarahtml-10
 tsconfig.tsbuildinfo
 
 # migration download cache (re-fetchable)
