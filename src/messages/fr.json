@@ -72,7 +72,8 @@
     "count": "{count, plural, =0 {Aucun bien} one {# bien} other {# biens}}",
     "addToSelection": "Ajouter à ma sélection",
     "inSelection": "Dans ma sélection",
-    "removeFromSelection": "Retirer de ma sélection"
+    "removeFromSelection": "Retirer de ma sélection",
+    "amenitiesTitle": "Équipements"
   },
   "cart": {
     "title": "Ma sélection",

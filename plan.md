@@ -2,7 +2,7 @@
 ### WordPress/Houzez → Next.js + Tailwind + Payload CMS
 
 **Date:** 12 August 2026
-**Status:** Phases 1–4 complete. Legacy independence achieved and enforced in CI. Phase 5 (Pages) is next.
+**Status:** Phases 1–5 complete. Legacy independence achieved and enforced in CI. Phase 6 (forms, cart, leads) is next.
 **Companion documents:**
 - [`content-audit/INVENTORY.md`](content-audit/INVENTORY.md) — the full extracted content of the current site
 - [`CLAUDE.md`](CLAUDE.md) — binding engineering conventions (i18n + theming rules)
@@ -524,8 +524,8 @@ The template is jQuery + Bootstrap + Swiper. In Next.js:
 | 2 | ✅ **Schema** | 11 collections, 2 globals, 12 page blocks, 117 tables. Localized fields wired to the registry; admin verified in French. Docker image builds (478 MB) |
 | 3 | ✅ **Migration** | 42 properties, 12 posts, 54 images, taxonomies and globals imported into `fr`. Blog slugs byte-identical. Taxonomy mapping in [`content-audit/MAPPING.md`](content-audit/MAPPING.md) |
 | 4 | ✅ **Components** | `Reveal`, `SectionHeader`, `VideoModal`, `PropertyCard`, `Hero`, `GalleryScroll`, `ButtonLink`, `CmsLink`, `MobileNav`. Header/footer/hero now CMS-driven (`navigation`, `site-settings`, `home-page`). Homepage + `/terrains` verified in both themes |
-| 5 | Pages ← *next* | Home, À propos, Services, Terrains, Programmes, Blog, Contact |
-| 6 | Forms, cart & leads | 8 lead forms, **cart → WhatsApp handoff (§4)**, notifications, admin inbox, export |
+| 5 | ✅ **Pages** | 26 routes live across both locales: home, à-propos, services (+5 detail), terrains, programmes (+2 filters), property detail, appartements, blog (+post, +category), contact, privacy, partenaire. Lexical renderer + 12-block page builder |
+| 6 | Forms, cart & leads ← *next* | 8 lead forms, **cart → WhatsApp handoff (§4)**, notifications, admin inbox, export |
 | 7 | English locale | `en.json` catalog, translated route segments, language switcher, `hreflang`. Content translation is a client deliverable (§6) |
 | 8 | SEO & polish | 301 map, sitemap, JSON-LD (`RealEstateListing`), OG images, Lighthouse, contrast audit in both themes |
 | 9 | Launch | Staging review, DNS cutover, WordPress archived read-only |

@@ -169,6 +169,19 @@ palette. Rebuild the token layer properly instead.
 
 ---
 
+## Querying localized content
+
+**Slugs are localized, but content currently exists only in French.** Payload falls back when
+*reading* a field, not when *querying* one: a `where: { slug: { equals: … } }` in `en` matches the
+English column, which is empty, so every English route 404s.
+
+Always resolve documents through **`findBySlugWithFallback`** (`src/lib/payload.ts`). It matches the
+slug in the requested locale, and on a miss matches it in the default locale and re-reads that
+document in the requested locale — so translated fields still win wherever they exist. Never write
+a bare slug `where` clause in a route.
+
+---
+
 ## Component conventions
 
 1. **Hero CTAs must use `tone="onDark"`.** The hero ground is dark in every state — a photo under
@@ -326,6 +339,16 @@ so a prompt fails fast instead of hanging.
 - **Slug lookups must run through `slugify()`** — the field hook normalises on write, so looking up
   by a raw source slug never matches and the re-run tries to create a duplicate. WordPress
   percent-encoded `m²` as `%c2%b2`, so this affects real listings.
+
+### Elementor artefacts to watch for
+
+- **Animated counters render empty.** `<span data-to-value="20">` has no text content — the number
+  is written by JS as it counts up. Imported naively, "20 ans d'expérience" becomes
+  **"0 Années d'expérience"**, which advertises the opposite of the truth. `cleanHTML` now recovers
+  `data-to-value` before conversion. Check any newly imported page for stray zeros.
+- **Featured images are marketing banners**, not photographs — the site name and a burgundy frame
+  are baked into the artwork. That is why the hero image is an editorial field rather than a
+  scavenged listing image, and why cards show coloured bars at their edges.
 
 ### Known source-data gaps (faithful, not bugs)
 

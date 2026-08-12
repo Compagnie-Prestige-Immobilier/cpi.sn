@@ -72,7 +72,8 @@
     "count": "{count, plural, =0 {No properties} one {# property} other {# properties}}",
     "addToSelection": "Add to my selection",
     "inSelection": "In my selection",
-    "removeFromSelection": "Remove from my selection"
+    "removeFromSelection": "Remove from my selection",
+    "amenitiesTitle": "Amenities"
   },
   "cart": {
     "title": "My selection",

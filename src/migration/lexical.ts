@@ -44,6 +44,20 @@ export function cleanHTML(html: string): string {
   const dom = new JSDOM(`<body>${html}</body>`)
   const { document } = dom.window
 
+  /**
+   * Elementor animated counters render as `<span data-to-value="20">` with an
+   * EMPTY body — the number is written by JS as it counts up. Converted as-is
+   * they become "+ 0 Années d'expérience", which doesn't just look broken, it
+   * advertises the opposite of the truth. Recover the target value first.
+   */
+  document.querySelectorAll('[data-to-value]').forEach((el) => {
+    const value = Number(el.getAttribute('data-to-value'))
+    if (Number.isFinite(value)) {
+      // Space-separated thousands, per Senegalese convention.
+      el.textContent = value.toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, ' ')
+    }
+  })
+
   document
     .querySelectorAll('script, style, noscript, svg, iframe, form, button, input, img, picture, source')
     .forEach((el) => el.remove())

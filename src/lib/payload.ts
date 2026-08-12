@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import type { Where } from 'payload'
-import type { Locale } from '@/i18n/locales'
+import { defaultLocale, type Locale } from '@/i18n/locales'
 import type { Property } from '@/payload-types'
 
 /**
@@ -60,16 +60,89 @@ export async function getProperties({
   return res.docs
 }
 
-export async function getPropertyBySlug(slug: string, locale: Locale) {
+/**
+ * Look up a document by slug, falling back to the default locale.
+ *
+ * Slugs are localized, but content currently exists only in French. Payload
+ * falls back when *reading* a field, not when *querying* one — a
+ * `where: { slug: { equals: … } }` in `en` matches the English column, which is
+ * empty, so every English route 404s.
+ *
+ * So: match the slug in the requested locale; on a miss, match it in the
+ * default locale and re-read that document in the requested locale, so any
+ * translated fields that do exist still win.
+ */
+async function findBySlugWithFallback<T extends 'properties' | 'posts' | 'pages'>(
+  collection: T,
+  slug: string,
+  locale: Locale,
+  depth = 2,
+) {
   const payload = await payloadClient()
+
+  const query = (l: Locale) =>
+    payload.find({ collection, locale: l, depth, limit: 1, where: { slug: { equals: slug } } })
+
+  const direct = await query(locale)
+  if (direct.docs.length) return direct.docs[0]
+
+  if (locale === defaultLocale) return null
+
+  const fallback = await query(defaultLocale)
+  if (!fallback.docs.length) return null
+
+  return payload.findByID({ collection, id: fallback.docs[0].id, locale, depth })
+}
+
+export async function getPropertyBySlug(slug: string, locale: Locale) {
+  return findBySlugWithFallback('properties', slug, locale)
+}
+
+export { findBySlugWithFallback }
+
+export async function getPosts({
+  locale,
+  limit = 24,
+  categorySlug,
+}: {
+  locale: Locale
+  limit?: number
+  categorySlug?: string
+}) {
+  const payload = await payloadClient()
+
+  let categoryId: number | undefined
+  if (categorySlug) {
+    const cats = await payload.find({
+      collection: 'categories',
+      locale,
+      limit: 1,
+      where: { slug: { equals: categorySlug } },
+    })
+    // An unknown category must yield nothing, not silently list every post.
+    if (!cats.docs.length) return { docs: [], category: null }
+    categoryId = cats.docs[0].id as number
+  }
+
   const res = await payload.find({
-    collection: 'properties',
+    collection: 'posts',
     locale,
-    depth: 2,
-    limit: 1,
-    where: { slug: { equals: slug } },
+    limit,
+    depth: 1,
+    where: categoryId ? { category: { equals: categoryId } } : undefined,
+    sort: '-publishedAt',
   })
-  return res.docs[0] ?? null
+  return { docs: res.docs, category: null }
+}
+
+export async function getPostBySlug(slug: string, locale: Locale) {
+  return findBySlugWithFallback('posts', slug, locale)
+}
+
+export async function getCategories(locale: Locale) {
+  const payload = await payloadClient()
+  const res = await payload.find({ collection: 'categories', locale, limit: 50 })
+  return res.docs
 }
 
 export async function getSiteSettings(locale: Locale) {
