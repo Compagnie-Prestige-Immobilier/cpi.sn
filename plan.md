@@ -2,7 +2,7 @@
 ### WordPress/Houzez → Next.js + Tailwind + Payload CMS
 
 **Date:** 12 August 2026
-**Status:** Phases 1–3 complete and verified — see §10. Phase 4 (Components) is next.
+**Status:** Phases 1–3 complete; phase 4 underway. Legacy independence achieved and enforced in CI.
 **Companion documents:**
 - [`content-audit/INVENTORY.md`](content-audit/INVENTORY.md) — the full extracted content of the current site
 - [`CLAUDE.md`](CLAUDE.md) — binding engineering conventions (i18n + theming rules)
@@ -523,7 +523,7 @@ The template is jQuery + Bootstrap + Swiper. In Next.js:
 | 1 | ✅ **Foundation** | Next 16 + Tailwind v4 + Payload 3 scaffold, Dockerfile + docker-compose, locale registry, translated routing, semantic light/dark tokens, health check. Build + typecheck + catalog parity all green |
 | 2 | ✅ **Schema** | 11 collections, 2 globals, 12 page blocks, 117 tables. Localized fields wired to the registry; admin verified in French. Docker image builds (478 MB) |
 | 3 | ✅ **Migration** | 42 properties, 12 posts, 54 images, taxonomies and globals imported into `fr`. Blog slugs byte-identical. Taxonomy mapping in [`content-audit/MAPPING.md`](content-audit/MAPPING.md) |
-| 4 | Components ← *next* | Ombara ported to React/Tailwind — header, hero, cards, gallery, footer. **Every component reviewed in both themes as it's built**, not audited at the end |
+| 4 | ◐ **Components** | Done: `Reveal`, `SectionHeader`, `VideoModal` (click-to-load facade), `PropertyCard`, `/terrains` listing — verified in both themes against real imported data. Remaining: hero, gallery scroll, CMS-driven header/footer |
 | 5 | Pages | Home, À propos, Services, Terrains, Programmes, Blog, Contact |
 | 6 | Forms, cart & leads | 8 lead forms, **cart → WhatsApp handoff (§4)**, notifications, admin inbox, export |
 | 7 | English locale | `en.json` catalog, translated route segments, language switcher, `hreflang`. Content translation is a client deliverable (§6) |

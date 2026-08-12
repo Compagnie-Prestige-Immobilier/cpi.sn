@@ -11,12 +11,11 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      // Only needed while migrating media off the old WordPress install.
-      // Remove once the import in phase 3 has completed.
-      { protocol: 'https', hostname: 'cpi.sn' },
-      { protocol: 'https', hostname: 'i0.wp.com' },
-    ],
+    // No remotePatterns, deliberately. Every image is served from Payload's
+    // own media volume. The legacy WordPress install disappears at cutover —
+    // cpi.sn will be THIS app — so any remote reference to it would be a dead
+    // image with no way to recover the original. Allowing the old host here
+    // would let such a reference slip in unnoticed.
   },
 
   // The purchased HTML template and the content audit are reference material,

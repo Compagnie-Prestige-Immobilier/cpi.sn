@@ -241,6 +241,29 @@ a client-side cart hands off to WhatsApp instead.
 
 ---
 
+## Independence from the legacy WordPress site
+
+**cpi.sn becomes THIS app at cutover.** CPI has no WordPress admin, no source and no backups —
+only the domain. Anything still pointing at the old install is a permanently broken link or a lost
+image, with no way to recover the original.
+
+1. **`npm run check:legacy` fails the build** on any `cpi.sn` / `wp-content` / `houzez.co`
+   reference in application source. It runs as part of `npm run check`. Only `src/migration/**` is
+   exempt — that code is *meant* to talk to the old site.
+2. **`next.config.ts` declares no `remotePatterns`, deliberately.** Adding the old host back would
+   let a remote reference slip in unnoticed.
+3. **`serverURL` is NOT set in `payload.config.ts`.** Payload derives upload URLs from it, so
+   setting it bakes an absolute origin into every media reference
+   (`http://localhost:3000/api/media/file/x.webp`) — which breaks on any other host, and which
+   next/image rejects outright given there are no `remotePatterns`. Unset, Payload emits relative
+   URLs that work everywhere. Absolute URLs for metadata/sitemap/email read
+   `NEXT_PUBLIC_SERVER_URL` directly instead.
+4. **`legacy-archive/`** holds a one-time mirror of all 777 WordPress uploads (1.3 GB), captured
+   while the old site was still reachable. Gitignored — **back it up separately**. It is the only
+   remaining copy of anything the migration did not import.
+
+---
+
 ## Payload schema gotchas
 
 Learned the hard way while building phase 2 — all three cost real debugging time.

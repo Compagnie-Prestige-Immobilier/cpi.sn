@@ -25,3 +25,6 @@ tsconfig.tsbuildinfo
 
 # migration download cache (re-fetchable)
 .migration-cache
+
+# one-time mirror of the legacy WordPress uploads (large, back this up separately)
+legacy-archive

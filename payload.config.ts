@@ -35,7 +35,20 @@ if (!process.env.DATABASE_URI) {
 }
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
+  /**
+   * `serverURL` is deliberately NOT set.
+   *
+   * Payload derives upload URLs from it, so setting it bakes an absolute origin
+   * into every media reference (`http://localhost:3000/api/media/file/x.webp`).
+   * That breaks the moment the host differs from the build environment, and
+   * because `next.config.ts` allows no `remotePatterns`, next/image rejects the
+   * foreign origin outright — every image on the site fails.
+   *
+   * Unset, Payload emits relative URLs (`/api/media/file/x.webp`), which are
+   * same-origin in every environment and need no allowlist. Code that genuinely
+   * needs an absolute URL (metadata, sitemap, email) reads
+   * NEXT_PUBLIC_SERVER_URL directly.
+   */
 
   admin: {
     user: Users.slug,

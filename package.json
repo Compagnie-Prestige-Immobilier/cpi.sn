@@ -13,13 +13,15 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "check:messages": "node scripts/check-messages.mjs",
-    "check": "npm run check:messages && npm run typecheck",
+    "check": "npm run check:messages && npm run check:legacy && npm run typecheck",
     "payload": "payload",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
-    "import": "tsx src/migration/import.ts"
+    "import": "tsx src/migration/import.ts",
+    "check:legacy": "node scripts/check-no-legacy.mjs",
+    "archive:legacy": "node scripts/archive-legacy.mjs"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",
