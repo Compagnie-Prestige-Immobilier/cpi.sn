@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.env
+.env.*
+!.env.example
+media
+npm-debug.log*
+# Reference material — not application code, and large.
+ombarahtml-10
+content-audit
+*.md
+!README.md

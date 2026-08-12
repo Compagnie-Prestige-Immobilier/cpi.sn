@@ -1,0 +1,119 @@
+/**
+ * CPI design tokens — light / dark.
+ *
+ * Two layers, and the distinction matters:
+ *
+ *   1. PALETTE  (--burgundy-*, --stone-*)  raw scales. Never used in components.
+ *   2. SEMANTIC (--surface, --brand, …)    what components actually reference.
+ *
+ * Components use the semantic layer only: bg-surface, text-brand, border-subtle.
+ * Never `bg-[#65000d]`, never `bg-burgundy-800`. The whole point is that a token
+ * resolves to a *different* palette step per theme.
+ *
+ * Why that's mandatory here: CPI's brand is a single hue. #65000D scores 12.91:1
+ * on the light surface but 1.31:1 on the dark one — unusable. There is no second
+ * brand colour to fall back on, so dark mode comes out of the burgundy ramp
+ * itself. Every value below is measured; see CLAUDE.md → Theming.
+ */
+
+/* ---------------------------------------------------------------------------
+   1. Palette
+   --------------------------------------------------------------------------- */
+:root {
+  /* Burgundy — hue 352. The 800 step is CPI's existing brand colour, so light
+     mode is visually unchanged from the current WordPress site. */
+  --burgundy-50: #f9f6f6;
+  --burgundy-100: #f3eced;
+  --burgundy-200: #e8d4d7;
+  --burgundy-300: #db9fa7;
+  --burgundy-400: #d45e6e;
+  --burgundy-500: #c52036;
+  --burgundy-600: #970c1f;
+  --burgundy-700: #7a0010;
+  --burgundy-800: #65000d; /* ← brand */
+  --burgundy-900: #52000b;
+  --burgundy-950: #330007;
+
+  /* Warm neutrals. The mid steps are sampled from the logo artwork. */
+  --stone-50: #fbfaf8;
+  --stone-100: #f4f2f1;
+  --stone-200: #e6e3e1;
+  --stone-300: #dce0e0;
+  --stone-400: #a1a7a8;
+  --stone-500: #7c8081;
+  --stone-600: #515151;
+  --stone-700: #403838;
+  --stone-800: #282828;
+  --stone-900: #1c1a1a;
+  --stone-950: #171214;
+
+  --white: #ffffff;
+  --black: #000000;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Semantic tokens — light (default)
+   --------------------------------------------------------------------------- */
+:root {
+  --surface: var(--stone-50);
+  --surface-raised: var(--white);
+  --surface-sunken: var(--stone-100);
+  --surface-inverse: var(--stone-950);
+
+  --foreground: var(--stone-900); /* 16.61:1 */
+  --foreground-muted: var(--stone-600); /*  7.61:1 */
+  --foreground-inverse: var(--stone-100);
+
+  --border-subtle: var(--stone-200);
+  --border-strong: var(--stone-400);
+
+  --brand: var(--burgundy-800); /* 12.91:1 on surface */
+  --brand-hover: var(--burgundy-700); /* 10.97:1 */
+  --brand-muted: var(--burgundy-100);
+  --brand-border: var(--burgundy-600);
+  --brand-solid: var(--burgundy-800);
+  --brand-solid-hover: var(--burgundy-700);
+  --brand-solid-foreground: var(--white); /* 13.47:1 on brand-solid */
+
+  /* Accents the Ombara template rendered in gold. Burgundy here — see CLAUDE.md.
+     `-on-dark` is for accents sitting over photography or dark sections, where
+     #65000D is invisible. Same hue, lighter step. Never a different colour. */
+  --accent: var(--burgundy-800);
+  --accent-on-dark: var(--burgundy-300);
+
+  --focus-ring: var(--burgundy-600);
+  --overlay: rgb(28 26 26 / 0.6);
+}
+
+/* ---------------------------------------------------------------------------
+   3. Semantic tokens — dark
+   Only the semantic layer is redefined; the palette never changes.
+   --------------------------------------------------------------------------- */
+:root[data-theme='dark'],
+.dark {
+  --surface: var(--stone-950); /* warm #171214, not Ombara's cool navy */
+  --surface-raised: #1f191b;
+  --surface-sunken: #120e10;
+  --surface-inverse: var(--stone-50);
+
+  --foreground: var(--stone-100); /* 16.61:1 */
+  --foreground-muted: var(--stone-400); /*  7.60:1 */
+  --foreground-inverse: var(--stone-900);
+
+  --border-subtle: #2e2629;
+  --border-strong: #4a3f43;
+
+  --brand: var(--burgundy-400); /* 4.97:1 — the lowest passing step */
+  --brand-hover: var(--burgundy-300); /* 8.41:1 */
+  --brand-muted: #2a1417;
+  --brand-border: var(--burgundy-400);
+  --brand-solid: var(--burgundy-700);
+  --brand-solid-hover: var(--burgundy-600);
+  --brand-solid-foreground: var(--white); /* 11.44:1 on brand-solid */
+
+  --accent: var(--burgundy-400);
+  --accent-on-dark: var(--burgundy-300);
+
+  --focus-ring: var(--burgundy-400);
+  --overlay: rgb(0 0 0 / 0.7);
+}

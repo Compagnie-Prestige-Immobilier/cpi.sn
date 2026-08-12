@@ -1,0 +1,137 @@
+{
+  "site": {
+    "name": "CPI",
+    "fullName": "Compagnie Prestige Immobilier",
+    "tagline": "Champion de l'immobilier au Sénégal",
+    "description": "Promoteur immobilier de référence au Sénégal depuis 2003. Terrains viabilisés, programmes immobiliers, construction et conseil juridique."
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Nos services",
+    "land": "Terrains disponibles",
+    "developments": "Projets",
+    "developmentsOngoing": "Projets en cours",
+    "developmentsCompleted": "Projets réalisés",
+    "apartments": "Appartements",
+    "blog": "Blog",
+    "contact": "Contact",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "skipToContent": "Aller au contenu principal"
+  },
+  "common": {
+    "loading": "Chargement…",
+    "readMore": "En savoir plus",
+    "seeAll": "Voir tout",
+    "back": "Retour",
+    "close": "Fermer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "share": "Partager",
+    "priceOnRequest": "Prix sur demande",
+    "from": "À partir de",
+    "reference": "Référence"
+  },
+  "theme": {
+    "toggle": "Changer de thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "language": {
+    "switch": "Changer de langue",
+    "current": "Langue actuelle : {label}"
+  },
+  "property": {
+    "specs": {
+      "surface": "Superficie",
+      "plotSize": "Superficie du terrain",
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles de bain",
+      "year": "Année",
+      "titleDeed": "Titre foncier",
+      "city": "Ville",
+      "area": "Région"
+    },
+    "status": {
+      "available": "Disponible",
+      "ongoing": "En cours",
+      "completed": "Réalisé",
+      "sold": "Vendu",
+      "forRent": "À louer"
+    },
+    "kind": {
+      "terrain": "Terrain",
+      "villa": "Villa",
+      "apartment": "Appartement",
+      "building": "Immeuble",
+      "office": "Bureau",
+      "retail": "Commerce"
+    },
+    "count": "{count, plural, =0 {Aucun bien} one {# bien} other {# biens}}",
+    "addToSelection": "Ajouter à ma sélection",
+    "inSelection": "Dans ma sélection",
+    "removeFromSelection": "Retirer de ma sélection"
+  },
+  "cart": {
+    "title": "Ma sélection",
+    "empty": "Votre sélection est vide.",
+    "emptyAction": "Découvrir nos terrains",
+    "count": "{count, plural, =0 {Aucun bien sélectionné} one {# bien sélectionné} other {# biens sélectionnés}}",
+    "remove": "Retirer",
+    "clear": "Vider ma sélection",
+    "submit": "Finaliser ma demande",
+    "submitting": "Envoi en cours…",
+    "whatsappHint": "Vous serez redirigé vers WhatsApp pour finaliser avec notre équipe.",
+    "form": {
+      "name": "Votre nom",
+      "phone": "Téléphone",
+      "email": "E-mail (facultatif)",
+      "message": "Message (facultatif)"
+    },
+    "whatsapp": {
+      "intro": "Bonjour CPI, je suis intéressé(e) par :",
+      "line": "• {title} — {details}",
+      "reference": "Référence : {reference}",
+      "truncated": "… et {count, plural, one {# autre bien} other {# autres biens}}. Détail complet sous la référence ci-dessous."
+    }
+  },
+  "video": {
+    "play": "Lire la vidéo",
+    "close": "Fermer la vidéo",
+    "label": "Vidéo de présentation"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Conseils et actualités de l'immobilier au Sénégal",
+    "readingTime": "{minutes} min de lecture",
+    "publishedOn": "Publié le {date}",
+    "categories": "Catégories",
+    "relatedPosts": "Articles similaires",
+    "empty": "Aucun article pour le moment."
+  },
+  "forms": {
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "Adresse e-mail invalide",
+    "invalidPhone": "Numéro de téléphone invalide",
+    "submit": "Envoyer",
+    "submitting": "Envoi en cours…",
+    "success": "Merci, votre demande a bien été envoyée.",
+    "error": "Une erreur est survenue. Merci de réessayer ou de nous appeler directement."
+  },
+  "placeholder": {
+    "testimonialName": "Client CPI",
+    "testimonialRole": "Témoignage à venir",
+    "teamName": "Membre de l'équipe",
+    "teamRole": "Poste à préciser",
+    "notice": "Contenu provisoire — sera remplacé par CPI."
+  },
+  "error": {
+    "notFoundTitle": "Page introuvable",
+    "notFoundBody": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "genericTitle": "Une erreur est survenue",
+    "genericBody": "Merci de réessayer dans un instant.",
+    "backHome": "Retour à l'accueil"
+  }
+}

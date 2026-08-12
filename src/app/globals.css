@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+
+/* Class-based dark mode. next-themes writes `.dark` onto <html>; the
+   [data-theme] selector keeps parity with the token file. */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *));
+
+/**
+ * `@theme inline` makes the generated utilities reference the CSS variable
+ * rather than inlining its value at build time. That is what allows a single
+ * `bg-surface` class to resolve differently in light and dark.
+ *
+ * Using plain `@theme` here would bake the light value into the utility and
+ * dark mode would silently do nothing.
+ */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-inverse: var(--foreground-inverse);
+
+  --color-subtle: var(--border-subtle);
+  --color-strong: var(--border-strong);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-border: var(--brand-border);
+  --color-brand-solid: var(--brand-solid);
+  --color-brand-solid-hover: var(--brand-solid-hover);
+  --color-brand-solid-foreground: var(--brand-solid-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-on-dark: var(--accent-on-dark);
+
+  --font-heading: var(--font-cormorant), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* Explicit background: without it the page borrows whatever the host
+       paints behind it, which breaks dark mode in embedded contexts. */
+    background-color: var(--surface);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Photos are dimmed slightly in dark mode, never inverted. */
+  .dark img:not([data-no-dim]) {
+    filter: brightness(0.9);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Logical-property helper kept explicit so an RTL locale stays cheap. */
+  .container-page {
+    margin-inline: auto;
+    inline-size: 100%;
+    max-inline-size: 80rem;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2.5rem;
+    }
+  }
+}
