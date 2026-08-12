@@ -44,9 +44,15 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      # The build imports payload.config.ts, which throws without these. It
-      # never touches the database — migrations run at container start — so
-      # placeholders are correct here, exactly as in the Dockerfile.
+      # payload.config.ts throws if these are unset, so the build needs values —
+      # but it never CONNECTS: the public site is `force-dynamic`, so no page is
+      # prerendered and nothing queries Postgres at build time. Placeholders are
+      # therefore correct, exactly as in the Dockerfile.
+      #
+      # If this step ever fails with "cannot connect to Postgres", something has
+      # reintroduced build-time prerendering of a page that reads the CMS. Fix
+      # the page, don't add a database service here — prerendering would mean
+      # CPI's content edits need a redeploy to appear.
       - name: Build
         env:
           DATABASE_URI: postgres://build:build@localhost:5432/build

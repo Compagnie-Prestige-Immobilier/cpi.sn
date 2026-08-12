@@ -182,6 +182,26 @@ a bare slug `where` clause in a route.
 
 ---
 
+## Rendering: the public site is dynamic, on purpose
+
+`src/app/(site)/[locale]/layout.tsx` sets **`export const dynamic = 'force-dynamic'`**. Do not
+remove it, and do not add `generateStaticParams`-driven prerendering to a route that reads Payload.
+
+Two reasons, the first being the one that matters:
+
+1. **It's a CMS.** Every page reads Payload — the layout alone loads the `navigation` and
+   `site-settings` globals. Prerendered, an edit CPI makes in the admin would not appear until
+   someone rebuilt and redeployed. That defeats the point of giving them a CMS.
+2. **It decouples the build from the database.** Otherwise `next build` needs a reachable Postgres
+   to prerender every page, which fails in CI and in `docker build`, where no database exists.
+   Symptom: `ERROR: cannot connect to Postgres` during "Generating static pages".
+
+SSR is cheap here — Payload's Local API runs in the same process, so there is no HTTP round trip.
+If traffic ever justifies caching, add **on-demand revalidation from Payload hooks**; do not go
+back to build-time prerendering.
+
+---
+
 ## API routes
 
 **Never create a static route at `/api/<collection-slug>`.** Next resolves the more specific path

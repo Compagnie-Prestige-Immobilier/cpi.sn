@@ -26,6 +26,28 @@ const inter = Inter({
   display: 'swap',
 })
 
+/**
+ * The public site renders per request, not at build time.
+ *
+ * Two reasons, and the first is the important one:
+ *
+ *  1. It's a CMS. Every page reads Payload — this layout alone loads the
+ *     `navigation` and `site-settings` globals. Prerendered, an edit CPI makes
+ *     in the admin would not appear until someone rebuilt and redeployed the
+ *     app. That is not a trade-off worth making on a site whose whole point is
+ *     that the client can maintain it.
+ *
+ *  2. It decouples the build from the database. `next build` would otherwise
+ *     need a reachable Postgres to prerender 54 pages, which fails in CI and in
+ *     `docker build`, where no database exists.
+ *
+ * SSR is cheap here: Payload's Local API runs in the same process, so there is
+ * no HTTP round trip. If traffic ever justifies it, the route to take is
+ * on-demand revalidation from Payload hooks — not a return to build-time
+ * prerendering.
+ */
+export const dynamic = 'force-dynamic'
+
 export function generateStaticParams() {
   return localeCodes.map((locale) => ({ locale }))
 }

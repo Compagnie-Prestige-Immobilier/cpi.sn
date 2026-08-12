@@ -119,8 +119,10 @@ Things this changes versus a Vercel deploy, and how they're handled:
   self-hosted Payload install loses client uploads. The volume must be in Dokploy's backup set
   alongside `pgdata`.
 - **Migrations run on container start**, not at build time — the build has no DB access.
-- **ISR cache is per-container.** Fine at one replica; if CPI ever scales to two, the cache needs
-  to move to Redis or shared storage. Noted so it isn't a surprise later.
+- **The public site renders per request** (`force-dynamic`), so CMS edits appear immediately and
+  the build needs no database. If caching is ever added, use on-demand revalidation from Payload
+  hooks rather than build-time prerendering — and note that a per-container cache would need Redis
+  before scaling past one replica.
 - **A `/api/health` endpoint** for Dokploy's healthcheck, so a failed boot doesn't silently serve
   a dead container.
 - **Secrets** (`DATABASE_URI`, `PAYLOAD_SECRET`, mail credentials) come from Dokploy's env
