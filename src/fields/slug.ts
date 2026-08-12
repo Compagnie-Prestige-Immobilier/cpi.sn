@@ -1,10 +1,28 @@
 import type { Field } from 'payload'
 
-/** Accent-aware slugify — French titles are full of é/è/à/ç. */
+/**
+ * Accent-aware slugify — French titles are full of é/è/à/ç, and real-estate
+ * copy is full of `m²`.
+ *
+ * Superscripts are folded to digits first: without that, "Villa de 200 m²"
+ * loses the 2 entirely. WordPress percent-encoded them instead, which is why
+ * the old URLs look like `villa-de-200-m%c2%b2-a-ouakam`.
+ */
 export function slugify(input: string): string {
-  return input
+  let value = input
+  // Decode percent-encoded source slugs (…-m%c2%b2-… → …-m²-…).
+  try {
+    value = decodeURIComponent(value)
+  } catch {
+    /* leave malformed sequences as-is */
+  }
+
+  return value
+    .replace(/²/g, '2')
+    .replace(/³/g, '3')
+    .replace(/[‘’']/g, '')
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-zA-Z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .toLowerCase()

@@ -58,5 +58,19 @@ export const Media: CollectionConfig = {
       localized: true,
       label: { fr: 'Légende', en: 'Caption' },
     },
+    {
+      name: 'sourceUrl',
+      type: 'text',
+      index: true,
+      label: { fr: 'URL d’origine', en: 'Source URL' },
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        description: {
+          fr: 'Renseigné automatiquement lors de la migration depuis WordPress.',
+          en: 'Set automatically during the WordPress migration.',
+        },
+      },
+    },
   ],
 }

@@ -261,6 +261,30 @@ and `tsc` both pass happily on a schema Postgres will reject.
 
 ---
 
+## Running the content migration
+
+`npm run import` — idempotent, matches on slug and updates rather than duplicating.
+`-- --fresh` wipes imported collections first; `-- --no-media` skips downloads for a fast check.
+
+- **Body HTML comes from the live WordPress REST API, cached in `.migration-cache/html/`.**
+  Never import from `content-audit/**.md` — those are turndown *markdown*, and feeding markdown to
+  an HTML converter leaves literal `**asterisks**` in the body text.
+- **Images cache in `.migration-cache/media/`** keyed by URL hash, and upload with a filename
+  derived from the original URL. Passing Payload the cache path would name every file after its
+  sha1 — unreadable in the admin and worthless for image SEO.
+- **`media.sourceUrl` is the dedupe key** across re-runs. Don't remove it.
+- **Slug lookups must run through `slugify()`** — the field hook normalises on write, so looking up
+  by a raw source slug never matches and the re-run tries to create a duplicate. WordPress
+  percent-encoded `m²` as `%c2%b2`, so this affects real listings.
+
+### Known source-data gaps (faithful, not bugs)
+
+- 4 properties have **no city** — the field was empty in WordPress.
+- Several city assignments are simply **wrong in the source** (Ndayanne → Popenguine, Sangalkam →
+  Rufisque). Imported as-is rather than guessed at; CPI should correct them in the admin.
+
+---
+
 ## Content gotchas carried over from WordPress
 
 These are documented in `content-audit/INVENTORY.md` and must not be re-imported:

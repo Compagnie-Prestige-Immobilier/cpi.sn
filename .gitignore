@@ -22,3 +22,6 @@ brand
 content-audit
 ombarahtml-10
 tsconfig.tsbuildinfo
+
+# migration download cache (re-fetchable)
+.migration-cache
