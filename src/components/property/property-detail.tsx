@@ -3,6 +3,7 @@ import { getTranslations, getFormatter } from 'next-intl/server'
 import { RichText } from '@/components/rich-text'
 import { GalleryScroll } from '@/components/ui/gallery-scroll'
 import { VideoModal } from '@/components/ui/video-modal'
+import { AddToSelection } from '@/components/cart/add-to-selection'
 import type { Property, Media, City, Amenity } from '@/payload-types'
 
 const AVAILABILITY_KEY = {
@@ -74,6 +75,24 @@ export async function PropertyDetail({ property }: { property: Property }) {
               ? [property.priceNote, format.number(property.price, 'currency')].filter(Boolean).join(' ')
               : tCommon('priceOnRequest')}
           </p>
+
+          {/* Sold and completed stock is reference, not inventory — offering to
+              add it to a selection would set up a conversation CPI can't honour. */}
+          {property.availability !== 'vendu' && property.availability !== 'realise' ? (
+            <div className="mt-7">
+              <AddToSelection
+                item={{
+                  id: property.id,
+                  slug: property.slug,
+                  title: property.title,
+                  details: [city?.name, property.surface ? `${property.surface} m²` : null]
+                    .filter(Boolean)
+                    .join(' · '),
+                  productLine: property.productLine,
+                }}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import { Link } from '@/i18n/routing'
 import { CmsLink } from '@/components/ui/cms-link'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { SelectionBadge } from '@/components/cart/selection-badge'
 import { MobileNav } from '@/components/mobile-nav'
 import { getNavigation } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
@@ -90,6 +91,7 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <SelectionBadge />
           <LanguageSwitcher />
           <ThemeToggle />
           <MobileNav

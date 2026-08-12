@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { ThemeProvider } from '@/components/theme-provider'
+import { CartProvider } from '@/components/cart/cart-provider'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { getDirection, localeCodes } from '@/i18n/locales'
@@ -78,15 +79,17 @@ export default async function SiteLayout({
       <body className="min-h-dvh bg-surface text-foreground antialiased">
         <NextIntlClientProvider>
           <ThemeProvider>
-            <a
-              href="#main"
-              className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-brand-solid focus:px-4 focus:py-2 focus:text-brand-solid-foreground"
-            >
-              {t('skipToContent')}
-            </a>
-            <SiteHeader />
-            <main id="main">{children}</main>
-            <SiteFooter />
+            <CartProvider>
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-brand-solid focus:px-4 focus:py-2 focus:text-brand-solid-foreground"
+              >
+                {t('skipToContent')}
+              </a>
+              <SiteHeader />
+              <main id="main">{children}</main>
+              <SiteFooter />
+            </CartProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

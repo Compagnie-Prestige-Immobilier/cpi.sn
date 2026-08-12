@@ -6,6 +6,7 @@ import { GalleryScroll } from '@/components/ui/gallery-scroll'
 import { ButtonLink } from '@/components/ui/button-link'
 import { CmsLink } from '@/components/ui/cms-link'
 import { PropertyCard } from '@/components/property/property-card'
+import { ContactForm } from '@/components/forms/contact-form'
 import { getProperties } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Page, Media, Property } from '@/payload-types'
@@ -242,9 +243,22 @@ async function BlockSwitch({ block, locale }: { block: Block; locale: Locale }) 
       )
     }
 
-    // `testimonialsBlock` and `contactForm` land in phase 6 alongside the lead
-    // pipeline — rendering an inert form now would invite real enquiries into a
-    // dead end.
+    case 'contactForm':
+      return (
+        <section className="container-page py-16">
+          <div className="mx-auto max-w-2xl">
+            {block.heading ? (
+              <SectionHeader title={block.heading} subtitle={block.body ?? undefined} align="start" />
+            ) : null}
+            <div className="mt-8">
+              <ContactForm subject={block.subject} />
+            </div>
+          </div>
+        </section>
+      )
+
+    // `testimonialsBlock` renders nothing until CPI supplies real quotes — an
+    // invented testimonial on a trust-driven site is worse than no section.
     default:
       return null
   }
