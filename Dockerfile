@@ -11,7 +11,7 @@ FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install
 
 # ── builder ──────────────────────────────────────────────────────────────────
 FROM node:22-bookworm-slim AS builder
