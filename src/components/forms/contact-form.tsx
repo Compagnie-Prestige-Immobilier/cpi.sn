@@ -24,7 +24,7 @@ export function ContactForm({ subject }: { subject?: string | null }) {
     const form = new FormData(event.currentTarget)
 
     try {
-      const res = await fetch('/api/leads', {
+      const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

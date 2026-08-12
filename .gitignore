@@ -5,9 +5,10 @@ build
 .DS_Store
 *.pem
 
-# env
+# env — ignore every variant, then re-allow the committed template.
+# `.env*` deliberately, not `.env*.local`: .env.prod holds live credentials.
 .env
-.env*.local
+.env.*
 !.env.example
 
 # payload

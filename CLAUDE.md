@@ -182,6 +182,19 @@ a bare slug `where` clause in a route.
 
 ---
 
+## API routes
+
+**Never create a static route at `/api/<collection-slug>`.** Next resolves the more specific path
+before Payload's `/api/[...slug]` catch-all, so the handler shadows Payload's REST endpoint for that
+collection and the admin's list view 405s. Public form submission lives at **`/api/enquiries`**, not
+`/api/leads`, for exactly this reason.
+
+Public writes go through a route handler using the Local API with `overrideAccess`, never by opening
+the collection to anonymous `create`. That keeps the REST endpoint closed to drive-by spam while the
+site's own forms still work.
+
+---
+
 ## Component conventions
 
 1. **Hero CTAs must use `tone="onDark"`.** The hero ground is dark in every state — a photo under

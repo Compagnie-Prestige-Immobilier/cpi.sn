@@ -36,7 +36,7 @@ export function SelectionForm({ whatsappNumber }: { whatsappNumber: string }) {
        * entirely — CPI still has the enquiry. Reversing this order silently
        * loses every abandoned conversation. See CLAUDE.md → Cart.
        */
-      const res = await fetch('/api/leads', {
+      const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

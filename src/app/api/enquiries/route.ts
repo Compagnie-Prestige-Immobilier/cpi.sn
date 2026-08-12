@@ -8,6 +8,11 @@ export const dynamic = 'force-dynamic'
 /**
  * Public endpoint for contact forms and cart enquiries.
  *
+ * Lives at /api/enquiries, NOT /api/leads. A static route at /api/leads would
+ * shadow Payload's own `/api/[...slug]` REST handler for the `leads`
+ * collection — Next resolves the more specific path first — and the admin's
+ * Demandes list, which reads that endpoint, would 405.
+ *
  * The `leads` collection itself stays closed to anonymous writes — this handler
  * uses the Local API with `overrideAccess`, so the REST endpoint is never open
  * to drive-by spam while the site's own forms still work

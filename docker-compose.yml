@@ -1,10 +1,15 @@
-# CPI.sn — Dokploy deployment.
+# cpi.sn — deployment via Dokploy.
 #
-# Dokploy supplies the reverse proxy and TLS, so no ports are published to the
-# host here; it attaches to the `web` service on 3000.
+# One service. Postgres is NOT defined here: it is managed by Dokploy
+# (`cpisn-db-udk1lq`) and reached over the internal network. Bundling a second
+# Postgres would mean an unused container holding an empty volume, and an easy
+# way to point the app at the wrong database.
 #
-# Set in Dokploy's environment manager (never committed):
-#   POSTGRES_PASSWORD, PAYLOAD_SECRET, NEXT_PUBLIC_SERVER_URL
+# Local development does not use this file — run `bun run dev` (or `npm run dev`)
+# against a local Postgres instead.
+#
+# Environment comes from Dokploy's manager; see .env.prod for the values:
+#   DATABASE_URI · PAYLOAD_SECRET · NEXT_PUBLIC_SERVER_URL
 
 services:
   web:
@@ -14,44 +19,31 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      DATABASE_URI: postgres://cpi:${POSTGRES_PASSWORD}@db:5432/cpi
+      DATABASE_URI: ${DATABASE_URI}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
       MEDIA_DIR: /app/media
     volumes:
-      # Uploads MUST live on this volume, never the container filesystem —
-      # anything written into the container is destroyed on redeploy.
-      # Back this up alongside pgdata. See CLAUDE.md → Deployment rule 3.
+      # The ONLY copy of client uploads. Include it in Dokploy's backup set
+      # alongside the database — a redeploy destroys anything written into the
+      # container filesystem itself.
       - media:/app/media
-    depends_on:
-      db:
-        condition: service_healthy
     expose:
       - '3000'
     healthcheck:
+      # Verifies the database is reachable, not merely that the process booted.
       test: ['CMD', 'curl', '-fsS', 'http://127.0.0.1:3000/api/health']
       interval: 30s
       timeout: 5s
       start_period: 40s
       retries: 3
 
-  db:
-    image: postgres:17-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: cpi
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: cpi
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      # Without this gate the web container races Postgres on first boot and
-      # crash-loops through its restart policy.
-      test: ['CMD-SHELL', 'pg_isready -U cpi -d cpi']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
 volumes:
-  pgdata:
   media:
+# If Dokploy's Postgres lives on a different Docker network, attach it here —
+# otherwise the hostname `cpisn-db-udk1lq` will not resolve from this container:
+#
+# networks:
+#   default:
+#     name: dokploy-network
+#     external: true

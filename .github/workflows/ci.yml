@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A new push supersedes an in-flight run on the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  # ── Static checks + production build ────────────────────────────────────────
+  build:
+    name: Checks & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Fails when a locale catalog has drifted from fr.json — a missing key
+      # must be a build error, not a raw `nav.about` shown to a visitor.
+      - name: Message catalogs in sync
+        run: npm run check:messages
+
+      # Fails on any surviving reference to the old WordPress install. cpi.sn
+      # becomes THIS app at cutover; a leftover link is permanently broken.
+      - name: No legacy WordPress references
+        run: npm run check:legacy
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # The build imports payload.config.ts, which throws without these. It
+      # never touches the database — migrations run at container start — so
+      # placeholders are correct here, exactly as in the Dockerfile.
+      - name: Build
+        env:
+          DATABASE_URI: postgres://build:build@localhost:5432/build
+          PAYLOAD_SECRET: build-time-placeholder
+        run: npm run build
+
+  # ── Migrations apply cleanly from an empty database ─────────────────────────
+  migrations:
+    name: Migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: cpi
+          POSTGRES_PASSWORD: cpi
+          POSTGRES_DB: cpi
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U cpi -d cpi"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URI: postgres://cpi:cpi@localhost:5432/cpi
+      PAYLOAD_SECRET: ci-placeholder-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # `< /dev/null` matters: with an interactive prompt the CLI would hang
+      # until the job timed out rather than failing fast. See CLAUDE.md.
+      - name: Apply migrations to an empty database
+        run: npx payload migrate < /dev/null
+
+      # Guards against the drift we hit in development: schema changes committed
+      # without a matching migration. `migrate:create` writes a file only when
+      # the config and the database disagree — any new file means a migration is
+      # missing from the commit.
+      - name: No un-migrated schema changes
+        run: |
+          set -euo pipefail
+          before=$(ls src/migrations/*.ts | wc -l)
+          # No `|| true`: a genuine failure here (bad config, unreachable DB)
+          # must fail the job rather than silently leaving the count unchanged
+          # and reporting "no drift".
+          npx payload migrate:create ci_drift_check < /dev/null
+          after=$(ls src/migrations/*.ts | wc -l)
+          if [ "$after" -ne "$before" ]; then
+            echo "::error::Schema differs from the committed migrations."
+            echo "Run: npm run migrate:create <name>  and commit the result."
+            git --no-pager diff --stat
+            ls -t src/migrations/*.ts | head -1
+            exit 1
+          fi
+          echo "Schema matches the committed migrations."
+
+  # ── Runtime image builds ────────────────────────────────────────────────────
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # The image is what actually ships; a Dockerfile that stops building is a
+    # release blocker, so this runs on every change rather than only on main.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

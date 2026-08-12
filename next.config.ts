@@ -9,6 +9,17 @@ const nextConfig: NextConfig = {
   // (~200 MB instead of ~1.2 GB). See CLAUDE.md → Deployment.
   output: 'standalone',
 
+  /**
+   * Explicitly false. This is Next's default, but it is also the first switch
+   * people reach for when a deploy is blocked — and flipping it lets a type
+   * error reach production silently. Stated here so turning it on is a visible,
+   * deliberate change in review rather than an invisible default.
+   *
+   * (Next 16 removed the `eslint` config key along with built-in `next lint`;
+   * linting runs separately.)
+   */
+  typescript: { ignoreBuildErrors: false },
+
   images: {
     formats: ['image/avif', 'image/webp'],
     // No remotePatterns, deliberately. Every image is served from Payload's
