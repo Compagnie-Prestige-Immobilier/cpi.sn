@@ -1,13 +1,14 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { Link } from '@/i18n/routing'
+import { ButtonLink } from '@/components/ui/button-link'
+import { Hero } from '@/components/ui/hero'
+import { SectionHeader } from '@/components/ui/section-header'
+import { Reveal } from '@/components/ui/reveal'
+import { GalleryScroll } from '@/components/ui/gallery-scroll'
+import { PropertyCard } from '@/components/property/property-card'
+import { getProperties, getHomePage } from '@/lib/payload'
+import type { Locale } from '@/i18n/locales'
+import type { Media } from '@/payload-types'
 
-/**
- * Placeholder home page — proves the foundation works end to end:
- * locale routing, message catalogs, semantic theme tokens, fonts.
- *
- * The real homepage (hero, 4 métiers, terrains, réalisations, CTA) is phase 5,
- * built on the Ombara skeleton. See plan.md §8.
- */
 export default async function HomePage({
   params,
 }: {
@@ -16,61 +17,80 @@ export default async function HomePage({
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [t, tNav] = await Promise.all([
-    getTranslations('site'),
-    getTranslations('nav'),
-  ])
+  const [t, tNav] = await Promise.all([getTranslations('site'), getTranslations('nav')])
+
+  const terrains = await getProperties({
+    locale: locale as Locale,
+    productLine: 'foncier',
+    availability: ['disponible', 'en-cours'],
+    limit: 6,
+  })
+
+  // Realised work, used as the gallery — a developer leads with proof, where a
+  // hotel would lead with atmosphere. See CLAUDE.md → template usage.
+  const realised = await getProperties({
+    locale: locale as Locale,
+    productLine: 'immobilier',
+    availability: ['realise', 'vendu'],
+    limit: 10,
+  })
+
+  /**
+   * Hero art comes from the home-page global, never from a listing. CPI's
+   * featured images are promotional banners with text baked in, so using one
+   * full-bleed collides with the headline. No image → solid brand ground.
+   */
+  const home = await getHomePage(locale as Locale)
+  const heroImage = (home.heroImage as Media | null) ?? null
+  const galleryImages = realised
+    .map((p) => p.featuredImage as Media | null)
+    .filter((m): m is Media => Boolean(m?.url))
 
   return (
-    <div className="container-page py-24 lg:py-32">
-      <p className="text-xs font-medium tracking-[0.2em] text-accent uppercase">
-        {t('name')} — Phase 1
-      </p>
+    <>
+      <Hero
+        eyebrow={home.heroEyebrow ?? t('name')}
+        title={home.heroTitle ?? t('fullName')}
+        subtitle={home.heroSubtitle ?? t('tagline')}
+        image={heroImage?.url ?? null}
+        imageAlt={heroImage?.alt ?? ''}
+        videoUrl={home.heroVideoUrl}
+        actions={
+          <>
+            {/* tone="onDark": the hero ground is always dark. */}
+            <ButtonLink href="/terrains" tone="onDark">
+              {tNav('land')}
+            </ButtonLink>
+            <ButtonLink href="/contact" tone="onDark" variant="outline">
+              {tNav('contact')}
+            </ButtonLink>
+          </>
+        }
+      />
 
-      <h1 className="mt-6 max-w-4xl font-heading text-5xl leading-[1.05] text-foreground lg:text-7xl">
-        {t('fullName')}
-      </h1>
-
-      <p className="mt-6 max-w-2xl text-lg text-foreground-muted">{t('tagline')}</p>
-
-      <div className="mt-10 flex flex-wrap gap-3">
-        <Link
-          href="/terrains"
-          className="rounded-full bg-brand-solid px-7 py-3 text-sm font-medium text-brand-solid-foreground transition-colors hover:bg-brand-solid-hover"
-        >
-          {tNav('land')}
-        </Link>
-        <Link
-          href="/contact"
-          className="rounded-full border border-brand-border px-7 py-3 text-sm font-medium text-brand transition-colors hover:bg-brand-muted"
-        >
-          {tNav('contact')}
-        </Link>
-      </div>
-
-      {/* Token smoke test — every swatch must stay legible in both themes. */}
-      <section className="mt-20 border-t border-subtle pt-10">
-        <h2 className="font-heading text-2xl text-foreground">Design tokens</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Swatch className="bg-surface-raised text-foreground" label="surface-raised" />
-          <Swatch className="bg-surface-sunken text-foreground" label="surface-sunken" />
-          <Swatch
-            className="bg-brand-solid text-brand-solid-foreground"
-            label="brand-solid"
-          />
-          <Swatch className="bg-brand-muted text-brand" label="brand-muted" />
+      <section className="container-page py-20 lg:py-28">
+        <SectionHeader
+          eyebrow="Promotion foncière"
+          title={tNav('land')}
+          subtitle={t('description')}
+          align="start"
+        />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {terrains.map((property, i) => (
+            <Reveal key={property.id} delay={(i % 3) * 90}>
+              <PropertyCard property={property} />
+            </Reveal>
+          ))}
         </div>
       </section>
-    </div>
-  )
-}
 
-function Swatch({ className, label }: { className: string; label: string }) {
-  return (
-    <div
-      className={`rounded-lg border border-subtle p-5 text-sm ${className}`}
-    >
-      {label}
-    </div>
+      {galleryImages.length ? (
+        <GalleryScroll
+          eyebrow="Réalisations"
+          title={tNav('developmentsCompleted')}
+          images={galleryImages}
+        />
+      ) : null}
+    </>
   )
 }

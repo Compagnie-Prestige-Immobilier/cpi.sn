@@ -169,6 +169,25 @@ palette. Rebuild the token layer properly instead.
 
 ---
 
+## Component conventions
+
+1. **Hero CTAs must use `tone="onDark"`.** The hero ground is dark in every state — a photo under
+   a scrim, or the burgundy fallback. The default burgundy fill measures **1.14:1** against that
+   ground and is effectively invisible. Use `ButtonLink`; never hand-roll a hero button.
+2. **Hero art comes from the `home-page` global, never from a listing.** CPI's featured images are
+   promotional banners with the site name burned into the artwork, so a scavenged one puts baked-in
+   text behind the headline. No image set → solid brand ground, which reads as intentional.
+3. **`CmsLink` for any href stored in the CMS.** Editors type French paths (`/terrains`); a plain
+   `<a>` would send English visitors to the French URL and drop the locale. `CmsLink` maps the path
+   back to its routing key so next-intl emits `/en/land`. Dynamic routes are excluded — they need
+   params.
+4. **`Reveal` fires once and honours `prefers-reduced-motion`** (content renders visible
+   immediately for those users, never hidden behind an animation they declined).
+5. **Sold / completed listings are desaturated with a muted badge.** They stay visible as proof of
+   delivery but must not read as available inventory.
+
+---
+
 ## Deployment — self-hosted VPS via Dokploy
 
 **Not Vercel.** Two Docker containers: `web` (Next.js + Payload in one process) and `db`
@@ -279,8 +298,16 @@ Learned the hard way while building phase 2 — all three cost real debugging ti
    empty draft in the list. Content collections use `drafts: true` (explicit save) rather than
    `drafts: { autosave: … }`. Versions still record each save.
 
-Always run `npx payload migrate` against a real database after a schema change — `generate:types`
-and `tsc` both pass happily on a schema Postgres will reject.
+4. **`push` is `false` in the DB adapter, in every environment.** With push enabled the CLI diffs
+   the schema and *prompts* to confirm — in a non-interactive shell that hangs forever and looks
+   exactly like a stuck migration. Worse, when it does run it applies the diff directly and writes a
+   single `dev` row into `payload_migrations`, so the real migration file is never marked applied
+   and dev silently drifts from what production will execute. Symptom to recognise: a `dev` row in
+   `payload_migrations` alongside tables that no migration created.
+
+Always run `npm run migrate` against a real database after a schema change — `generate:types` and
+`tsc` both pass happily on a schema Postgres will reject. Redirect stdin (`< /dev/null`) in scripts
+so a prompt fails fast instead of hanging.
 
 ---
 

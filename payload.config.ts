@@ -24,6 +24,7 @@ import { Leads } from './src/collections/Leads'
 
 import { SiteSettings } from './src/globals/SiteSettings'
 import { Navigation } from './src/globals/Navigation'
+import { HomePage } from './src/globals/HomePage'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -78,7 +79,7 @@ export default buildConfig({
     Users,
   ],
 
-  globals: [SiteSettings, Navigation],
+  globals: [SiteSettings, Navigation, HomePage],
 
   /**
    * Content localization, derived from the SAME registry that drives the
@@ -104,9 +105,20 @@ export default buildConfig({
 
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },
-    // Migrations run on container start, never at build time — the build has
-    // no database. See CLAUDE.md → Deployment.
-    push: process.env.NODE_ENV === 'development',
+    /**
+     * `push: false` everywhere, including development.
+     *
+     * With push enabled the CLI diffs the schema and prompts to confirm the
+     * changes — in a non-interactive shell that hangs forever, which looks
+     * exactly like a stuck migration. Worse, when it does run it applies the
+     * diff directly and records a single `dev` row in payload_migrations, so
+     * the real migration file is never marked applied and dev drifts away from
+     * what production will actually execute.
+     *
+     * Schema changes go through `npm run migrate:create` + `npm run migrate`,
+     * which is the same path the container runs at start-up.
+     */
+    push: false,
   }),
 
   // Required for image resizing. Must also be present in the Docker runner

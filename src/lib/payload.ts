@@ -77,6 +77,11 @@ export async function getSiteSettings(locale: Locale) {
   return payload.findGlobal({ slug: 'site-settings', locale, depth: 1 })
 }
 
+export async function getHomePage(locale: Locale) {
+  const payload = await payloadClient()
+  return payload.findGlobal({ slug: 'home-page', locale, depth: 1 })
+}
+
 export async function getNavigation(locale: Locale) {
   const payload = await payloadClient()
   return payload.findGlobal({ slug: 'navigation', locale, depth: 0 })

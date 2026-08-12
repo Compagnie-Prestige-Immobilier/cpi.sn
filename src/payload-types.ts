@@ -108,10 +108,12 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     navigation: Navigation;
+    'home-page': HomePage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
   };
   locale: 'fr' | 'en';
   widgets: {
@@ -1376,6 +1378,30 @@ export interface Navigation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  heroEyebrow?: string | null;
+  heroTitle?: string | null;
+  heroSubtitle?: string | null;
+  /**
+   * Full-bleed photograph. Avoid artwork that already contains text — the site heading sits on top of it.
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Opens in a modal on click — never a redirect to YouTube.
+   */
+  heroVideoUrl?: string | null;
+  /**
+   * Empty = the most recent available land.
+   */
+  featuredProperties?: (number | Property)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1443,6 +1469,21 @@ export interface NavigationSelect<T extends boolean = true> {
         href?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  heroImage?: T;
+  heroVideoUrl?: T;
+  featuredProperties?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
