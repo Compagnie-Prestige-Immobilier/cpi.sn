@@ -20,13 +20,14 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# The build never touches the database: migrations run at container start.
-# These are placeholders only so payload.config.ts can be imported at build time.
-ENV DATABASE_URI="postgres://build:build@localhost:5432/build"
-ENV PAYLOAD_SECRET="build-time-placeholder"
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN npm run build
+# The build never touches the database: migrations run at container start. These
+# placeholders exist only so payload.config.ts can be imported during the build.
+# Scoped to this RUN so they are not baked into the image as ENV layers.
+RUN DATABASE_URI="postgres://build:build@localhost:5432/build" \
+    PAYLOAD_SECRET="build-time-placeholder" \
+    npm run build
 
 # ── runner ───────────────────────────────────────────────────────────────────
 FROM node:22-bookworm-slim AS runner

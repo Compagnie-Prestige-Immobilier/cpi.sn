@@ -2,7 +2,7 @@
 ### WordPress/Houzez → Next.js + Tailwind + Payload CMS
 
 **Date:** 12 August 2026
-**Status:** Phase 1 (Foundation) complete and verified — see §10. Phase 2 (Schema) is next.
+**Status:** Phases 1–2 complete and verified — see §10. Phase 3 (Migration) is next.
 **Companion documents:**
 - [`content-audit/INVENTORY.md`](content-audit/INVENTORY.md) — the full extracted content of the current site
 - [`CLAUDE.md`](CLAUDE.md) — binding engineering conventions (i18n + theming rules)
@@ -86,7 +86,7 @@ cpi.sn/                        ← new Next.js app (folder to be created)
 
 | Layer | Choice | Why |
 |---|---|---|
-| Framework | **Next.js 15, App Router, TypeScript** | As specified |
+| Framework | **Next.js 16, App Router, TypeScript** | As specified |
 | Styling | **Tailwind CSS v4** | As specified |
 | i18n | **next-intl**, JSON catalogs | FR/EN now, Wolof/Hausa later — see §6 |
 | Theming | **next-themes** + semantic CSS tokens | Light/dark across the whole site — see §7 |
@@ -521,8 +521,8 @@ The template is jQuery + Bootstrap + Swiper. In Next.js:
 |---|---|---|
 | 0 | ✅ **Validation** | `content-audit/` reviewed, all §11 decisions settled |
 | 1 | ✅ **Foundation** | Next 16 + Tailwind v4 + Payload 3 scaffold, Dockerfile + docker-compose, locale registry, translated routing, semantic light/dark tokens, health check. Build + typecheck + catalog parity all green |
-| 2 | Schema ← *next* | All collections, globals, blocks; localized fields wired to the registry; admin usable in French |
-| 3 | Migration | Content + media imported into the `fr` locale; client can log in and see their data |
+| 2 | ✅ **Schema** | 11 collections, 2 globals, 12 page blocks, 117 tables. Localized fields wired to the registry; admin verified in French. Docker image builds (478 MB) |
+| 3 | Migration ← *next* | Content + media imported into the `fr` locale; client can log in and see their data |
 | 4 | Components | Ombara ported to React/Tailwind — header, hero, cards, gallery, footer. **Every component reviewed in both themes as it's built**, not audited at the end |
 | 5 | Pages | Home, À propos, Services, Terrains, Programmes, Blog, Contact |
 | 6 | Forms, cart & leads | 8 lead forms, **cart → WhatsApp handoff (§4)**, notifications, admin inbox, export |

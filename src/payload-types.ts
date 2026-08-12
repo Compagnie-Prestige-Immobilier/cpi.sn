@@ -67,8 +67,17 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    properties: Property;
+    posts: Post;
+    pages: Page;
+    team: Team;
+    testimonials: Testimonial;
+    leads: Lead;
+    cities: City;
+    amenities: Amenity;
+    categories: Category;
     media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,8 +85,17 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    properties: PropertiesSelect<false> | PropertiesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    team: TeamSelect<false> | TeamSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    leads: LeadsSelect<false> | LeadsSelect<true>;
+    cities: CitiesSelect<false> | CitiesSelect<true>;
+    amenities: AmenitiesSelect<false> | AmenitiesSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +105,14 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    navigation: Navigation;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+  };
   locale: 'fr' | 'en';
   widgets: {
     collections: CollectionsWidget;
@@ -118,31 +142,148 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Land, developments, villas and apartments.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "properties".
  */
-export interface User {
+export interface Property {
   id: number;
-  name: string;
-  role: 'admin' | 'editor';
+  title: string;
+  /**
+   * Shown on cards and in listings.
+   */
+  excerpt?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  amenities?: (number | Amenity)[] | null;
+  city?: (number | null) | City;
+  address?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  surface?: number | null;
+  plotSize?: number | null;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  /**
+   * e.g. R+5, RDC
+   */
+  floors?: string | null;
+  year?: number | null;
+  /**
+   * e.g. TF 7350/R. A strong selling point in Senegal — fill in whenever known.
+   */
+  titleDeed?: string | null;
+  featuredImage?: (number | null) | Media;
+  gallery?: (number | Media)[] | null;
+  /**
+   * Opens in a modal — never a redirect to YouTube.
+   */
+  videoUrl?: string | null;
+  brochure?: (number | null) | Media;
+  /**
+   * Leave blank to fall back to the page's own title and excerpt.
+   */
+  seo?: {
+    /**
+     * Ideally 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Ideally 150–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Shown on WhatsApp, Facebook and LinkedIn. 1200×630 recommended.
+     */
+    ogImage?: (number | null) | Media;
+    noIndex?: boolean | null;
+  };
+  /**
+   * Generated from the title if left blank. Warning: changing it breaks existing links.
+   */
+  slug: string;
+  productLine: 'foncier' | 'immobilier';
+  kind: 'terrain' | 'villa' | 'appartement' | 'immeuble' | 'bureau' | 'commerce';
+  availability: 'disponible' | 'en-cours' | 'realise' | 'vendu' | 'a-louer';
+  /**
+   * Unchecked shows "Price on request" — the common case.
+   */
+  showPrice?: boolean | null;
+  price?: number | null;
+  /**
+   * e.g. "from", "/ month"
+   */
+  priceNote?: string | null;
+  featured?: boolean | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "amenities".
+ */
+export interface Amenity {
+  id: number;
+  name: string;
+  /**
+   * Generated from the title if left blank. Warning: changing it breaks existing links.
+   */
+  slug: string;
+  category?: ('viabilisation' | 'confort' | 'securite' | 'exterieur') | null;
+  /**
+   * Icon name used on the property page.
+   */
+  icon?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cities".
+ */
+export interface City {
+  id: number;
+  name: string;
+  /**
+   * Generated from the title if left blank. Warning: changing it breaks existing links.
+   */
+  slug: string;
+  region?:
+    | (
+        | 'Dakar'
+        | 'Diourbel'
+        | 'Fatick'
+        | 'Kaffrine'
+        | 'Kaolack'
+        | 'Kédougou'
+        | 'Kolda'
+        | 'Louga'
+        | 'Matam'
+        | 'Saint-Louis'
+        | 'Sédhiou'
+        | 'Tambacounda'
+        | 'Thiès'
+        | 'Ziguinchor'
+      )
     | null;
-  password?: string | null;
-  collection: 'users';
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -195,6 +336,398 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  excerpt?: string | null;
+  coverImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Shown at the end of the article — a Sangalkam article can point at the development.
+   */
+  relatedProperties?: (number | Property)[] | null;
+  /**
+   * Leave blank to fall back to the page's own title and excerpt.
+   */
+  seo?: {
+    /**
+     * Ideally 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Ideally 150–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Shown on WhatsApp, Facebook and LinkedIn. 1200×630 recommended.
+     */
+    ogImage?: (number | null) | Media;
+    noIndex?: boolean | null;
+  };
+  /**
+   * Generated from the title if left blank. Warning: changing it breaks existing links.
+   */
+  slug: string;
+  category?: (number | null) | Category;
+  author?: (number | null) | User;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  /**
+   * Generated from the title if left blank. Warning: changing it breaks existing links.
+   */
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'admin' | 'editor';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  blocks?:
+    | (
+        | {
+            eyebrow?: string | null;
+            heading: string;
+            subheading?: string | null;
+            backgroundImage?: (number | null) | Media;
+            /**
+             * Loaded on click only, in a modal.
+             */
+            videoUrl?: string | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero';
+          }
+        | {
+            content: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            width?: ('narrow' | 'full') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'richText';
+          }
+        | {
+            items?:
+              | {
+                  /**
+                   * e.g. +10,000
+                   */
+                  value: string;
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stats';
+          }
+        | {
+            heading?: string | null;
+            entries?:
+              | {
+                  year: string;
+                  title: string;
+                  body?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'timeline';
+          }
+        | {
+            heading?: string | null;
+            items?:
+              | {
+                  title: string;
+                  body?: string | null;
+                  icon?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'valueGrid';
+          }
+        | {
+            heading: string;
+            body?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            image?: (number | null) | Media;
+            imagePosition?: ('start' | 'end') | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'serviceSplit';
+          }
+        | {
+            heading?: string | null;
+            mode?: ('filter' | 'manual') | null;
+            productLine?: ('foncier' | 'immobilier') | null;
+            availability?: ('disponible' | 'en-cours' | 'realise') | null;
+            limit?: number | null;
+            properties?: (number | Property)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'propertyList';
+          }
+        | {
+            heading?: string | null;
+            images: (number | Media)[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gallery';
+          }
+        | {
+            heading?: string | null;
+            /**
+             * Empty = featured testimonials. No real testimonials? A clearly-marked placeholder is shown.
+             */
+            testimonials?: (number | Testimonial)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'testimonialsBlock';
+          }
+        | {
+            heading?: string | null;
+            items?:
+              | {
+                  question: string;
+                  answer: {
+                    root: {
+                      type: string;
+                      children: {
+                        type: any;
+                        version: number;
+                        [k: string]: unknown;
+                      }[];
+                      direction: ('ltr' | 'rtl') | null;
+                      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                      indent: number;
+                      version: number;
+                    };
+                    [k: string]: unknown;
+                  };
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faq';
+          }
+        | {
+            heading: string;
+            body?: string | null;
+            backgroundImage?: (number | null) | Media;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'cta';
+          }
+        | {
+            heading?: string | null;
+            body?: string | null;
+            /**
+             * Identifies where the enquiry came from in the admin (e.g. "Turnkey project").
+             */
+            subject?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'contactForm';
+          }
+      )[]
+    | null;
+  /**
+   * Leave blank to fall back to the page's own title and excerpt.
+   */
+  seo?: {
+    /**
+     * Ideally 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Ideally 150–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Shown on WhatsApp, Facebook and LinkedIn. 1200×630 recommended.
+     */
+    ogImage?: (number | null) | Media;
+    noIndex?: boolean | null;
+  };
+  /**
+   * Generated from the title if left blank. Warning: changing it breaks existing links.
+   */
+  slug: string;
+  /**
+   * e.g. "Land development" under "Services".
+   */
+  parent?: (number | null) | Page;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  quote: string;
+  author: string;
+  /**
+   * e.g. "Owner in Sangalkam". Anchors the quote to a real place.
+   */
+  location?: string | null;
+  photo?: (number | null) | Media;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team".
+ */
+export interface Team {
+  id: number;
+  name: string;
+  role: string;
+  /**
+   * Without a photo, a neutral silhouette is shown instead.
+   */
+  photo?: (number | null) | Media;
+  bio?: string | null;
+  linkedin?: string | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Enquiries received through forms and WhatsApp selections.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads".
+ */
+export interface Lead {
+  id: number;
+  /**
+   * Given to the client. Used to recover a selection too long for WhatsApp.
+   */
+  reference?: string | null;
+  type: 'form' | 'cart';
+  status: 'nouveau' | 'contacte' | 'converti' | 'perdu';
+  /**
+   * Visitor's language — call them back in it.
+   */
+  locale?: string | null;
+  name: string;
+  phone: string;
+  email?: string | null;
+  message?: string | null;
+  items?: (number | Property)[] | null;
+  source?: string | null;
+  /**
+   * Visible to CPI staff only.
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -218,12 +751,48 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'properties';
+        value: number | Property;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'team';
+        value: number | Team;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'leads';
+        value: number | Lead;
+      } | null)
+    | ({
+        relationTo: 'cities';
+        value: number | City;
+      } | null)
+    | ({
+        relationTo: 'amenities';
+        value: number | Amenity;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -269,27 +838,328 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "properties_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface PropertiesSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  description?: T;
+  amenities?: T;
+  city?: T;
+  address?: T;
+  latitude?: T;
+  longitude?: T;
+  surface?: T;
+  plotSize?: T;
+  bedrooms?: T;
+  bathrooms?: T;
+  floors?: T;
+  year?: T;
+  titleDeed?: T;
+  featuredImage?: T;
+  gallery?: T;
+  videoUrl?: T;
+  brochure?: T;
+  seo?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        noIndex?: T;
       };
+  slug?: T;
+  productLine?: T;
+  kind?: T;
+  availability?: T;
+  showPrice?: T;
+  price?: T;
+  priceNote?: T;
+  featured?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  coverImage?: T;
+  content?: T;
+  relatedProperties?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        noIndex?: T;
+      };
+  slug?: T;
+  category?: T;
+  author?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  blocks?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              subheading?: T;
+              backgroundImage?: T;
+              videoUrl?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        richText?:
+          | T
+          | {
+              content?: T;
+              width?: T;
+              id?: T;
+              blockName?: T;
+            };
+        stats?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        timeline?:
+          | T
+          | {
+              heading?: T;
+              entries?:
+                | T
+                | {
+                    year?: T;
+                    title?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        valueGrid?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    body?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        serviceSplit?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              image?: T;
+              imagePosition?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        propertyList?:
+          | T
+          | {
+              heading?: T;
+              mode?: T;
+              productLine?: T;
+              availability?: T;
+              limit?: T;
+              properties?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              heading?: T;
+              images?: T;
+              id?: T;
+              blockName?: T;
+            };
+        testimonialsBlock?:
+          | T
+          | {
+              heading?: T;
+              testimonials?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        cta?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              backgroundImage?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        contactForm?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              subject?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        noIndex?: T;
+      };
+  slug?: T;
+  parent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team_select".
+ */
+export interface TeamSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  photo?: T;
+  bio?: T;
+  linkedin?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  quote?: T;
+  author?: T;
+  location?: T;
+  photo?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads_select".
+ */
+export interface LeadsSelect<T extends boolean = true> {
+  reference?: T;
+  type?: T;
+  status?: T;
+  locale?: T;
+  name?: T;
+  phone?: T;
+  email?: T;
+  message?: T;
+  items?: T;
+  source?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cities_select".
+ */
+export interface CitiesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  region?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "amenities_select".
+ */
+export interface AmenitiesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  category?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -346,6 +1216,30 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -383,6 +1277,170 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  siteName?: string | null;
+  tagline?: string | null;
+  defaultSeoImage?: (number | null) | Media;
+  phones?:
+    | {
+        label?: string | null;
+        number: string;
+        id?: string | null;
+      }[]
+    | null;
+  email?: string | null;
+  /**
+   * International format, no "+" or spaces (e.g. 221764508374). Receives selections sent from the site.
+   */
+  whatsappNumber: string;
+  address?: string | null;
+  openingHours?: string | null;
+  socials?:
+    | {
+        platform: 'facebook' | 'instagram' | 'linkedin' | 'tiktok' | 'youtube' | 'x';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  /**
+   * Two levels maximum. To filter properties, link to the listing page with a filter.
+   */
+  header?:
+    | {
+        label: string;
+        /**
+         * Leave blank for a submenu label with no link of its own.
+         */
+        href?: string | null;
+        children?:
+          | {
+              label: string;
+              /**
+               * Internal path (e.g. /terrains) or a full URL.
+               */
+              href?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerColumns?:
+    | {
+        heading?: string | null;
+        links?:
+          | {
+              label: string;
+              /**
+               * Internal path (e.g. /terrains) or a full URL.
+               */
+              href?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  legal?:
+    | {
+        label: string;
+        /**
+         * Internal path (e.g. /terrains) or a full URL.
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  tagline?: T;
+  defaultSeoImage?: T;
+  phones?:
+    | T
+    | {
+        label?: T;
+        number?: T;
+        id?: T;
+      };
+  email?: T;
+  whatsappNumber?: T;
+  address?: T;
+  openingHours?: T;
+  socials?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerColumns?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  legal?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

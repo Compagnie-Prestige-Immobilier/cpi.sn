@@ -9,8 +9,21 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { payloadLocales, defaultLocale } from './src/i18n/locales'
+
 import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
+import { Cities } from './src/collections/Cities'
+import { Amenities } from './src/collections/Amenities'
+import { Categories } from './src/collections/Categories'
+import { Properties } from './src/collections/Properties'
+import { Posts } from './src/collections/Posts'
+import { Pages } from './src/collections/Pages'
+import { Team } from './src/collections/Team'
+import { Testimonials } from './src/collections/Testimonials'
+import { Leads } from './src/collections/Leads'
+
+import { SiteSettings } from './src/globals/SiteSettings'
+import { Navigation } from './src/globals/Navigation'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -34,7 +47,25 @@ export default buildConfig({
     },
   },
 
-  collections: [Users, Media],
+  collections: [
+    // Content
+    Properties,
+    Posts,
+    Pages,
+    Team,
+    Testimonials,
+    // Sales
+    Leads,
+    // Taxonomies
+    Cities,
+    Amenities,
+    Categories,
+    // System
+    Media,
+    Users,
+  ],
+
+  globals: [SiteSettings, Navigation],
 
   /**
    * Content localization, derived from the SAME registry that drives the

@@ -1,7 +1,7 @@
 # CPI.sn — Project Conventions
 
 Rebuild of `cpi.sn` (Compagnie Prestige Immobilier, Senegalese real-estate developer)
-from WordPress/Houzez to **Next.js 15 (App Router) + Tailwind v4 + Payload 3**.
+from WordPress/Houzez to **Next.js 16 (App Router) + Tailwind v4 + Payload 3**.
 
 - Full rebuild plan: [`plan.md`](plan.md)
 - Extracted content of the old site: [`content-audit/`](content-audit/)
@@ -238,6 +238,26 @@ a client-side cart hands off to WhatsApp instead.
 - **Currency is XOF / FCFA**, integer only, never decimals.
 - **No auth, no accounts, no payment gateway** anywhere in the app.
 - Prices are frequently absent by design — default display is “Prix sur demande”.
+
+---
+
+## Payload schema gotchas
+
+Learned the hard way while building phase 2 — all three cost real debugging time.
+
+1. **Never name a field `status` on a collection with drafts enabled.** Payload's drafts feature
+   owns the `_status` column and generates `enum_<collection>_status` for it. A custom field called
+   `status` generates the *same* enum name, so both columns end up sharing one type containing only
+   `('draft','published')` — the admin offers your options and Postgres rejects them on save. The
+   properties collection uses `availability` for this reason. Same trap applies to any name Payload
+   reserves internally.
+2. **`defaultSort` is a top-level collection property, not `admin.defaultSort`.**
+3. **Autosave creates a document the moment the "New" form opens.** Every abandoned click leaves an
+   empty draft in the list. Content collections use `drafts: true` (explicit save) rather than
+   `drafts: { autosave: … }`. Versions still record each save.
+
+Always run `npx payload migrate` against a real database after a schema change — `generate:types`
+and `tsc` both pass happily on a schema Postgres will reject.
 
 ---
 
