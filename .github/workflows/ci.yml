@@ -91,7 +91,7 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm ci
+      - run: npm install
 
       # `< /dev/null` matters: with an interactive prompt the CLI would hang
       # until the job timed out rather than failing fast. See CLAUDE.md.
