@@ -316,6 +316,24 @@ a client-side cart hands off to WhatsApp instead.
 - **No auth, no accounts, no payment gateway** anywhere in the app.
 - Prices are frequently absent by design — default display is “Prix sur demande”.
 
+### Never run `npm run build` while a dev server is up
+
+Both write to `.next`, and the production build overwrites the import map Turbopack's dev server is
+holding open. Dev then fails to resolve its own internals — the reported symptom was:
+
+```text
+Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/font'
+  [next]/internal/font/google/cormorant_garamond_*.module.css
+```
+
+which reads like a `next/font` or a network problem and is neither: the fonts fetch fine and the
+source is untouched. **Fix: stop the dev server, `rm -rf .next`, start it again.** Nothing in the
+app needs changing.
+
+Next 16 refuses to start a second dev server on the same directory, so verifying a change against
+`next dev` means stopping the running one first — check for it rather than assuming the port is
+free.
+
 ---
 
 ## Independence from the legacy WordPress site
@@ -412,3 +430,13 @@ These are documented in `content-audit/INVENTORY.md` and must not be re-imported
 - The Houzez account system (dashboard, favourites, saved searches, cart) is **dropped**.
 - 17 overlapping property types collapse to `productLine` (2) × `kind` (6) × `status` (4).
 - All 4 existing testimonials are empty placeholders — real quotes still need collecting.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

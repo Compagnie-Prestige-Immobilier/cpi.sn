@@ -74,21 +74,28 @@ async function BlockSwitch({ block, locale }: { block: Block; locale: Locale }) 
       return (
         <section className="container-page py-16">
           {block.heading ? <SectionHeader title={block.heading} align="start" /> : null}
+          {/* Year in its own column from `sm` up: with eight entries a single
+              stacked column runs each body straight into the next year, which
+              is what made the migrated page hard to scan. */}
           <ol className="mt-12 border-s border-subtle">
             {(block.entries ?? []).map((entry, i) => (
               <Reveal key={entry.id ?? i} delay={(i % 4) * 70}>
-                <li className="relative ps-8 pb-10 last:pb-0">
+                <li className="relative ps-8 pb-14 last:pb-0 sm:grid sm:grid-cols-[7rem_1fr] sm:gap-6">
                   <span
                     aria-hidden
                     className="absolute start-0 top-2 size-2.5 -translate-x-1/2 rounded-full bg-brand rtl:translate-x-1/2"
                   />
-                  <p className="text-xs font-medium tracking-[0.18em] text-accent uppercase">
+                  <p className="font-heading text-lg leading-tight text-brand tabular-nums">
                     {entry.year}
                   </p>
-                  <h3 className="mt-2 font-heading text-xl text-foreground">{entry.title}</h3>
-                  {entry.body ? (
-                    <p className="mt-2 max-w-2xl text-foreground-muted">{entry.body}</p>
-                  ) : null}
+                  <div>
+                    <h3 className="font-heading text-xl leading-snug text-foreground">
+                      {entry.title}
+                    </h3>
+                    {entry.body ? (
+                      <p className="mt-3 max-w-2xl text-foreground-muted">{entry.body}</p>
+                    ) : null}
+                  </div>
                 </li>
               </Reveal>
             ))}
