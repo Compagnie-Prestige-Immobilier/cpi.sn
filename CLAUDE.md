@@ -231,6 +231,12 @@ site's own forms still work.
    params.
 4. **`Reveal` fires once and honours `prefers-reduced-motion`** (content renders visible
    immediately for those users, never hidden behind an animation they declined).
+
+   **It also keeps a `transform` on its wrapper permanently** (`translate-x-0` once shown). A
+   transform makes an element the containing block for any `position: fixed` descendant, so an
+   overlay rendered inside a `Reveal` is sized to *that element*, not the viewport — it appears
+   part-way off screen, and a body scroll lock then makes it unreachable. **Anything overlaying the
+   page — modals, drawers, toasts — must be portalled to `document.body`.** `VideoModal` does.
 5. **Sold / completed listings are desaturated with a muted badge.** They stay visible as proof of
    delivery but must not read as available inventory.
 
