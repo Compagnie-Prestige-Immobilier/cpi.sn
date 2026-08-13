@@ -24,6 +24,17 @@ COPY . .
 # "failed to calculate checksum … /app/public: not found". The usual cause is
 # an unanchored .gitignore rule (a bare `brand` also matches `public/brand`),
 # so the assets exist locally but were never committed and CI has no copy.
+# Reassemble the media seed. Split into <50 MB parts only because GitHub caps
+# a single file at 100 MB; the parts exist for git's benefit, not Docker's, so
+# they are unpacked here and never reach the runtime image.
+RUN mkdir -p /seed-media \
+    && if ls seed/uploads/media.tar.gz.part-* >/dev/null 2>&1; then \
+         cat seed/uploads/media.tar.gz.part-* | tar xzf - -C /seed-media --strip-components=1; \
+         echo "reassembled $(find /seed-media -type f | wc -l) media files"; \
+       else \
+         echo "no media seed present — uploads will start empty"; \
+       fi
+
 RUN test -d public || { \
       echo "ERROR: public/ is missing from the build context."; \
       echo "It is probably untracked — check .gitignore anchoring (use /brand, not brand)."; \
@@ -71,10 +82,16 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@img ./node_modules/
 
 # Content seed + its restore script, so a fresh deployment can be populated
 # with a single `docker exec` and nothing to copy across first.
-COPY --from=builder --chown=nextjs:nodejs /app/seed ./seed
-COPY --from=builder --chown=nextjs:nodejs /app/scripts/seed-db.sh ./scripts/seed-db.sh
+COPY --from=builder --chown=nextjs:nodejs /app/seed/cpi-seed.sql.gz ./seed/cpi-seed.sql.gz
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/ ./scripts/
+# Staged, not mounted: /app/media is the volume, so seeding it is an explicit
+# copy rather than a silent side effect of Docker populating an empty volume.
+COPY --from=builder --chown=nextjs:nodejs /seed-media /opt/cpi-seed/media
 
-RUN mkdir -p /app/media && chown -R nextjs:nodejs /app/media
+# NOTE: no `chown -R` over /opt/cpi-seed. Rewriting ownership on 129 MB of
+# already-COPYed files creates a second full layer — it cost ~140 MB here.
+# The COPY above already sets --chown.
+RUN mkdir -p /app/media && chown nextjs:nodejs /app/media
 
 USER nextjs
 EXPOSE 3000

@@ -33,7 +33,23 @@ steps below are done.
 Visit `https://dev.cpi.sn/admin`. With an empty `users` table Payload shows its
 create-first-user screen. Create the account there — no seeding required.
 
-### 2. Load the content — one command
+### 2. Load content and images — one command
+
+```bash
+docker exec <container> /app/scripts/seed.sh
+```
+
+Runs both halves below. Verified from scratch: empty database + empty volume →
+one command → 42 properties and 441 images, with `/api/media/file/…` serving
+`image/webp` and pages rendering.
+
+Both halves are needed and neither is sufficient: the database holds rows
+pointing at files, the volume holds the files. Restore only the database and
+every image on the site 404s.
+
+Each step refuses to overwrite existing data; pass `--force` to override.
+
+#### 2a. Content
 
 The content seed ships **inside the image** (`seed/cpi-seed.sql.gz`, ~930 KB), so there is nothing
 to copy across first:
@@ -42,15 +58,7 @@ to copy across first:
 docker exec <container> /app/scripts/seed-db.sh
 ```
 
-That restores 42 properties, 12 posts, 22 pages, 128 media records and the globals, then prints a
-count so you can see it worked.
-
-**It refuses to run against a database that already has properties** — a one-command restore that
-silently destroyed live content would be far too easy to trigger by accident. Override deliberately:
-
-```bash
-docker exec <container> /app/scripts/seed-db.sh --force
-```
+Restores 42 properties, 12 posts, 22 pages, 128 media records and the globals.
 
 Notes on how the seed is built, because both details bite if changed:
 
@@ -62,26 +70,34 @@ Notes on how the seed is built, because both details bite if changed:
   production keeps whatever admin you created. Excluding `users` *without* also excluding
   `payload_preferences_rels` fails on a foreign key, which is why the list is that long.
 
-To refresh the seed from your local database after further content work:
+#### 2b. Images
 
 ```bash
-npm run seed:dump      # reads DATABASE_URI from .env
+docker exec <container> /app/scripts/seed-media.sh
 ```
 
-### 3. Copy the media files — separate from the database
+The 441 migrated images ship **inside the image**, unpacked at `/opt/cpi-seed/media`.
 
-**A database restore does not move uploads.** The `media` table holds rows pointing at files that
-live on the mounted volume; without them every image 500s. This is verified behaviour, not a
-theoretical risk — restoring the DB alone gave exactly that.
+They are staged there rather than at `/app/media` deliberately: that path is the mounted volume, and
+relying on Docker's populate-an-empty-volume behaviour would work only when the volume happens to be
+empty and silently do nothing otherwise. An explicit copy behaves the same way in every state.
+
+In the repository they live as four ~40 MB parts under `seed/uploads/`, reassembled during the
+Docker build. That split exists solely because GitHub caps a **single file** at 100 MB (and warns
+past 50 MB) — the parts never reach the runtime image.
+
+#### Refreshing the seed
 
 ```bash
-# ~129 MB, from the project root
-tar czf media.tar.gz media/
-
-# On the server, into the volume Dokploy mounts at /app/media
-docker cp media.tar.gz <container>:/tmp/
-docker exec <container> sh -c 'cd /app/media && tar xzf /tmp/media.tar.gz --strip-components=1'
+npm run seed:dump       # database → seed/cpi-seed.sql.gz  (reads DATABASE_URI from .env)
+npm run seed:media      # media/    → seed/uploads/media.tar.gz.part-*
 ```
+
+#### Cost
+
+Carrying the images makes the runtime image ~834 MB instead of ~700 MB. That is the price of a
+self-contained deploy. Once production has been seeded once and CPI's uploads live safely on the
+volume, `seed/uploads/` can be deleted from the repository and the image drops back.
 
 ---
 

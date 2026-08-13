@@ -81,15 +81,10 @@ psql "$DATABASE_URI" -tAc "
 
 cat <<'EOF'
 
-✓ Content restored.
+✓ Content restored. Images stay broken until the volume is seeded too —
+  the database only holds rows pointing at the files:
 
-  Images will still 404 until the media FILES are copied onto the volume —
-  the database only holds rows pointing at them:
+      docker exec <container> /app/scripts/seed-media.sh
 
-      tar czf media.tar.gz media/                       # on your machine
-      docker cp media.tar.gz <container>:/tmp/
-      docker exec <container> sh -c \
-        'cd /app/media && tar xzf /tmp/media.tar.gz --strip-components=1'
-
-  Then create your admin at /admin (the seed contains no user accounts).
+  Or do both at once with /app/scripts/seed.sh
 EOF
