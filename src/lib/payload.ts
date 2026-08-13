@@ -145,6 +145,18 @@ export async function getCategories(locale: Locale) {
   return res.docs
 }
 
+export async function getTestimonials(locale: Locale) {
+  const payload = await payloadClient()
+  const res = await payload.find({
+    collection: 'testimonials',
+    locale,
+    depth: 1,
+    limit: 6,
+    sort: '-featured',
+  })
+  return res.docs
+}
+
 export async function getSiteSettings(locale: Locale) {
   const payload = await payloadClient()
   return payload.findGlobal({ slug: 'site-settings', locale, depth: 1 })

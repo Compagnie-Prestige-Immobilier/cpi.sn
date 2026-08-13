@@ -8,7 +8,8 @@ import { PropertyCard } from '@/components/property/property-card'
 import { StatsBand } from '@/components/home/stats-band'
 import { Founder } from '@/components/home/founder'
 import { ValueProps } from '@/components/home/value-props'
-import { getProperties, getHomePage } from '@/lib/payload'
+import { Testimonials } from '@/components/home/testimonials'
+import { getProperties, getHomePage, getTestimonials } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Media, Property } from '@/payload-types'
 
@@ -50,6 +51,8 @@ export default async function HomePage({
     availability: ['realise', 'vendu'],
     limit: 10,
   })
+
+  const testimonials = await getTestimonials(locale as Locale)
 
   const heroImage = (home.heroImage as Media | null) ?? null
   const galleryImages = realised
@@ -107,6 +110,8 @@ export default async function HomePage({
         eyebrow="Pourquoi CPI"
         title="Nos engagements"
       />
+
+      <Testimonials testimonials={testimonials} />
 
       {galleryImages.length ? (
         <GalleryScroll

@@ -11,7 +11,7 @@ import path from 'node:path'
 import { existsSync } from 'node:fs'
 import { getPayload } from 'payload'
 import config from '../../payload.config'
-import { importImage } from './media'
+import { importImage, importLocalFile } from './media'
 import { htmlToLexical } from './lexical'
 
 const ARCHIVE = path.resolve(process.cwd(), 'legacy-archive/uploads')
@@ -85,6 +85,41 @@ const VALUE_PROPS = [
   },
 ]
 
+/**
+ * Video testimonials from the legacy homepage. Real, named people — the
+ * `houzez_testimonials` post type CPI never filled in was a red herring.
+ * Video → person mapping read from document order in the source HTML.
+ */
+const TESTIMONIALS = [
+  {
+    author: 'Mr Abib Sy',
+    // Source HTML reads "minitre"; corrected here.
+    role: "Ancien ministre d'État et dernier directeur de campagne du président Abdoulaye Wade",
+    video: 'https://youtu.be/bMtZktxvxyk',
+  },
+  {
+    author: 'Mme Aminata Niane',
+    role: 'Ingénieur Agronome',
+    video: 'https://youtu.be/Ozj8AvwAC04',
+  },
+  {
+    author: 'Mr George Dacosta',
+    role: 'Cadre de Banque',
+    video: 'https://youtu.be/qBHtPJ8AEPk',
+  },
+]
+
+/** YouTube poster, imported locally so nothing is requested from Google on load. */
+async function importPoster(payload: Parameters<typeof importImage>[0], video: string, alt: string) {
+  const id = video.match(/[\w-]{11}$/)?.[0]
+  if (!id) return null
+  for (const quality of ['maxresdefault', 'hqdefault']) {
+    const media = await importImage(payload, `https://i.ytimg.com/vi/${id}/${quality}.jpg`, alt)
+    if (media) return media
+  }
+  return null
+}
+
 async function main() {
   const payload = await getPayload({ config })
 
@@ -102,6 +137,21 @@ async function main() {
   } else {
     console.warn(`  ⚠ hero image not found at ${heroPath} — leaving it unset`)
   }
+
+  // Founder portrait, supplied by CPI. Imported from the repo root rather than
+  // the legacy archive: `legacy-archive/…/founder.jpg` is Houzez stock showing
+  // a different person entirely.
+  const portraitPath = path.resolve(process.cwd(), 'founder.png')
+  const portraitId = existsSync(portraitPath)
+    ? await importLocalFile(payload, portraitPath, 'Aminata Sall SY, fondatrice de CPI')
+    : null
+  if (!portraitId) console.warn('  ⚠ founder.png not found — portrait left unset')
+
+  const gaindePosterId = await importPoster(
+    payload,
+    'https://youtu.be/0PwlHrRO8tc',
+    'Projet Gaindé 2000 — ORBUS',
+  )
 
   await payload.updateGlobal({
     slug: 'home-page',
@@ -121,10 +171,54 @@ async function main() {
         role: 'Fondatrice & Administratrice Générale',
         bio: await htmlToLexical(payload, FOUNDER_BIO_HTML),
         highlights: HIGHLIGHTS,
-        // portrait deliberately left unset — see the field description.
+        portrait: portraitId,
+        // Her own project, not a client testimonial — so it belongs here rather
+        // than in the testimonials row. Its own poster, not her portrait: the
+        // film is about ORBUS, and reusing her face would misdescribe it.
+        videoUrl: 'https://youtu.be/0PwlHrRO8tc',
+        videoLabel: "Projet Gaindé 2000 — ORBUS, itinéraire d'une fierté nationale",
+        videoPoster: gaindePosterId,
       },
     },
   })
+
+  // ── Testimonials ──────────────────────────────────────────────────────────
+  for (const item of TESTIMONIALS) {
+    const poster = await importPoster(payload, item.video, `${item.author} — témoignage CPI`)
+
+    const existing = await payload.find({
+      collection: 'testimonials',
+      where: { author: { equals: item.author } },
+      limit: 1,
+      overrideAccess: true,
+    })
+
+    const data = {
+      author: item.author,
+      role: item.role,
+      videoUrl: item.video,
+      photo: poster,
+      featured: true,
+    }
+
+    if (existing.docs[0]) {
+      await payload.update({
+        collection: 'testimonials',
+        id: existing.docs[0].id,
+        data,
+        locale: 'fr',
+        overrideAccess: true,
+      })
+    } else {
+      await payload.create({
+        collection: 'testimonials',
+        data,
+        locale: 'fr',
+        overrideAccess: true,
+      })
+    }
+  }
+  console.log(`✓ ${TESTIMONIALS.length} video testimonials seeded`)
 
   console.log(`✓ home-page seeded${heroId ? ` (hero media #${heroId})` : ' (no hero image)'}`)
   process.exit(0)

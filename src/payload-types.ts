@@ -672,12 +672,20 @@ export interface Page {
  */
 export interface Testimonial {
   id: number;
-  quote: string;
+  quote?: string | null;
+  /**
+   * Opens in a modal on the site — never a redirect to YouTube.
+   */
+  videoUrl?: string | null;
+  role?: string | null;
   author: string;
   /**
    * e.g. "Owner in Sangalkam". Anchors the quote to a real place.
    */
   location?: string | null;
+  /**
+   * Doubles as the video poster.
+   */
   photo?: (number | null) | Media;
   featured?: boolean | null;
   updatedAt: string;
@@ -1107,6 +1115,8 @@ export interface TeamSelect<T extends boolean = true> {
  */
 export interface TestimonialsSelect<T extends boolean = true> {
   quote?: T;
+  videoUrl?: T;
+  role?: T;
   author?: T;
   location?: T;
   photo?: T;
@@ -1429,6 +1439,18 @@ export interface HomePage {
       };
       [k: string]: unknown;
     } | null;
+    /**
+     * e.g. the Gaindé 2000 / ORBUS film. Opens in a modal.
+     */
+    videoUrl?: string | null;
+    /**
+     * Without a caption nobody knows what the video shows.
+     */
+    videoLabel?: string | null;
+    /**
+     * Do not reuse the portrait — the video is about a project, not the person.
+     */
+    videoPoster?: (number | null) | Media;
     highlights?:
       | {
           year?: string | null;
@@ -1545,6 +1567,9 @@ export interface HomePageSelect<T extends boolean = true> {
         role?: T;
         portrait?: T;
         bio?: T;
+        videoUrl?: T;
+        videoLabel?: T;
+        videoPoster?: T;
         highlights?:
           | T
           | {

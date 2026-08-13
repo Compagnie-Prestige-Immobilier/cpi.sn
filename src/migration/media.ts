@@ -122,6 +122,56 @@ export async function importImage(
   }
 }
 
+/**
+ * Import a file from disk (not from the legacy site).
+ *
+ * Used for assets CPI supplies directly — e.g. the founder's portrait. Deduped
+ * on `sourceUrl` like everything else, using a `file://` key so a re-run
+ * updates rather than piling up copies.
+ */
+export async function importLocalFile(
+  payload: Payload,
+  filePath: string,
+  alt: string,
+): Promise<number | null> {
+  const key = `file://${path.basename(filePath)}`
+
+  const cached = urlToId.get(key)
+  if (cached) return cached
+
+  const existing = await payload.find({
+    collection: 'media',
+    where: { sourceUrl: { equals: key } },
+    limit: 1,
+    overrideAccess: true,
+  })
+  if (existing.docs[0]) {
+    urlToId.set(key, existing.docs[0].id as number)
+    return existing.docs[0].id as number
+  }
+
+  try {
+    const ext = path.extname(filePath).toLowerCase()
+    const doc = await payload.create({
+      collection: 'media',
+      data: { alt, sourceUrl: key },
+      file: {
+        data: await readFile(filePath),
+        name: path.basename(filePath),
+        mimetype: MIME[ext] ?? 'image/jpeg',
+        size: (await stat(filePath)).size,
+      },
+      overrideAccess: true,
+    })
+    urlToId.set(key, doc.id as number)
+    return doc.id as number
+  } catch (error) {
+    failures++
+    console.warn(`    ⚠ local upload failed: ${filePath} — ${(error as Error).message}`)
+    return null
+  }
+}
+
 /** Seed the in-memory cache from media already in the database (idempotent re-runs). */
 export async function primeMediaCache(payload: Payload) {
   const existing = await payload.find({ collection: 'media', limit: 2000, overrideAccess: true })

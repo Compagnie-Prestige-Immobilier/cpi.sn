@@ -2,13 +2,16 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin, isPublic, isStaff } from '@/access'
 
 /**
- * Client testimonials.
+ * Client testimonials — text or video.
  *
- * All four on the old site were empty placeholders, so this collection ships
- * empty. Do NOT seed it with invented quotes: for a business whose entire
- * proposition is trust, a fabricated testimonial reaching production is a
- * serious problem. The front end renders a marked placeholder when the
- * collection is empty. See CLAUDE.md → Media and placeholders.
+ * The Houzez `houzez_testimonials` post type was four empty placeholders, but
+ * the legacy homepage carried real VIDEO testimonials from named people. Those
+ * are the ones worth having, so this collection supports both shapes: a written
+ * quote, a video, or both.
+ *
+ * Never invent a quote or attribute one to a plausible-sounding name. On a site
+ * whose whole proposition is trust, a fabricated testimonial reaching
+ * production is a serious problem. See CLAUDE.md → Media and placeholders.
  */
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
@@ -26,9 +29,26 @@ export const Testimonials: CollectionConfig = {
     {
       name: 'quote',
       type: 'textarea',
-      required: true,
+      // Optional: a video testimonial carries no transcript.
       localized: true,
-      label: { fr: 'Témoignage', en: 'Quote' },
+      label: { fr: 'Témoignage (texte)', en: 'Quote (text)' },
+    },
+    {
+      name: 'videoUrl',
+      type: 'text',
+      label: { fr: 'Vidéo (YouTube)', en: 'Video (YouTube)' },
+      admin: {
+        description: {
+          fr: "S'ouvre dans une fenêtre modale sur le site — jamais de redirection vers YouTube.",
+          en: 'Opens in a modal on the site — never a redirect to YouTube.',
+        },
+      },
+    },
+    {
+      name: 'role',
+      type: 'text',
+      localized: true,
+      label: { fr: 'Fonction', en: 'Role' },
     },
     {
       name: 'author',
@@ -51,7 +71,13 @@ export const Testimonials: CollectionConfig = {
       name: 'photo',
       type: 'upload',
       relationTo: 'media',
-      label: { fr: 'Photo', en: 'Photo' },
+      label: { fr: 'Photo / vignette', en: 'Photo / poster' },
+      admin: {
+        description: {
+          fr: 'Sert aussi de vignette pour la vidéo.',
+          en: 'Doubles as the video poster.',
+        },
+      },
     },
     {
       name: 'featured',

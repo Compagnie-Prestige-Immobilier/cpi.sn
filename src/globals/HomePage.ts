@@ -161,6 +161,41 @@ export const HomePage: GlobalConfig = {
           label: { fr: 'Parcours', en: 'Biography' },
         },
         {
+          name: 'videoUrl',
+          type: 'text',
+          label: { fr: 'Vidéo liée (YouTube)', en: 'Related video (YouTube)' },
+          admin: {
+            description: {
+              fr: "Ex. le film Gaindé 2000 / ORBUS. S'ouvre en fenêtre modale.",
+              en: 'e.g. the Gaindé 2000 / ORBUS film. Opens in a modal.',
+            },
+          },
+        },
+        {
+          name: 'videoLabel',
+          type: 'text',
+          localized: true,
+          label: { fr: 'Légende de la vidéo', en: 'Video caption' },
+          admin: {
+            description: {
+              fr: 'Sans légende, personne ne sait ce que la vidéo montre.',
+              en: 'Without a caption nobody knows what the video shows.',
+            },
+          },
+        },
+        {
+          name: 'videoPoster',
+          type: 'upload',
+          relationTo: 'media',
+          label: { fr: 'Vignette de la vidéo', en: 'Video poster' },
+          admin: {
+            description: {
+              fr: "Ne pas réutiliser le portrait : la vidéo porte sur un projet, pas sur la personne.",
+              en: 'Do not reuse the portrait — the video is about a project, not the person.',
+            },
+          },
+        },
+        {
           name: 'highlights',
           type: 'array',
           maxRows: 4,

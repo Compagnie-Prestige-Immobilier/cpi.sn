@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { RichText } from '@/components/rich-text'
 import { Reveal } from '@/components/ui/reveal'
 import { ButtonLink } from '@/components/ui/button-link'
+import { VideoModal } from '@/components/ui/video-modal'
 import type { HomePage, Media } from '@/payload-types'
 
 /**
@@ -90,9 +91,31 @@ export async function Founder({ founder }: { founder: HomePage['founder'] }) {
 
           <RichText data={founder.bio} className="mt-8 max-w-2xl" />
 
-          <ButtonLink href="/a-propos" variant="outline" className="mt-9">
-            {tCommon('readMore')}
-          </ButtonLink>
+          <div className="mt-9 flex flex-wrap items-center gap-6">
+            <ButtonLink href="/a-propos" variant="outline">
+              {tCommon('readMore')}
+            </ButtonLink>
+
+          </div>
+
+          {/* Her own project (Gaindé 2000 / ORBUS), not a client testimonial.
+              Its own poster and a caption — reusing her portrait made it look
+              like a second copy of the photo and said nothing about the film. */}
+          {founder.videoUrl ? (
+            <figure className="mt-10 max-w-md">
+              <VideoModal
+                url={founder.videoUrl}
+                poster={(founder.videoPoster as Media | null)?.url ?? undefined}
+                posterAlt={(founder.videoPoster as Media | null)?.alt ?? ''}
+                label={founder.videoLabel ?? undefined}
+              />
+              {founder.videoLabel ? (
+                <figcaption className="mt-3 text-sm text-foreground-muted">
+                  {founder.videoLabel}
+                </figcaption>
+              ) : null}
+            </figure>
+          ) : null}
         </Reveal>
       </div>
     </section>
