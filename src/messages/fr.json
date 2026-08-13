@@ -134,5 +134,129 @@
     "genericTitle": "Une erreur est survenue",
     "genericBody": "Merci de réessayer dans un instant.",
     "backHome": "Retour à l'accueil"
+  },
+  "homeTemplate": {
+    "hero": {
+      "subtitle": "Depuis 2003, CPI sécurise chaque étape de votre acquisition — terrains viabilisés, titres vérifiés et accompagnement juridique intégré.",
+      "badges": {
+        "one": "Terrains viabilisés",
+        "two": "Sécurité juridique",
+        "three": "Paiement échelonné"
+      },
+      "menu": {
+        "approach": "Notre approche",
+        "metiers": "Nos métiers",
+        "gallery": "Réalisations"
+      },
+      "cta": "Nous contacter",
+      "slideFallback": "Nos réalisations",
+      "navLabel": "Navigation du hero"
+    },
+    "approach": {
+      "eyebrow": "Découvrir",
+      "title": "L'expérience CPI",
+      "subtitle": "Du choix du terrain à la remise du titre foncier",
+      "items": {
+        "one": {
+          "title": "Sécurité",
+          "body": "Chaque site est vérifié par notre cabinet conseil avant d'être commercialisé."
+        },
+        "two": {
+          "title": "Accompagnement",
+          "body": "Un interlocuteur dédié suit votre dossier jusqu’aux formalités finales."
+        },
+        "three": {
+          "title": "Accessibilité",
+          "body": "Des facilités de paiement pensées pour les familles et pour la diaspora."
+        }
+      }
+    },
+    "usp": {
+      "eyebrow": "Nos atouts",
+      "title": "Ce qui distingue CPI",
+      "items": {
+        "one": "Terrains viabilisés et bornés",
+        "two": "Titres fonciers et baux vérifiés",
+        "three": "Cabinet conseil juridique intégré",
+        "four": "Paiement échelonné jusqu'à 3 ans",
+        "five": "Accompagnement de la diaspora",
+        "six": "Plus de 15 sites autour de Dakar",
+        "seven": "Géomètres et bureaux d’études partenaires",
+        "eight": "Suivi de projet digitalisé",
+        "nine": "Plus de 10 000 familles accompagnées"
+      }
+    },
+    "metiers": {
+      "eyebrow": "Savoir-faire",
+      "title": "Nos métiers",
+      "tabs": {
+        "foncier": {
+          "label": "Promotion foncière",
+          "title": "Promotion foncière",
+          "body": "Identification, régularisation et viabilisation de sites autour de Dakar. Nous ne commercialisons un terrain qu'une fois sa situation juridique établie."
+        },
+        "immobilier": {
+          "label": "Promotion immobilière",
+          "title": "Promotion immobilière",
+          "body": "Appartements et villas livrés clés en main, conçus avec des architectes et des bureaux de contrôle partenaires."
+        },
+        "juridique": {
+          "label": "Conseil juridique",
+          "title": "Cabinet conseil juridique",
+          "body": "Droit foncier et domanial, formalités administratives et gestion de litiges. C'est ce cabinet intégré qui rend la promesse de sécurité tenable."
+        }
+      }
+    },
+    "lines": {
+      "eyebrow": "Nos gammes",
+      "title": "Terrains & résidences",
+      "subtitle": "Deux façons de devenir propriétaire avec CPI",
+      "land": {
+        "title": "Terrains disponibles",
+        "body": "Parcelles viabilisées sur nos sites stratégiques, avec accompagnement juridique complet."
+      },
+      "homes": {
+        "title": "Appartements & villas",
+        "body": "Programmes immobiliers livrés clés en main, en cours ou déjà réalisés."
+      }
+    },
+    "gallery": {
+      "eyebrow": "Réalisations",
+      "title": "Nos sites en images",
+      "subtitle": "Des projets livrés, pas des images de synthèse.",
+      "copy": {
+        "one": "Chaque site raconte la même méthode : un foncier vérifié, viabilisé, puis accompagné jusqu'au titre.",
+        "two": "60 % de nos ventes viennent de recommandations de familles déjà installées."
+      }
+    },
+    "feature": {
+      "prev": "Préc.",
+      "next": "Suiv.",
+      "skip": "Passer",
+      "eyebrowFallback": "Nos sites"
+    },
+    "showcase": {
+      "kicker": "En vidéo",
+      "play": "Lire la vidéo de présentation",
+      "specs": {
+        "one": "20 ans d’expérience",
+        "two": "+10 000 familles"
+      }
+    },
+    "register": {
+      "title": "Faites le premier pas",
+      "desc": "Parlez-nous de votre projet. Notre équipe vous rappelle et vous oriente vers les sites qui correspondent à votre budget.",
+      "name": "Nom complet",
+      "namePlaceholder": "Votre nom",
+      "email": "Adresse e-mail",
+      "emailPlaceholder": "vous@exemple.com",
+      "phone": "Téléphone",
+      "phonePlaceholder": "Votre numéro",
+      "dialCode": "Indicatif pays",
+      "country": "Pays de résidence",
+      "countryPlaceholder": "Sénégal",
+      "terms": "J'accepte d'être recontacté au sujet de ma demande.",
+      "submit": "Envoyer ma demande"
+    }
   }
 }

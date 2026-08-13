@@ -51,6 +51,47 @@ export const HomePage: GlobalConfig = {
       },
     },
     {
+      /**
+       * The template hero is a slider. Its slides are an editorial choice for
+       * the same reason `heroImage` is: pulling three listing images in would
+       * put three burned-in marketing banners behind the headline in sequence.
+       *
+       * Empty is fine — the hero falls back to `heroImage` as a single still,
+       * and the slider chrome hides itself rather than showing "01 / 01".
+       */
+      name: 'heroSlides',
+      type: 'array',
+      label: { fr: 'Diaporama du hero', en: 'Hero slideshow' },
+      maxRows: 5,
+      admin: {
+        description: {
+          fr: "Photographies plein écran, sans texte incrusté. Vide : l'image du hero est utilisée seule.",
+          en: 'Full-bleed photographs with no burned-in text. Empty: the hero image is used on its own.',
+        },
+      },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+          label: { fr: 'Image', en: 'Image' },
+        },
+        {
+          name: 'label',
+          type: 'text',
+          localized: true,
+          label: { fr: 'Légende', en: 'Caption' },
+          admin: {
+            description: {
+              fr: 'Affichée en bas du hero pendant la diapositive.',
+              en: 'Shown at the foot of the hero while the slide is active.',
+            },
+          },
+        },
+      ],
+    },
+    {
       name: 'heroVideoUrl',
       type: 'text',
       label: { fr: 'Vidéo de présentation (YouTube)', en: 'Intro video (YouTube)' },

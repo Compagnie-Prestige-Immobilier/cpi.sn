@@ -13,6 +13,16 @@ import { getProperties, getHomePage, getTestimonials } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Media, Property } from '@/payload-types'
 
+/**
+ * The first homepage, preserved verbatim after the Ombara template replica took
+ * over `/`. Kept reachable so the two can be compared side by side, but not
+ * indexed — two near-identical homepages competing in search would split the
+ * ranking that the URL structure exists to protect.
+ */
+export const metadata = {
+  robots: { index: false, follow: false },
+}
+
 export default async function HomePage({
   params,
 }: {

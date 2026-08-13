@@ -1400,6 +1400,19 @@ export interface HomePage {
    */
   heroImage?: (number | null) | Media;
   /**
+   * Full-bleed photographs with no burned-in text. Empty: the hero image is used on its own.
+   */
+  heroSlides?:
+    | {
+        image: number | Media;
+        /**
+         * Shown at the foot of the hero while the slide is active.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Opens in a modal on click — never a redirect to YouTube.
    */
   heroVideoUrl?: string | null;
@@ -1551,6 +1564,13 @@ export interface HomePageSelect<T extends boolean = true> {
   heroTitle?: T;
   heroSubtitle?: T;
   heroImage?: T;
+  heroSlides?:
+    | T
+    | {
+        image?: T;
+        label?: T;
+        id?: T;
+      };
   heroVideoUrl?: T;
   featuredProperties?: T;
   stats?:

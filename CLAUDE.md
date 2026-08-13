@@ -217,6 +217,50 @@ site's own forms still work.
 
 ---
 
+## The homepage is a faithful Ombara `index.html` port
+
+`/` is a deliberate, close reproduction of the template's `index.html`, built at the designer's
+request after he judged the first homepage too far from what he supplied. **This one route is the
+exception to "take the bones, not the skin" — everywhere else the rule still stands.**
+
+What is reproduced: the nine-section order, the geometry, and all of the motion — the hero's
+scroll-driven `clip-path` mask, the crossfade slider and its title wipe, the `data-reveal`
+choreography with the template's delay ladder, the shared image-wipe on media, the sticky
+scroll-driven feature gallery, and Lenis smooth scroll.
+
+What is **not** reproduced: the palette. Ombara's navy and sand-gold are dropped exactly as
+everywhere else — every colour resolves through a CPI semantic token, so dark mode works even
+though the template only ever had a light theme. The content is CPI's, in French, from the message
+catalogs.
+
+1. **The port lives in [`src/styles/home-template.css`](src/styles/home-template.css), scoped under
+   `.tpl`.** Structural CSS is ported rather than re-expressed in Tailwind because the fidelity
+   being asked for is in the exact timing functions and clip-path polygons. Nothing leaks: every
+   selector is under `.tpl`, and the rest of the site is untouched Tailwind.
+2. **Section ids are a review contract, not decoration.** Sections are `s1`…`s9`; addressable blocks
+   inside them are `s2-a`, `s2-b`, … The designer refers to "section 3.b" and it resolves
+   unambiguously. Badges render them on screen and `?ids=off` hides the badges while keeping the
+   ids. **If you re-order or remove a section, the numbering the designer is working against
+   changes** — say so rather than silently renumbering.
+3. **`prefers-reduced-motion` must neutralise the *pre-reveal state*, not just the transitions.**
+   The template ships a blanket `transition: none`, which here would freeze every `.tpl-reveal` at
+   `opacity: 0` and render a blank page. The stylesheet resets the hidden state and
+   `TemplateMotion` marks everything visible on mount.
+4. **Two grounds are pinned dark with `--stone-950`, not `--surface-inverse`** — the feature gallery
+   and the room cards. Their overlay type is white in both themes, and `--surface-inverse` flips to
+   a *light* value in dark mode.
+5. **Large image slots draw from `gallery`, never `featuredImage`** — and skip any gallery entry
+   that duplicates the featured image, because several listings attach the same banner twice. See
+   the note below on why banners are unusable at size.
+6. **The previous homepage is preserved at `/accueil-v1`** (`/en/home-v1`), `noindex`, unlisted in
+   the nav, so the two can be compared.
+
+Known content gap: CPI's library is mostly marketing artwork with the site name burned in, so a few
+slots still show text-in-image. The fix is CPI uploading photographs — `heroSlides` on the
+`home-page` global exists for exactly this.
+
+---
+
 ## Component conventions
 
 1. **Hero CTAs must use `tone="onDark"`.** The hero ground is dark in every state — a photo under

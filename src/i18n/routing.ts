@@ -14,6 +14,10 @@ import { localeCodes, defaultLocale } from './locales'
 export const pathnames = {
   '/': '/',
 
+  // The homepage this replaced, kept reachable so the two can be compared side
+  // by side. Deliberately absent from the navigation.
+  '/accueil-v1': { fr: '/accueil-v1', en: '/home-v1' },
+
   '/a-propos': { fr: '/a-propos', en: '/about' },
   '/contact': { fr: '/contact', en: '/contact' },
   '/references': { fr: '/references', en: '/references' },
