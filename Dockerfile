@@ -51,8 +51,10 @@ ENV HOSTNAME=0.0.0.0
 # else are destroyed on redeploy.
 ENV MEDIA_DIR=/app/media
 
+# curl: healthcheck. postgresql-client: the one-command content seed
+# (scripts/seed-db.sh) — psql only, no pg_restore version coupling.
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl \
+  && apt-get install -y --no-install-recommends curl postgresql-client \
   && rm -rf /var/lib/apt/lists/* \
   && groupadd --system --gid 1001 nodejs \
   && useradd --system --uid 1001 --gid nodejs nextjs
@@ -66,6 +68,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # sharp is a native module; the tracer does not always follow it cleanly.
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/sharp ./node_modules/sharp
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@img ./node_modules/@img
+
+# Content seed + its restore script, so a fresh deployment can be populated
+# with a single `docker exec` and nothing to copy across first.
+COPY --from=builder --chown=nextjs:nodejs /app/seed ./seed
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/seed-db.sh ./scripts/seed-db.sh
 
 RUN mkdir -p /app/media && chown -R nextjs:nodejs /app/media
 

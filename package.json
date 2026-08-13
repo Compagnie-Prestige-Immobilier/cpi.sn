@@ -21,7 +21,8 @@
     "migrate:create": "payload migrate:create",
     "import": "tsx src/migration/import.ts",
     "check:legacy": "node scripts/check-no-legacy.mjs",
-    "archive:legacy": "node scripts/archive-legacy.mjs"
+    "archive:legacy": "node scripts/archive-legacy.mjs",
+    "seed:dump": "bash -c 'pg_dump \"$DATABASE_URI\" --format=plain --no-owner --no-privileges --clean --if-exists --exclude-table-data=users --exclude-table-data=users_sessions --exclude-table-data=payload_preferences --exclude-table-data=payload_preferences_rels --exclude-table-data=payload_locked_documents --exclude-table-data=payload_locked_documents_rels --exclude-table-data=leads --exclude-table-data=leads_rels | gzip -9 > seed/cpi-seed.sql.gz && ls -lh seed/cpi-seed.sql.gz'"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",

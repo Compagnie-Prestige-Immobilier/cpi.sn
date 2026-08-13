@@ -33,24 +33,40 @@ steps below are done.
 Visit `https://dev.cpi.sn/admin`. With an empty `users` table Payload shows its
 create-first-user screen. Create the account there — no seeding required.
 
-### 2. Move the content across
+### 2. Load the content — one command
 
-The local database already holds everything the migration produced: 42 properties, 12 posts,
-22 pages, 128 media records and the globals. Copying it over is faster and less error-prone than
-re-running the WordPress import against production.
+The content seed ships **inside the image** (`seed/cpi-seed.sql.gz`, ~930 KB), so there is nothing
+to copy across first:
 
 ```bash
-# From the project root, against your local database
-pg_dump -h 127.0.0.1 -U cpi -d cpi \
-  --no-owner --no-privileges --clean --if-exists -Fc -f cpi.dump
-
-# Restore into the production database (run where it is reachable —
-# the Dokploy host, or via a tunnel; cpisn-db-udk1lq is internal)
-pg_restore -d "$DATABASE_URI" --no-owner --no-privileges --clean --if-exists cpi.dump
+docker exec <container> /app/scripts/seed-db.sh
 ```
 
-`--no-owner --no-privileges` matters: local runs as `cpi`, production as `postgres`, and without
-these the restore fails on every `ALTER ... OWNER TO` statement.
+That restores 42 properties, 12 posts, 22 pages, 128 media records and the globals, then prints a
+count so you can see it worked.
+
+**It refuses to run against a database that already has properties** — a one-command restore that
+silently destroyed live content would be far too easy to trigger by accident. Override deliberately:
+
+```bash
+docker exec <container> /app/scripts/seed-db.sh --force
+```
+
+Notes on how the seed is built, because both details bite if changed:
+
+- **Plain SQL piped through `psql`, not a custom-format dump.** `pg_restore` refuses any archive
+  produced by a newer `pg_dump`, and the client version inside the image is not the one that made
+  the file. `psql` reading SQL has no such constraint.
+- **No user accounts, and no leads.** `users`, `users_sessions`, the per-user `payload_preferences*`
+  and `payload_locked_documents*` tables are excluded — so no password hash is committed, and
+  production keeps whatever admin you created. Excluding `users` *without* also excluding
+  `payload_preferences_rels` fails on a foreign key, which is why the list is that long.
+
+To refresh the seed from your local database after further content work:
+
+```bash
+npm run seed:dump      # reads DATABASE_URI from .env
+```
 
 ### 3. Copy the media files — separate from the database
 
