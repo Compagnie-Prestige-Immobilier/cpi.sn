@@ -40,8 +40,8 @@ docker exec <container> /app/scripts/seed.sh
 ```
 
 Runs both halves below. Verified from scratch: empty database + empty volume →
-one command → 42 properties and 441 images, with `/api/media/file/…` serving
-`image/webp` and pages rendering.
+one command → 42 properties and 471 image files, with `/api/media/file/…` serving
+`image/webp` and every page rendering.
 
 Both halves are needed and neither is sufficient: the database holds rows
 pointing at files, the volume holds the files. Restore only the database and
@@ -58,17 +58,21 @@ to copy across first:
 docker exec <container> /app/scripts/seed-db.sh
 ```
 
-Restores 42 properties, 12 posts, 22 pages, 128 media records and the globals.
+Restores 42 properties, 12 posts, 22 pages, 139 media records, 3 video testimonials and the globals.
 
-Notes on how the seed is built, because both details bite if changed:
+Notes on how the seed is built, because each of these bites if changed:
 
+- **DATA ONLY — migrations own the schema, the seed owns the content.** A schema+data dump fights
+  the migrations it lands on: dropping `media`'s primary key fails once a newer migration has added
+  `home_page.founder_portrait_id` referencing it, and the restore dies half-applied. Data-only means
+  the dump never has to match the target's schema version.
+- **Existing content is truncated first**, from a table list derived at runtime — so a collection
+  added later is included automatically rather than quietly keeping stale rows.
+- **`users`, `leads` and the per-user admin tables are excluded outright.** Re-seeding therefore
+  never destroys the admin account or the sales inbox, and no password hash is committed.
 - **Plain SQL piped through `psql`, not a custom-format dump.** `pg_restore` refuses any archive
   produced by a newer `pg_dump`, and the client version inside the image is not the one that made
-  the file. `psql` reading SQL has no such constraint.
-- **No user accounts, and no leads.** `users`, `users_sessions`, the per-user `payload_preferences*`
-  and `payload_locked_documents*` tables are excluded — so no password hash is committed, and
-  production keeps whatever admin you created. Excluding `users` *without* also excluding
-  `payload_preferences_rels` fails on a foreign key, which is why the list is that long.
+  the file.
 
 #### 2b. Images
 
@@ -76,21 +80,25 @@ Notes on how the seed is built, because both details bite if changed:
 docker exec <container> /app/scripts/seed-media.sh
 ```
 
-The 441 migrated images ship **inside the image**, unpacked at `/opt/cpi-seed/media`.
+The 471 images ship **inside the image**, unpacked at `/opt/cpi-seed/media`.
 
 They are staged there rather than at `/app/media` deliberately: that path is the mounted volume, and
 relying on Docker's populate-an-empty-volume behaviour would work only when the volume happens to be
 empty and silently do nothing otherwise. An explicit copy behaves the same way in every state.
 
-In the repository they live as four ~40 MB parts under `seed/uploads/`, reassembled during the
+In the repository they live as four parts under `seed/uploads/` (3 × 40 MB + 26 MB), reassembled during the
 Docker build. That split exists solely because GitHub caps a **single file** at 100 MB (and warns
 past 50 MB) — the parts never reach the runtime image.
 
 #### Refreshing the seed
 
+**Run both, always.** They are separate artefacts and they drift: regenerating the database seed
+alone leaves rows pointing at images that were never shipped, which surfaces as a 500 on every
+image rather than anything obvious. `seed.sh` verifies this after seeding and warns if any media
+row has no file.
+
 ```bash
-npm run seed:dump       # database → seed/cpi-seed.sql.gz  (reads DATABASE_URI from .env)
-npm run seed:media      # media/    → seed/uploads/media.tar.gz.part-*
+npm run seed:dump && npm run seed:media
 ```
 
 #### Cost
