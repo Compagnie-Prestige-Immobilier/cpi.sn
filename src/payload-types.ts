@@ -1397,6 +1397,53 @@ export interface HomePage {
    * Empty = the most recent available land.
    */
   featuredProperties?: (number | Property)[] | null;
+  /**
+   * Mirrors the À propos page. Real values, not counters stuck at zero.
+   */
+  stats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  founder?: {
+    name?: string | null;
+    role?: string | null;
+    /**
+     * A real photograph of the founder only. With none, a clearly-marked neutral silhouette is shown — never stand in a stock image for a named person.
+     */
+    portrait?: (number | null) | Media;
+    bio?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    highlights?:
+      | {
+          year?: string | null;
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  valueProps?:
+    | {
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1484,6 +1531,35 @@ export interface HomePageSelect<T extends boolean = true> {
   heroImage?: T;
   heroVideoUrl?: T;
   featuredProperties?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  founder?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        portrait?: T;
+        bio?: T;
+        highlights?:
+          | T
+          | {
+              year?: T;
+              text?: T;
+              id?: T;
+            };
+      };
+  valueProps?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

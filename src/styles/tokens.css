@@ -79,7 +79,10 @@
      `-on-dark` is for accents sitting over photography or dark sections, where
      #65000D is invisible. Same hue, lighter step. Never a different colour. */
   --accent: var(--burgundy-800);
-  --accent-on-dark: var(--burgundy-300);
+  /* burgundy-200, not -300: measured over the scrimmed hero photograph the 300
+     step reaches only 4.26:1, short of AA for small uppercase type. 200 gives
+     6.63:1 there and 10.88:1 on the plain burgundy ground. */
+  --accent-on-dark: var(--burgundy-200);
 
   --focus-ring: var(--burgundy-600);
   --overlay: rgb(28 26 26 / 0.6);
@@ -112,7 +115,7 @@
   --brand-solid-foreground: var(--white); /* 11.44:1 on brand-solid */
 
   --accent: var(--burgundy-400);
-  --accent-on-dark: var(--burgundy-300);
+  --accent-on-dark: var(--burgundy-200);
 
   --focus-ring: var(--burgundy-400);
   --overlay: rgb(0 0 0 / 0.7);

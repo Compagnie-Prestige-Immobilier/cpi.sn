@@ -75,5 +75,140 @@ export const HomePage: GlobalConfig = {
         },
       },
     },
+
+    {
+      name: 'stats',
+      type: 'array',
+      maxRows: 4,
+      label: { fr: 'Chiffres clés', en: 'Key figures' },
+      admin: {
+        description: {
+          fr: 'Repris de la page À propos. Les vraies valeurs, pas des compteurs à zéro.',
+          en: 'Mirrors the À propos page. Real values, not counters stuck at zero.',
+        },
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'value',
+              type: 'text',
+              required: true,
+              label: { fr: 'Valeur', en: 'Value' },
+              admin: { width: '35%' },
+            },
+            {
+              name: 'label',
+              type: 'text',
+              required: true,
+              localized: true,
+              label: { fr: 'Libellé', en: 'Label' },
+              admin: { width: '65%' },
+            },
+          ],
+        },
+      ],
+    },
+
+    /**
+     * The founder.
+     *
+     * Aminata Sall SY's record — the 1979 Cour suprême case that carries her
+     * name, the Trade Point Sénégal and Gaindé 2000 years — is the strongest
+     * trust signal CPI has in a market where buyers are rightly wary about land
+     * title. It was buried on the old site; it belongs on the homepage.
+     */
+    {
+      name: 'founder',
+      type: 'group',
+      label: { fr: 'Fondatrice', en: 'Founder' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'name',
+              type: 'text',
+              label: { fr: 'Nom', en: 'Name' },
+              admin: { width: '50%' },
+            },
+            {
+              name: 'role',
+              type: 'text',
+              localized: true,
+              label: { fr: 'Fonction', en: 'Role' },
+              admin: { width: '50%' },
+            },
+          ],
+        },
+        {
+          name: 'portrait',
+          type: 'upload',
+          relationTo: 'media',
+          label: { fr: 'Portrait', en: 'Portrait' },
+          admin: {
+            description: {
+              fr: "Photographie réelle de la fondatrice uniquement. Sans portrait, une silhouette neutre clairement identifiée s'affiche — ne jamais utiliser une image d'illustration à la place d'une personne réelle.",
+              en: 'A real photograph of the founder only. With none, a clearly-marked neutral silhouette is shown — never stand in a stock image for a named person.',
+            },
+          },
+        },
+        {
+          name: 'bio',
+          type: 'richText',
+          localized: true,
+          label: { fr: 'Parcours', en: 'Biography' },
+        },
+        {
+          name: 'highlights',
+          type: 'array',
+          maxRows: 4,
+          label: { fr: 'Faits marquants', en: 'Highlights' },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'year',
+                  type: 'text',
+                  label: { fr: 'Année', en: 'Year' },
+                  admin: { width: '25%' },
+                },
+                {
+                  name: 'text',
+                  type: 'text',
+                  localized: true,
+                  label: { fr: 'Fait', en: 'Fact' },
+                  admin: { width: '75%' },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      name: 'valueProps',
+      type: 'array',
+      maxRows: 6,
+      label: { fr: 'Nos engagements', en: 'Our commitments' },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          localized: true,
+          label: { fr: 'Titre', en: 'Title' },
+        },
+        {
+          name: 'body',
+          type: 'textarea',
+          localized: true,
+          label: { fr: 'Description', en: 'Body' },
+        },
+      ],
+    },
   ],
 }

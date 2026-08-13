@@ -130,10 +130,12 @@ default; the toggle offers light / dark / system.
    `--color-secondary: #c5a880` for accent text, decorative left-borders (`.border-left-gold`),
    hero/gallery progress bars and active pagination dots. All of them take burgundy instead.
 
-   The one mechanical exception: accents that sit **on dark grounds** — the hero progress bar over
-   photography, anything on a dark section — need a lighter ramp step (`burgundy-300`/`400`), since
-   `#65000D` on dark imagery is invisible. Same brand color, tonally adjusted where the ground
-   demands it. Never substitute a different hue.
+   The one mechanical exception: accents that sit **on dark grounds** — the hero eyebrow over
+   photography, anything on a dark section — take `--accent-on-dark`, which resolves to
+   **`burgundy-200`**. `#65000D` on dark imagery is invisible, and `burgundy-300` measured only
+   **4.26:1** over the scrimmed hero photo — short of AA for small uppercase type. The 200 step
+   gives 6.63:1 there and 10.88:1 on the plain burgundy ground. Same brand hue, tonally adjusted
+   where the ground demands it. Never substitute a different hue.
 
 5. **The dark surface is warm (`#171214`), not Ombara's cool navy (`#121921`).** A warm burgundy
    brand on a cool blue-grey ground reads as a mismatch. Neutrals derive from the logo's greys

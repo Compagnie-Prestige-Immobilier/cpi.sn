@@ -62,7 +62,11 @@ export function Hero({
         aria-hidden
         className={
           image
-            ? 'absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/45 to-black/20'
+            ? // The text block sits in the lower-middle, which is exactly where a
+              // two-stop scrim is thinnest — the eyebrow measured 3.19:1 over the
+              // aerial photo. Weighting the middle fixes every line at once, and
+              // survives a brighter photo later; tinting the type would not.
+              'absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/60 to-black/25'
             : 'absolute inset-0 -z-10 bg-gradient-to-t from-black/35 to-transparent'
         }
       />
