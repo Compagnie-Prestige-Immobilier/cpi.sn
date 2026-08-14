@@ -87,6 +87,23 @@ BEGIN
 END $$;
 SQL
 
+# ── Pre-flight: refuse to truncate for a seed that has no data ───────────────
+# This script empties the content tables *before* restoring. A truncate followed
+# by a no-op restore leaves the database blank, which is exactly what happened
+# in production when a corrupt dump was committed: it reported success and left
+# properties=0 posts=0 pages=0 media=0.
+#
+# Checking first makes that failure safe — the existing data survives and the
+# script tells you the seed is the problem.
+COPIES=$(gzip -dc "$SEED" 2>/dev/null | grep -c '^COPY ' || true)
+if [ "${COPIES:-0}" -lt 10 ]; then
+  echo "✗ $SEED contains ${COPIES:-0} COPY statement(s) — it is empty or corrupt." >&2
+  echo "  Refusing to truncate. Regenerate it with 'npm run seed:dump' and make" >&2
+  echo "  sure the regenerated file is committed before building the image." >&2
+  exit 1
+fi
+echo "  seed looks sane (${COPIES} tables)"
+
 echo "→ Restoring $SEED"
 # pg_dump's data-only output happens to load cleanly under normal FK checking,
 # so this is belt-and-braces rather than a requirement. Deferring needs
