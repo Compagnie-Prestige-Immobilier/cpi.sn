@@ -413,5 +413,37 @@
       "title": "Take the first step",
       "body": "Tell us about your project. Our team will call you back and point you to the sites that match your budget."
     }
+  },
+  "boutique": {
+    "title": "Online shop",
+    "heading": "CPI land & products",
+    "intro": "Every site we sell, plus our documents and services. Add to the basket and our team will call you back to finalise.",
+    "statSites": "sites for sale",
+    "statParcel": "m² per plot",
+    "landHeading": "Land for sale",
+    "servicesEyebrow": "Documents & services",
+    "servicesHeading": "Order online",
+    "servicesIntro": "Indicative prices. Our team confirms the detail and timings before any payment.",
+    "add": "Add",
+    "added": "In basket",
+    "onRequest": "Price on request",
+    "trust": {
+      "legalTitle": "Legally verified",
+      "legalBody": "No plot goes on sale before our practice has settled its legal position.",
+      "payTitle": "Guided payment",
+      "payBody": "Wave, Orange Money or transfer — terms are confirmed by our team before any payment.",
+      "holdTitle": "Reserve without commitment",
+      "holdBody": "Your request holds the plot while we go through the file together."
+    },
+    "cart": {
+      "title": "My basket",
+      "empty": "Your basket is empty.",
+      "total": "Indicative total",
+      "quoteNote": "Some lines are priced on request: the final amount is confirmed by our team.",
+      "checkout": "Request a quote",
+      "remove": "Remove",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity"
+    }
   }
 }

@@ -38,6 +38,7 @@ export interface LocaleDefinition {
 export const locales = [
   { code: 'fr', label: 'Français', dir: 'ltr', flag: 'FR', default: true },
   { code: 'en', label: 'English', dir: 'ltr', flag: 'GB', fallback: 'fr' },
+  { code: 'es', label: 'Español', dir: 'ltr', flag: 'ES', fallback: 'fr' },
 
   // Planned. Uncomment + add src/messages/<code>.json to enable.
   // { code: 'wo', label: 'Wolof', dir: 'ltr', flag: 'SN', fallback: 'fr' },

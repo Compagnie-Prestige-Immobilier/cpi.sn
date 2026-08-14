@@ -1,0 +1,449 @@
+{
+  "site": {
+    "name": "CPI",
+    "fullName": "Compagnie Prestige Immobilier",
+    "tagline": "Líder inmobiliario en Senegal",
+    "description": "Promotora inmobiliaria de referencia en Senegal desde 2003. Parcelas urbanizadas, programas inmobiliarios, construcción y asesoría jurídica."
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Quiénes somos",
+    "services": "Servicios",
+    "land": "Terrenos disponibles",
+    "developments": "Proyectos",
+    "developmentsOngoing": "Proyectos en curso",
+    "developmentsCompleted": "Proyectos entregados",
+    "apartments": "Apartamentos",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "openMenu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú",
+    "skipToContent": "Ir al contenido principal",
+    "mySpace": "Mon espace",
+    "shop": "Tienda",
+    "landCount": "{count, plural, one {# terreno en venta} other {# terrenos en venta}}",
+    "allLandInShop": "Ver todos los terrenos en la tienda"
+  },
+  "common": {
+    "loading": "Cargando…",
+    "readMore": "Saber más",
+    "seeAll": "Ver todo",
+    "back": "Volver",
+    "close": "Cerrar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "share": "Compartir",
+    "priceOnRequest": "Precio a consultar",
+    "from": "Desde",
+    "reference": "Referencia"
+  },
+  "theme": {
+    "toggle": "Cambiar de tema",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "language": {
+    "switch": "Cambiar de idioma",
+    "current": "Idioma actual: {label}"
+  },
+  "property": {
+    "specs": {
+      "surface": "Superficie",
+      "plotSize": "Superficie del terreno",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "year": "Año",
+      "titleDeed": "Título de propiedad",
+      "city": "Ciudad",
+      "area": "Región"
+    },
+    "status": {
+      "available": "Disponible",
+      "ongoing": "En curso",
+      "completed": "Entregado",
+      "sold": "Vendido",
+      "forRent": "En alquiler"
+    },
+    "kind": {
+      "terrain": "Terreno",
+      "villa": "Villa",
+      "apartment": "Apartamento",
+      "building": "Edificio",
+      "office": "Oficina",
+      "retail": "Local comercial"
+    },
+    "count": "{count, plural, =0 {Ningún inmueble} one {# inmueble} other {# inmuebles}}",
+    "addToSelection": "Añadir a mi selección",
+    "inSelection": "En mi selección",
+    "removeFromSelection": "Quitar de mi selección",
+    "amenitiesTitle": "Equipamiento"
+  },
+  "cart": {
+    "title": "Mi selección",
+    "empty": "Su selección está vacía.",
+    "emptyAction": "Descubrir nuestros terrenos",
+    "count": "{count, plural, =0 {Ningún inmueble seleccionado} one {# inmueble seleccionado} other {# inmuebles seleccionados}}",
+    "remove": "Quitar",
+    "clear": "Vaciar mi selección",
+    "submit": "Enviar mi solicitud",
+    "submitting": "Enviando…",
+    "form": {
+      "name": "Su nombre",
+      "phone": "Teléfono",
+      "email": "Correo electrónico (opcional)",
+      "message": "Mensaje (opcional)"
+    },
+    "successTitle": "Su solicitud ha sido registrada",
+    "successBody": "Nuestro equipo se pondrá en contacto con usted en breve. Conserve la referencia siguiente para cualquier gestión.",
+    "successReference": "Referencia: {reference}",
+    "hint": "Sus datos se transmiten directamente a nuestro equipo comercial. No hace falta ninguna cuenta.",
+    "open": "Mi selección"
+  },
+  "video": {
+    "play": "Reproducir el vídeo",
+    "close": "Cerrar el vídeo",
+    "label": "Vídeo de presentación"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Consejos y actualidad del sector inmobiliario en Senegal",
+    "readingTime": "{minutes} min de lectura",
+    "publishedOn": "Publicado el {date}",
+    "categories": "Categorías",
+    "relatedPosts": "Artículos relacionados",
+    "empty": "Todavía no hay artículos."
+  },
+  "forms": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Correo electrónico no válido",
+    "invalidPhone": "Número de teléfono no válido",
+    "submit": "Enviar",
+    "submitting": "Enviando…",
+    "success": "Gracias, su solicitud se ha enviado correctamente.",
+    "error": "Se ha producido un error. Vuelva a intentarlo o llámenos directamente."
+  },
+  "placeholder": {
+    "testimonialName": "Cliente CPI",
+    "testimonialRole": "Testimonio próximamente",
+    "teamName": "Miembro del equipo",
+    "teamRole": "Puesto por definir",
+    "notice": "Contenido provisional — será sustituido por CPI."
+  },
+  "error": {
+    "notFoundTitle": "Página no encontrada",
+    "notFoundBody": "La página que busca no existe o se ha movido.",
+    "genericTitle": "Se ha producido un error",
+    "genericBody": "Vuelva a intentarlo en unos instantes.",
+    "backHome": "Volver al inicio"
+  },
+  "homeTemplate": {
+    "hero": {
+      "subtitle": "Desde 2003, CPI asegura cada etapa de su compra: parcelas urbanizadas, títulos verificados y acompañamiento jurídico integrado.",
+      "badges": {
+        "one": "Parcelas urbanizadas",
+        "two": "Seguridad jurídica",
+        "three": "Pago aplazado"
+      },
+      "menu": {
+        "approach": "Nuestro enfoque",
+        "metiers": "Nuestras actividades",
+        "gallery": "Realizaciones"
+      },
+      "cta": "Contáctenos",
+      "slideFallback": "Nuestras realizaciones",
+      "navLabel": "Navegación del hero"
+    },
+    "approach": {
+      "eyebrow": "Descubrir",
+      "title": "La experiencia CPI",
+      "subtitle": "De la elección del terreno a la entrega del título",
+      "items": {
+        "one": {
+          "title": "Seguridad",
+          "body": "Cada sitio es verificado por nuestro gabinete antes de su puesta en venta."
+        },
+        "two": {
+          "title": "Acompañamiento",
+          "body": "Un interlocutor dedicado sigue su expediente hasta los trámites finales."
+        },
+        "three": {
+          "title": "Accesibilidad",
+          "body": "Facilidades de pago pensadas para las familias y para la diáspora."
+        }
+      }
+    },
+    "usp": {
+      "eyebrow": "Nuestras ventajas",
+      "title": "Lo que distingue a CPI",
+      "items": {
+        "one": "Parcelas urbanizadas y deslindadas",
+        "two": "Títulos de propiedad y arrendamientos verificados",
+        "three": "Gabinete de asesoría jurídica integrado",
+        "four": "Pago aplazado hasta 3 años",
+        "five": "Acompañamiento de la diáspora",
+        "six": "Más de 15 sitios alrededor de Dakar",
+        "seven": "Topógrafos y oficinas de estudios asociadas",
+        "eight": "Seguimiento digital de los proyectos",
+        "nine": "Más de 10 000 familias acompañadas"
+      }
+    },
+    "metiers": {
+      "eyebrow": "Saber hacer",
+      "title": "Nuestras actividades",
+      "tabs": {
+        "foncier": {
+          "label": "Promoción del suelo",
+          "title": "Promoción del suelo",
+          "body": "Identificación, regularización y urbanización de sitios alrededor de Dakar. Solo comercializamos un terreno cuando su situación jurídica está establecida."
+        },
+        "immobilier": {
+          "label": "Promoción inmobiliaria",
+          "title": "Promoción inmobiliaria",
+          "body": "Apartamentos y villas entregados llave en mano, diseñados con arquitectos y oficinas de control asociadas."
+        },
+        "juridique": {
+          "label": "Asesoría jurídica",
+          "title": "Gabinete de asesoría jurídica",
+          "body": "Derecho del suelo y del patrimonio público, trámites administrativos y gestión de litigios. Este gabinete integrado es lo que hace sostenible la promesa de seguridad."
+        }
+      }
+    },
+    "lines": {
+      "eyebrow": "Nuestras gamas",
+      "title": "Terrenos y residencias",
+      "subtitle": "Dos formas de ser propietario con CPI",
+      "land": {
+        "title": "Terrenos disponibles",
+        "body": "Parcelas urbanizadas en nuestros sitios estratégicos, con acompañamiento jurídico completo."
+      },
+      "homes": {
+        "title": "Apartamentos y villas",
+        "body": "Programas inmobiliarios entregados llave en mano, en ejecución o ya finalizados."
+      }
+    },
+    "gallery": {
+      "eyebrow": "Realizaciones",
+      "title": "Nuestros sitios en imágenes",
+      "subtitle": "Proyectos entregados, no recreaciones.",
+      "copy": {
+        "one": "Cada sitio cuenta el mismo método: un suelo verificado, urbanizado y acompañado hasta el título.",
+        "two": "El 60 % de nuestras ventas proviene de recomendaciones de familias ya instaladas."
+      }
+    },
+    "feature": {
+      "prev": "Ant.",
+      "next": "Sig.",
+      "skip": "Saltar",
+      "eyebrowFallback": "Nuestros sitios"
+    },
+    "showcase": {
+      "kicker": "En vídeo",
+      "play": "Reproducir el vídeo de presentación",
+      "specs": {
+        "one": "20 años de experiencia",
+        "two": "+10 000 familias"
+      }
+    },
+    "register": {
+      "title": "Dé el primer paso",
+      "desc": "Cuéntenos su proyecto. Nuestro equipo le llamará y le orientará hacia los sitios que se ajusten a su presupuesto.",
+      "name": "Nombre completo",
+      "namePlaceholder": "Su nombre",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "usted@ejemplo.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "Su número",
+      "dialCode": "Prefijo del país",
+      "country": "País de residencia",
+      "countryPlaceholder": "Senegal",
+      "terms": "Acepto que me contacten en relación con mi solicitud.",
+      "submit": "Enviar mi solicitud"
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Desde 2003",
+      "titleLead": "Líder inmobiliario en",
+      "titleAccent": "Senegal",
+      "subtitle": "Desde 2003, CPI hace accesible la propiedad del suelo a las familias senegalesas, con seguridad jurídica verificada en cada etapa.",
+      "ctaContact": "Contáctenos",
+      "ctaShop": "Visitar la tienda",
+      "badges": {
+        "one": "Parcelas urbanizadas",
+        "two": "Seguridad jurídica",
+        "three": "Pago aplazado"
+      },
+      "statFamilies": "familias alojadas",
+      "statSites": "sitios alrededor de Dakar",
+      "statYears": "años de experiencia",
+      "statReferral": "de las ventas por recomendación"
+    },
+    "approach": {
+      "eyebrow": "Descubrir",
+      "title": "La experiencia CPI",
+      "subtitle": "De la elección de la parcela a la entrega del título de propiedad",
+      "items": {
+        "one": {
+          "title": "Certeza",
+          "body": "Cada sitio es verificado por nuestro gabinete jurídico antes de su puesta en venta."
+        },
+        "two": {
+          "title": "Acompañamiento",
+          "body": "Un interlocutor dedicado sigue su expediente hasta los últimos trámites."
+        },
+        "three": {
+          "title": "Accesibilidad",
+          "body": "Planes de pago pensados para las familias en el país y en la diáspora."
+        }
+      }
+    },
+    "usp": {
+      "eyebrow": "Por qué CPI",
+      "title": "Lo que distingue a CPI",
+      "items": {
+        "one": "Parcelas urbanizadas y deslindadas",
+        "two": "Títulos de propiedad y arrendamientos verificados",
+        "three": "Gabinete jurídico interno",
+        "four": "Pago aplazado hasta 3 años",
+        "five": "Acompañamiento de la diáspora",
+        "six": "Más de 15 sitios alrededor de Dakar",
+        "seven": "Topógrafos e ingenieros asociados",
+        "eight": "Seguimiento digital de los proyectos",
+        "nine": "Más de 10 000 familias alojadas"
+      }
+    },
+    "metiers": {
+      "eyebrow": "Actividades CPI",
+      "kicker": "Experiencia",
+      "title": "Lo que hacemos",
+      "all": "Todos nuestros servicios",
+      "tabs": {
+        "foncier": {
+          "label": "Promoción del suelo",
+          "body": "Búsqueda, regularización y urbanización de sitios alrededor de Dakar. Una parcela solo se pone en venta cuando su situación jurídica está resuelta."
+        },
+        "immobilier": {
+          "label": "Promoción inmobiliaria",
+          "body": "Apartamentos y villas entregados llave en mano, diseñados con arquitectos y oficinas de control asociadas."
+        },
+        "juridique": {
+          "label": "Gabinete de asesoría jurídica",
+          "body": "Derecho del suelo y del patrimonio público, trámites administrativos y gestión de litigios. Este gabinete interno es lo que hace creíble la promesa de seguridad."
+        }
+      }
+    },
+    "lines": {
+      "eyebrow": "Nuestras gamas",
+      "title": "Terrenos y viviendas",
+      "subtitle": "Dos vías para ser propietario con CPI",
+      "land": {
+        "title": "Terrenos disponibles",
+        "body": "Parcelas urbanizadas en nuestros sitios estratégicos, con acompañamiento jurídico completo."
+      },
+      "homes": {
+        "title": "Apartamentos y villas",
+        "body": "Programas llave en mano, en ejecución o ya entregados."
+      }
+    },
+    "projects": {
+      "eyebrow": "Proyectos",
+      "title": "Nuestros sitios en imágenes",
+      "body": "Proyectos entregados, no recreaciones. Cada sitio sigue el mismo método: terreno verificado, urbanizado y acompañado hasta el título.",
+      "referral": "El 60 % de nuestras ventas proviene de recomendaciones de familias ya instaladas."
+    },
+    "feature": {
+      "prev": "Ant.",
+      "next": "Sig.",
+      "skip": "Saltar",
+      "eyebrowFallback": "Nuestros sitios"
+    },
+    "shop": {
+      "eyebrow": "Tienda en línea",
+      "title": "Reservar y gestionar en línea",
+      "subtitle": "Reservas, expedientes y servicios: díganos qué necesita y nuestro equipo le llamará para concretarlo.",
+      "popular": "Lo más solicitado",
+      "from": "desde {price}",
+      "items": {
+        "plot": {
+          "title": "Reservar una parcela",
+          "body": "Bloquee la parcela que elija. Nuestro equipo confirma la disponibilidad y las condiciones.",
+          "price": "250 000 FCFA",
+          "cta": "Reservar"
+        },
+        "documents": {
+          "title": "Expedientes y documentos",
+          "body": "Título de propiedad, plano de deslinde, certificado de propiedad: solicitados y entregados en formato digital.",
+          "price": "15 000 FCFA",
+          "cta": "Solicitar"
+        },
+        "advisory": {
+          "title": "Servicios de asesoría",
+          "body": "Estudio jurídico, análisis del suelo, asistencia notarial: reserve una cita con nuestro gabinete.",
+          "price": "50 000 FCFA",
+          "cta": "Reservar"
+        },
+        "instalment": {
+          "title": "Pagar un vencimiento",
+          "body": "Abone su mensualidad y consulte su calendario de pagos desde su área de cliente.",
+          "price": "Área de cliente",
+          "cta": "Abrir mi área"
+        },
+        "goodies": {
+          "title": "Artículos CPI",
+          "body": "Merchandising: cuadernos, gorras, polos, con entrega en Dakar.",
+          "price": "5 000 FCFA",
+          "cta": "Consultar"
+        },
+        "account": {
+          "title": "Área de cliente",
+          "body": "Contratos, calendario de pagos, recibos y avance de la obra, para clientes de CPI.",
+          "price": "",
+          "cta": "Iniciar sesión"
+        }
+      }
+    },
+    "video": {
+      "kicker": "En vídeo",
+      "play": "Reproducir el vídeo de presentación",
+      "years": "de experiencia",
+      "families": "familias"
+    },
+    "contact": {
+      "eyebrow": "Contacto",
+      "title": "Dé el primer paso",
+      "body": "Cuéntenos su proyecto. Nuestro equipo le llamará y le orientará hacia los sitios que se ajusten a su presupuesto."
+    }
+  },
+  "boutique": {
+    "title": "Tienda en línea",
+    "heading": "Terrenos y productos CPI",
+    "intro": "Todos los sitios que comercializamos, junto con nuestros expedientes y servicios. Añada al carrito y nuestro equipo le llamará para concretarlo.",
+    "statSites": "terrenos en venta",
+    "statParcel": "m² por parcela",
+    "landHeading": "Terrenos en venta",
+    "servicesEyebrow": "Expedientes y servicios",
+    "servicesHeading": "Solicitar en línea",
+    "servicesIntro": "Precios orientativos. Nuestro equipo confirma el detalle y los plazos antes de cualquier pago.",
+    "add": "Añadir",
+    "added": "En el carrito",
+    "onRequest": "Precio a consultar",
+    "trust": {
+      "legalTitle": "Verificado jurídicamente",
+      "legalBody": "Ninguna parcela se pone en venta antes del saneamiento jurídico por parte de nuestro gabinete.",
+      "payTitle": "Pago acompañado",
+      "payBody": "Wave, Orange Money o transferencia: nuestro equipo confirma las condiciones antes de cualquier pago.",
+      "holdTitle": "Reserva sin compromiso",
+      "holdBody": "Su solicitud bloquea la parcela mientras revisamos juntos el expediente."
+    },
+    "cart": {
+      "title": "Mi carrito",
+      "empty": "Su carrito está vacío.",
+      "total": "Total orientativo",
+      "quoteNote": "Algunas líneas tienen precio a consultar: nuestro equipo le confirmará el importe final.",
+      "checkout": "Solicitar presupuesto",
+      "remove": "Quitar",
+      "increase": "Aumentar la cantidad",
+      "decrease": "Reducir la cantidad"
+    }
+  }
+}

@@ -7,6 +7,7 @@ import * as migration_20260813_103323_homepage_sections from './20260813_103323_
 import * as migration_20260813_105800_testimonial_video from './20260813_105800_testimonial_video';
 import * as migration_20260813_110246_founder_video_poster from './20260813_110246_founder_video_poster';
 import * as migration_20260813_195642_home_hero_slides from './20260813_195642_home_hero_slides';
+import * as migration_20260814_133006_add_spanish_locale from './20260814_133006_add_spanish_locale';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260813_195642_home_hero_slides.up,
     down: migration_20260813_195642_home_hero_slides.down,
-    name: '20260813_195642_home_hero_slides'
+    name: '20260813_195642_home_hero_slides',
+  },
+  {
+    up: migration_20260814_133006_add_spanish_locale.up,
+    down: migration_20260814_133006_add_spanish_locale.down,
+    name: '20260814_133006_add_spanish_locale'
   },
 ];

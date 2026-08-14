@@ -18,37 +18,39 @@ export const pathnames = {
   // direction back. Deliberately absent from the navigation, and noindex.
   //   v1 — the first CPI homepage
   //   v2 — the Ombara `index.html` port
-  '/accueil-v1': { fr: '/accueil-v1', en: '/home-v1' },
-  '/accueil-v2': { fr: '/accueil-v2', en: '/home-v2' },
+  '/accueil-v1': { fr: '/accueil-v1', en: '/home-v1', es: '/inicio-v1' },
+  '/accueil-v2': { fr: '/accueil-v2', en: '/home-v2', es: '/inicio-v2' },
 
-  '/a-propos': { fr: '/a-propos', en: '/about' },
-  '/contact': { fr: '/contact', en: '/contact' },
-  '/references': { fr: '/references', en: '/references' },
+  '/a-propos': { fr: '/a-propos', en: '/about', es: '/quienes-somos' },
+  '/contact': { fr: '/contact', en: '/contact', es: '/contacto' },
+  '/references': { fr: '/references', en: '/references', es: '/referencias' },
   '/politique-de-confidentialite': {
     fr: '/politique-de-confidentialite',
     en: '/privacy-policy',
+    es: '/politica-de-privacidad',
   },
 
-  '/nos-services': { fr: '/nos-services', en: '/services' },
-  '/nos-services/[slug]': { fr: '/nos-services/[slug]', en: '/services/[slug]' },
+  '/nos-services': { fr: '/nos-services', en: '/services', es: '/servicios' },
+  '/nos-services/[slug]': { fr: '/nos-services/[slug]', en: '/services/[slug]', es: '/servicios/[slug]' },
 
-  '/terrains': { fr: '/terrains', en: '/land' },
-  '/terrains/[slug]': { fr: '/terrains/[slug]', en: '/land/[slug]' },
+  '/terrains': { fr: '/terrains', en: '/land', es: '/terrenos' },
+  '/terrains/[slug]': { fr: '/terrains/[slug]', en: '/land/[slug]', es: '/terrenos/[slug]' },
 
-  '/programmes': { fr: '/programmes', en: '/developments' },
-  '/programmes/en-cours': { fr: '/programmes/en-cours', en: '/developments/ongoing' },
-  '/programmes/realises': { fr: '/programmes/realises', en: '/developments/completed' },
-  '/programmes/[slug]': { fr: '/programmes/[slug]', en: '/developments/[slug]' },
+  '/programmes': { fr: '/programmes', en: '/developments', es: '/programas' },
+  '/programmes/en-cours': { fr: '/programmes/en-cours', en: '/developments/ongoing', es: '/programas/en-curso' },
+  '/programmes/realises': { fr: '/programmes/realises', en: '/developments/completed', es: '/programas/entregados' },
+  '/programmes/[slug]': { fr: '/programmes/[slug]', en: '/developments/[slug]', es: '/programas/[slug]' },
 
-  '/appartements': { fr: '/appartements', en: '/apartments' },
+  '/appartements': { fr: '/appartements', en: '/apartments', es: '/apartamentos' },
 
   '/blog': '/blog',
   '/blog/[slug]': '/blog/[slug]',
-  '/blog/categorie/[slug]': { fr: '/blog/categorie/[slug]', en: '/blog/category/[slug]' },
+  '/blog/categorie/[slug]': { fr: '/blog/categorie/[slug]', en: '/blog/category/[slug]', es: '/blog/categoria/[slug]' },
 
-  '/ma-selection': { fr: '/ma-selection', en: '/my-selection' },
-  '/devenir-partenaire': { fr: '/devenir-partenaire', en: '/become-a-partner' },
-  '/demande/[slug]': { fr: '/demande/[slug]', en: '/request/[slug]' },
+  '/boutique': { fr: '/boutique', en: '/shop', es: '/tienda' },
+  '/ma-selection': { fr: '/ma-selection', en: '/my-selection', es: '/mi-seleccion' },
+  '/devenir-partenaire': { fr: '/devenir-partenaire', en: '/become-a-partner', es: '/hazte-socio' },
+  '/demande/[slug]': { fr: '/demande/[slug]', en: '/request/[slug]', es: '/solicitud/[slug]' },
 } as const
 
 export const routing = defineRouting({

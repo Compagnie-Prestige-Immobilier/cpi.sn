@@ -12,8 +12,11 @@ import type { Locale } from '@/i18n/locales'
  * and socials. The design hardcodes them, but these are exactly the details
  * that change, and CPI has to be able to change them without a deploy.
  *
- * Hidden below `lg`: seven items of contact detail in a 375px-wide bar is
- * noise, and all of it repeats in the footer.
+ * Visible at every width. It was hidden below `lg`, which made the address and
+ * opening hours vanish on a narrow window — the strip is where visitors look
+ * for them, so it now wraps instead of disappearing. Only the social icons drop
+ * on the smallest screens, where they are the least useful item and repeat in
+ * the footer anyway.
  */
 const SOCIAL_PATHS: Record<string, string> = {
   facebook:
@@ -35,8 +38,8 @@ export async function HeaderTopBar() {
   const socials = settings.socials ?? []
 
   return (
-    <div className="hidden border-b border-subtle/60 lg:block">
-      <div className="mx-auto flex max-w-[1400px] items-center gap-4 px-6 py-2 text-[12px] text-foreground-muted">
+    <div className="border-b border-subtle/60">
+      <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-4 gap-y-1 px-6 py-2 text-[12px] text-foreground-muted">
         {settings.address ? (
           <span className="flex items-center gap-[7px]">
             <Pin />
@@ -50,7 +53,7 @@ export async function HeaderTopBar() {
           </span>
         ) : null}
 
-        <span className="ms-auto flex items-center gap-4">
+        <span className="ms-auto flex flex-wrap items-center gap-x-4 gap-y-1">
           {phones.map((phone) => (
             <a
               key={phone}
@@ -70,7 +73,7 @@ export async function HeaderTopBar() {
           <LanguageSwitcher compact />
 
           {socials.length ? (
-            <span className="flex items-center gap-2.5">
+            <span className="hidden items-center gap-2.5 sm:flex">
               {socials.map((s) => {
                 const path = SOCIAL_PATHS[s.platform]
                 return (

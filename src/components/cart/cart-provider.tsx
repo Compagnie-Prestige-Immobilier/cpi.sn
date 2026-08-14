@@ -23,6 +23,14 @@ export type CartItem = {
   title: string
   details: string
   productLine: 'foncier' | 'immobilier'
+  /**
+   * Boutique fields. Both optional so selections saved before the shop existed
+   * still deserialise — `qty` defaults to 1 and a missing `price` simply means
+   * "Prix sur demande", which is most of CPI's catalogue today.
+   */
+  qty?: number
+  price?: number | null
+  kind?: 'property' | 'service'
 }
 
 type CartContextValue = {
@@ -33,6 +41,10 @@ type CartContextValue = {
   add: (item: CartItem) => void
   remove: (id: number) => void
   toggle: (item: CartItem) => void
+  /** Quantity delta; removes the line when it would drop below 1. */
+  setQty: (id: number, qty: number) => void
+  /** Sum of priced lines only. Unpriced lines are quoted, not totalled. */
+  total: number
   clear: () => void
 }
 
@@ -91,7 +103,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const has = useCallback((id: number) => items.some((i) => i.id === id), [items])
 
   const add = useCallback((item: CartItem) => {
-    setItems((prev) => (prev.some((i) => i.id === item.id) ? prev : [...prev, item]))
+    // Adding something already in the basket bumps its quantity rather than
+    // silently doing nothing — which is what a shop visitor expects.
+    setItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id)
+      if (!existing) return [...prev, { qty: 1, ...item }]
+      return prev.map((i) =>
+        i.id === item.id ? { ...i, qty: (i.qty ?? 1) + (item.qty ?? 1) } : i,
+      )
+    })
   }, [])
 
   const remove = useCallback((id: number) => {
@@ -106,11 +126,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
     )
   }, [])
 
+  const setQty = useCallback((id: number, qty: number) => {
+    setItems((prev) =>
+      qty < 1
+        ? prev.filter((i) => i.id !== id)
+        : prev.map((i) => (i.id === id ? { ...i, qty } : i)),
+    )
+  }, [])
+
   const clear = useCallback(() => setItems([]), [])
 
+  /**
+   * Priced lines only. Most CPI listings have no price — totalling them as 0
+   * would understate the basket and imply the land is free.
+   */
+  const total = useMemo(
+    () => items.reduce((sum, i) => sum + (i.price ?? 0) * (i.qty ?? 1), 0),
+    [items],
+  )
+
   const value = useMemo(
-    () => ({ items, ready, has, add, remove, toggle, clear }),
-    [items, ready, has, add, remove, toggle, clear],
+    () => ({ items, ready, has, add, remove, toggle, setQty, total, clear }),
+    [items, ready, has, add, remove, toggle, setQty, total, clear],
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

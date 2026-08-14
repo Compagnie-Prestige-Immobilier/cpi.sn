@@ -27,6 +27,12 @@ const FLAGS: Record<string, React.ReactNode> = {
       <path d="M13.5 0v18M0 9h27" stroke="#c8102e" strokeWidth="3.6" />
     </>
   ),
+  ES: (
+    <>
+      <rect width="27" height="18" fill="#c60b1e" />
+      <rect width="27" height="9" y="4.5" fill="#ffc400" />
+    </>
+  ),
   SN: (
     <>
       <rect width="9" height="18" x="0" fill="#00853f" />

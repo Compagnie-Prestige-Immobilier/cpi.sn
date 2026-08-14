@@ -104,7 +104,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en' | 'es') | ('fr' | 'en' | 'es')[];
   globals: {
     'site-settings': SiteSetting;
     navigation: Navigation;
@@ -115,7 +115,7 @@ export interface Config {
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
   };
-  locale: 'fr' | 'en';
+  locale: 'fr' | 'en' | 'es';
   widgets: {
     collections: CollectionsWidget;
   };

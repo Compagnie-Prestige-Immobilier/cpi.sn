@@ -413,5 +413,37 @@
       "title": "Faites le premier pas",
       "body": "Parlez-nous de votre projet. Notre équipe vous rappelle et vous orientera vers les sites correspondant à votre budget."
     }
+  },
+  "boutique": {
+    "title": "Boutique en ligne",
+    "heading": "Terrains & produits CPI",
+    "intro": "Tous les sites que nous commercialisons, avec nos dossiers et prestations. Ajoutez au panier et notre équipe vous rappelle pour finaliser.",
+    "statSites": "sites à vendre",
+    "statParcel": "m² par parcelle",
+    "landHeading": "Terrains à vendre",
+    "servicesEyebrow": "Dossiers & prestations",
+    "servicesHeading": "À commander en ligne",
+    "servicesIntro": "Tarifs indicatifs. Notre équipe confirme le détail et les délais avant tout règlement.",
+    "add": "Ajouter",
+    "added": "Dans le panier",
+    "onRequest": "Prix sur demande",
+    "trust": {
+      "legalTitle": "Vérifié juridiquement",
+      "legalBody": "Aucune parcelle n'est mise en vente avant l'assainissement juridique par notre cabinet.",
+      "payTitle": "Règlement accompagné",
+      "payBody": "Wave, Orange Money ou virement — les modalités sont confirmées par notre équipe avant tout paiement.",
+      "holdTitle": "Réservation sans engagement",
+      "holdBody": "Votre demande bloque la parcelle le temps que nous validions ensemble le dossier."
+    },
+    "cart": {
+      "title": "Mon panier",
+      "empty": "Votre panier est vide.",
+      "total": "Total indicatif",
+      "quoteNote": "Certaines lignes sont à prix sur demande : le montant final vous est confirmé par notre équipe.",
+      "checkout": "Demander un devis",
+      "remove": "Retirer",
+      "increase": "Augmenter la quantité",
+      "decrease": "Diminuer la quantité"
+    }
   }
 }
