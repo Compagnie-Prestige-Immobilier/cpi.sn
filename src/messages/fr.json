@@ -20,7 +20,9 @@
     "closeMenu": "Fermer le menu",
     "skipToContent": "Aller au contenu principal",
     "mySpace": "Mon espace",
-    "shop": "Boutique"
+    "shop": "Boutique",
+    "landCount": "{count, plural, one {# site à vendre} other {# sites à vendre}}",
+    "allLandInShop": "Voir tous les terrains en boutique"
   },
   "common": {
     "loading": "Chargement…",

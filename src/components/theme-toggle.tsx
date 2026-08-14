@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react'
  * a plain bordered icon button. `sky-toggle.tsx` and `sky-toggle.css` are still
  * in the repository; swapping back is a one-line import change.
  */
-export function ThemeToggle() {
+export function ThemeToggle({ compact = false }: { compact?: boolean } = {}) {
   const t = useTranslations('theme')
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -35,12 +35,16 @@ export function ThemeToggle() {
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label={t('toggle')}
       title={mounted ? t(isDark ? 'dark' : 'light') : undefined}
-      className="grid size-[38px] place-items-center border border-strong/45 text-foreground transition-colors hover:border-brand-border hover:text-brand"
+      className={
+        compact
+          ? 'grid size-[26px] place-items-center border border-subtle text-foreground-muted transition-colors hover:border-brand-border hover:text-brand'
+          : 'grid size-[38px] place-items-center border border-strong/45 text-foreground transition-colors hover:border-brand-border hover:text-brand'
+      }
     >
       {isDark ? (
         <svg
-          width="17"
-          height="17"
+          width={compact ? 15 : 17}
+          height={compact ? 15 : 17}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -54,8 +58,8 @@ export function ThemeToggle() {
         </svg>
       ) : (
         <svg
-          width="17"
-          height="17"
+          width={compact ? 15 : 17}
+          height={compact ? 15 : 17}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

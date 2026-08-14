@@ -21,7 +21,7 @@ import { FlagIcon } from '@/components/ui/flag-icon'
  * cannot render the flag artwork, and rather than a bare div because this is a
  * navigation control a keyboard user has to be able to reach and operate.
  */
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ compact = false }: { compact?: boolean } = {}) {
   const t = useTranslations('language')
   const active = useLocale()
   const router = useRouter()
@@ -81,7 +81,11 @@ export function LanguageSwitcher() {
         aria-label={t('switch')}
         disabled={isPending}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-2 border border-strong/45 px-3 py-[9px] text-[11px] tracking-[0.14em] text-foreground uppercase transition-colors hover:border-brand-border hover:text-brand disabled:opacity-50"
+        className={
+          compact
+            ? 'inline-flex items-center gap-1.5 text-[12px] tracking-[0.08em] text-foreground-muted uppercase transition-colors hover:text-brand disabled:opacity-50'
+            : 'inline-flex items-center gap-2 border border-strong/45 px-3 py-[9px] text-[11px] tracking-[0.14em] text-foreground uppercase transition-colors hover:border-brand-border hover:text-brand disabled:opacity-50'
+        }
       >
         <FlagIcon region={current.flag} code={current.code} />
         <span>{current.code}</span>

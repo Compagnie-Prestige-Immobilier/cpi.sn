@@ -20,7 +20,9 @@
     "closeMenu": "Close menu",
     "skipToContent": "Skip to main content",
     "mySpace": "Mon espace",
-    "shop": "Shop"
+    "shop": "Shop",
+    "landCount": "{count, plural, one {# site for sale} other {# sites for sale}}",
+    "allLandInShop": "See all land in the shop"
   },
   "common": {
     "loading": "Loading…",
