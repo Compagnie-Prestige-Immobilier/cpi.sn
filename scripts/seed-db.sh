@@ -114,27 +114,34 @@ fi
 # Derived from the catalogue rather than a fixed list, so a collection added
 # later is covered without touching this script.
 echo "→ Re-syncing id sequences…"
-RESYNCED=$(psql "$DATABASE_URI" -tAc "
-DO \$\$
-DECLARE r RECORD; maxid BIGINT;
+# `pg_dump --data-only` writes rows with their original ids but emits no
+# `setval`, so every sequence is left where it was — usually 1. The next INSERT
+# then reuses an existing id. That is what broke the shop_items migration in
+# production: the SQL applied fine, then Payload's INSERT into
+# payload_migrations hit a unique violation on `id`.
+#
+# `pg_get_serial_sequence` is used rather than walking pg_depend: it resolves
+# identity and serial columns alike, and returns NULL for a column that has no
+# sequence instead of quietly missing one.
+psql "$DATABASE_URI" --quiet --no-psqlrc --set ON_ERROR_STOP=1 <<'SQL' >/dev/null
+DO $$
+DECLARE r RECORD; seqname TEXT; maxid BIGINT;
 BEGIN
   FOR r IN
-    SELECT s.relname AS seq,
-           t.relname AS tbl,
-           a.attname AS col
-    FROM pg_class s
-    JOIN pg_depend d  ON d.objid = s.oid AND d.classid = 'pg_class'::regclass AND d.deptype = 'a'
-    JOIN pg_class t   ON t.oid = d.refobjid
-    JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = d.refobjsubid
-    JOIN pg_namespace n ON n.oid = s.relnamespace
-    WHERE s.relkind = 'S' AND n.nspname = 'public'
+    SELECT c.table_name AS tbl, c.column_name AS col
+    FROM information_schema.columns c
+    JOIN information_schema.tables t
+      ON t.table_name = c.table_name AND t.table_schema = c.table_schema
+    WHERE c.table_schema = 'public' AND t.table_type = 'BASE TABLE'
   LOOP
+    seqname := pg_get_serial_sequence(format('public.%I', r.tbl), r.col);
+    CONTINUE WHEN seqname IS NULL;
     EXECUTE format('SELECT COALESCE(MAX(%I), 0) FROM public.%I', r.col, r.tbl) INTO maxid;
-    PERFORM setval(format('public.%I', r.seq), GREATEST(maxid, 1), maxid > 0);
+    PERFORM setval(seqname, maxid + 1, false);
   END LOOP;
-END \$\$;
-SELECT count(*) FROM pg_class WHERE relkind = 'S' AND relnamespace = 'public'::regnamespace;")
-echo "  ${RESYNCED} sequence(s) re-synced"
+END $$;
+SQL
+echo "  sequences re-synced"
 
 echo "→ Verifying…"
 psql "$DATABASE_URI" -tAc "

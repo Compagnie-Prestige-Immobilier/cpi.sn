@@ -90,6 +90,36 @@ In the repository they live as four parts under `seed/uploads/` (3 × 40 MB + 26
 Docker build. That split exists solely because GitHub caps a **single file** at 100 MB (and warns
 past 50 MB) — the parts never reach the runtime image.
 
+#### Sequences — the one that bites after a restore
+
+`pg_dump --data-only` writes rows with their original ids but emits **no
+`setval`**, so every sequence stays where it was while the restored rows run to
+N. The next INSERT reuses an id that already exists.
+
+It surfaces as a Payload validation error rather than a Postgres one, which
+makes it hard to place:
+
+```text
+ERROR: Error running migration … Le champ suivant n'est pas valide : id
+  "collection": "payload-migrations",
+  "errors": [{ "message": "La valeur doit être unique", "path": "id" }]
+```
+
+That exact failure hit `20260814_140734_shop_items` in production: the SQL
+applied in 23 ms, then Payload could not record that it had. **A migration that
+half-applies leaves the tables created and unrecorded**, so the retry fails
+again on `CREATE TYPE … already exists`. Recovering needs both halves — reset
+the sequence *and* drop what the migration created, then restart so it re-runs
+properly.
+
+`seed-db.sh` now re-syncs every sequence after restoring, so this should not
+recur. If it ever does, the manual fix is:
+
+```sql
+SELECT setval(pg_get_serial_sequence('payload_migrations','id'),
+              COALESCE((SELECT MAX(id) FROM payload_migrations), 0) + 1, false);
+```
+
 #### Refreshing the seed
 
 **Run both, always.** They are separate artefacts and they drift: regenerating the database seed
