@@ -21,7 +21,7 @@ const STYLES: Record<Tone, Record<Variant, string>> = {
     outline: 'border border-brand-border text-brand hover:bg-brand-muted',
   },
   onDark: {
-    solid: 'bg-white text-[var(--burgundy-800)] hover:bg-white/90',
+    solid: 'bg-white text-[var(--brand-on-light)] hover:bg-white/90',
     outline: 'border border-white/45 text-white hover:bg-white/10',
   },
 }

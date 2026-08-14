@@ -110,7 +110,15 @@ not "restore" system detection without raising it first.
    Components use `bg-surface`, `text-foreground`, `border-subtle`, `text-brand`,
    `bg-brand-solid`, `text-accent` — never `bg-[#65000d]` or `text-burgundy-700`.
 
-2. **CPI's brand is a single hue: burgundy, plus neutrals. There is no gold.**
+2. **SUPERSEDED (redesign refresh 1): the brand is now deep green + gold.**
+   `#0D1712` ground, `#C69A46` gold, `#F5F1E9` type — the designer's palette,
+   verbatim, in `src/styles/tokens.css` §1. Burgundy survives only in
+   `legacy-palette.css`, scoped to the two archived homepages. The paragraph
+   below is kept because it explains *why the token layer is built the way it
+   is* — that architecture is what let the whole site change hue by editing one
+   file. Read it as history, not as current colour policy.
+
+   **Historic:** CPI's brand is a single hue: burgundy, plus neutrals. No gold.
    The brand token is **`#65000D`** (with `#5a0f11` as its dark step) — the value used throughout
    the current site's CSS. The master logo artwork is a slightly different `#5d1615`; that
    difference is known and accepted, so don't "fix" either to match the other. Do not introduce a
@@ -327,22 +335,80 @@ slots still show text-in-image. The fix is CPI uploading photographs — `heroSl
 
 ---
 
-## Cart → WhatsApp
+## The Boutique is a shopfront, not a checkout
+
+The redesign adds a `#shop` section with prices and, in the original export,
+"Paiement sécurisé par carte, Wave ou Orange Money. Reçu délivré immédiatement."
+
+**Nothing on that page takes money.** Every action opens the enquiry form, or the
+client portal for the two items that belong to an existing customer. The payment
+strapline is deliberately not reproduced: a page advertising instant card
+payment that processes none is a complaint at best and reads as fraud at worst,
+and "no payment gateway" has been a project constraint since day one.
+
+Prices render as indicative ("dès 250 000 FCFA"), which is true and useful.
+When a real gateway is chosen — PayDunya and CinetPay both cover Wave + Orange
+Money + card in Senegal — it lands in `ShopGrid`, and it needs an orders
+collection, webhook handling and a refund path before the reservation card can
+promise anything.
+
+---
+
+## Homepage versions
+
+Three homepages exist. `/` is current; the other two are archives the designer
+can ask to return to, `noindex` and absent from the nav.
+
+| Route | What it is |
+|---|---|
+| `/` | Redesign refresh 1 — deep green + gold, sections `top`, `s2`–`s9`, `shop` |
+| `/accueil-v2` (`/en/home-v2`) | The Ombara `index.html` port |
+| `/accueil-v1` (`/en/home-v1`) | The first CPI homepage |
+
+**Both archives are pinned to `legacy-palette.css`** and load Cormorant Garamond
++ Inter themselves. Without that they would silently re-render in whatever
+palette the site currently uses — an archive of the layout but not of the
+design, which is not what "keep the old one" means.
+
+The designer builds from the deployed site, so section ids are a shared
+contract: he reused `s2`…`s9` from the previous round. Renumbering them breaks
+the vocabulary he writes feedback in.
+
+---
+
+## Cart → enquiry
 
 There are **no user accounts, no auth and no payment gateway.** The Houzez account system is gone;
-a client-side cart hands off to WhatsApp instead.
+a client-side selection checks out into the `leads` collection, which CPI works from the admin.
 
-1. **Persist the lead to Payload BEFORE opening WhatsApp, never after.** If the handoff were the
-   only record, every abandoned conversation would be invisible to CPI. This ordering is the
-   commercial point of the feature — do not "optimize" it away.
-2. **Cart state is client-side only** (localStorage + a small store). No DB writes until checkout.
-3. **The WhatsApp message is built from an i18n template**, not string concatenation — it is
-   user-facing text and lives in `messages/<locale>.json` like everything else.
-4. **`wa.me` URLs truncate past ~2 000 characters.** Long carts send a summary plus a reference
-   number (`CPI-2026-0413`) that resolves to the saved lead in the admin.
-5. **The WhatsApp number is a Payload global**, never a hardcoded constant.
-6. **Most listings have no price** — the message must read correctly with "Prix sur demande"
-   rather than emitting `0 FCFA`.
+**The WhatsApp handoff has been removed.** The old flow saved the lead and then opened `wa.me`, so
+the visitor's final step happened somewhere CPI could not observe and any reply landed in one
+salesperson's phone rather than the shared pipeline. Persisting was always the part that mattered;
+it is now the whole of it. `src/lib/whatsapp.ts` and the `cart.whatsapp.*` strings are gone — do not
+reintroduce them without raising it.
+
+1. **The write to Payload is the transaction.** Only clear the selection once the API confirms;
+   never report success that was not received. A visitor who is told CPI has their details when
+   nobody does is worse off than one shown an error.
+2. **Show the reference on success** (`CPI-2026-0413`). It is what the client quotes and what
+   staff search on.
+3. **Cart state is client-side only** (localStorage + a small store). No DB writes until checkout.
+4. **The `type` value stays `cart`.** Only its admin label changed; renaming the stored value needs
+   a migration and orphans every existing row.
+5. **`siteSettings.whatsappNumber` is retained** as a contact detail. It no longer drives checkout.
+6. **Most listings have no price** — anything rendering one must read correctly with
+   "Prix sur demande" rather than emitting `0 FCFA`.
+
+### Header controls
+
+The header carries, in order: selection, language, theme, **Mon espace**. The portal
+(`https://monespace.cpi.sn`) is a separate application, so it is a plain `<a target="_blank"
+rel="noopener noreferrer">` — never `Link`/`CmsLink`, which would resolve it against the locale
+routing map. It is hidden below `sm` and mirrored inside `MobileNav`; if you touch one, touch both,
+or the portal becomes unreachable on the phones that make up most of CPI's traffic.
+
+The selection button renders **always**, not only when the cart is non-empty — the count bubble is
+the conditional part, and it is gated on `ready` because the server cannot know localStorage.
 
 ---
 

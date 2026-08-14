@@ -40,7 +40,7 @@ export function Hero({
        `bg-surface-inverse` would flip light/dark and read as an accident. */
     <section
       className={`relative isolate flex min-h-[78vh] items-end overflow-hidden lg:min-h-[86vh] ${
-        image ? 'bg-stone-950' : 'bg-[var(--burgundy-900)]'
+        image ? 'bg-[var(--ground-dark)]' : 'bg-[var(--ground-dark)]'
       }`}
     >
       {image ? (

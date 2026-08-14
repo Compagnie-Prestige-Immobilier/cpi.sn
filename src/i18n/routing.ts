@@ -14,9 +14,12 @@ import { localeCodes, defaultLocale } from './locales'
 export const pathnames = {
   '/': '/',
 
-  // The homepage this replaced, kept reachable so the two can be compared side
-  // by side. Deliberately absent from the navigation.
+  // Superseded homepages, kept reachable so the designer can ask for an earlier
+  // direction back. Deliberately absent from the navigation, and noindex.
+  //   v1 — the first CPI homepage
+  //   v2 — the Ombara `index.html` port
   '/accueil-v1': { fr: '/accueil-v1', en: '/home-v1' },
+  '/accueil-v2': { fr: '/accueil-v2', en: '/home-v2' },
 
   '/a-propos': { fr: '/a-propos', en: '/about' },
   '/contact': { fr: '/contact', en: '/contact' },

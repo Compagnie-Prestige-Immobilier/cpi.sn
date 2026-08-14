@@ -81,7 +81,7 @@ export function LanguageSwitcher() {
         aria-label={t('switch')}
         disabled={isPending}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-2 rounded-full border border-subtle px-3 py-1.5 text-xs tracking-wide text-foreground-muted uppercase transition-colors hover:border-brand-border hover:text-brand disabled:opacity-50"
+        className="inline-flex items-center gap-2 border border-strong/45 px-3 py-[9px] text-[11px] tracking-[0.14em] text-foreground uppercase transition-colors hover:border-brand-border hover:text-brand disabled:opacity-50"
       >
         <FlagIcon region={current.flag} code={current.code} />
         <span>{current.code}</span>
@@ -103,7 +103,7 @@ export function LanguageSwitcher() {
         <ul
           role="listbox"
           aria-label={t('switch')}
-          className="absolute end-0 z-50 mt-2 min-w-44 overflow-hidden rounded-lg border border-subtle bg-surface-raised py-1 shadow-lg"
+          className="absolute end-0 z-50 mt-2 min-w-44 overflow-hidden border border-subtle bg-surface-raised py-1 shadow-xl"
         >
           {locales.map(({ code, label, flag }) => {
             const isActive = code === active

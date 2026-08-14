@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Allura } from 'next/font/google'
+import { Allura, Cormorant_Garamond, Inter } from 'next/font/google'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Link } from '@/i18n/routing'
@@ -15,6 +15,7 @@ import type { Locale } from '@/i18n/locales'
 import type { City, Media, Property } from '@/payload-types'
 
 import '@/styles/home-template.css'
+import '@/styles/legacy-palette.css'
 
 /**
  * The template's `.accent-text` is set in Allura, a script face. That is a
@@ -22,6 +23,20 @@ import '@/styles/home-template.css'
  * burgundy. Declared here rather than in the layout so only this route pays for
  * it.
  */
+/** Archived with its own typography; only this route loads these faces. */
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
 const allura = Allura({
   subsets: ['latin'],
   weight: '400',
@@ -244,7 +259,7 @@ export default async function HomePage({
   const showcaseImage = videoPoster?.url ?? pool[0]?.src ?? null
 
   return (
-    <div className={`tpl ${allura.variable}`}>
+    <div className={`tpl legacy-palette ${allura.variable} ${cormorant.variable} ${inter.variable}`}>
       <TemplateMotion />
 
       {/* ── 1 · Hero ─────────────────────────────────────────────── */}

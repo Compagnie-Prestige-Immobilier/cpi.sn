@@ -1,8 +1,6 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { SectionHeader } from '@/components/ui/section-header'
 import { SelectionForm } from '@/components/cart/selection-form'
-import { getSiteSettings } from '@/lib/payload'
-import type { Locale } from '@/i18n/locales'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -18,14 +16,12 @@ export default async function SelectionPage({ params }: Props) {
   setRequestLocale(locale)
 
   const t = await getTranslations('cart')
-  const settings = await getSiteSettings(locale as Locale)
 
   return (
     <div className="container-page py-20 lg:py-28">
       <SectionHeader eyebrow="CPI" title={t('title')} align="start" />
       <div className="mt-12">
-        {/* The number is a CMS global, never a constant — CPI will change it. */}
-        <SelectionForm whatsappNumber={settings.whatsappNumber ?? '221764508374'} />
+        <SelectionForm />
       </div>
     </div>
   )

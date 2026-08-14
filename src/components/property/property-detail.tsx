@@ -52,7 +52,7 @@ export async function PropertyDetail({ property }: { property: Property }) {
 
   return (
     <article>
-      <div className="relative isolate flex min-h-[55vh] items-end overflow-hidden bg-[var(--burgundy-900)] lg:min-h-[65vh]">
+      <div className="relative isolate flex min-h-[55vh] items-end overflow-hidden bg-[var(--ground-dark)] lg:min-h-[65vh]">
         {hero?.url ? (
           <Image src={hero.url} alt={hero.alt ?? property.title} fill priority sizes="100vw" data-no-dim className="-z-10 object-cover" />
         ) : null}
@@ -63,7 +63,7 @@ export async function PropertyDetail({ property }: { property: Property }) {
             <span className="rounded-full bg-white/15 px-3 py-1 text-[0.6875rem] font-medium tracking-wide text-white uppercase backdrop-blur">
               {t(`kind.${KIND_KEY[property.kind]}`)}
             </span>
-            <span className="rounded-full bg-white px-3 py-1 text-[0.6875rem] font-medium tracking-wide text-[var(--burgundy-800)] uppercase">
+            <span className="rounded-full bg-white px-3 py-1 text-[0.6875rem] font-medium tracking-wide text-[var(--brand-on-light)] uppercase">
               {t(`status.${AVAILABILITY_KEY[property.availability]}`)}
             </span>
           </div>

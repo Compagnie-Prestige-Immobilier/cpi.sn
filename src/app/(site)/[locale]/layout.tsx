@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Inter } from 'next/font/google'
+import { Big_Shoulders, Manrope } from 'next/font/google'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -13,16 +13,25 @@ import { routing } from '@/i18n/routing'
 
 import '../../globals.css'
 
-const cormorant = Cormorant_Garamond({
+/**
+ * The redesign's typography: a condensed display face for headings, Manrope for
+ * everything else. Replaces Cormorant Garamond + Inter site-wide — the header
+ * changes on every page, so leaving the rest on the old pairing would read as a
+ * half-finished migration.
+ */
+// Google consolidated "Big Shoulders Display" into the `Big_Shoulders` family;
+// the export the designer's CSS names no longer exists in next/font.
+const display = Big_Shoulders({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-cormorant',
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-display',
   display: 'swap',
 })
 
-const inter = Inter({
+const body = Manrope({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-inter',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-body-sans',
   display: 'swap',
 })
 
@@ -96,7 +105,7 @@ export default async function SiteLayout({
       dir={getDirection(locale)}
       // next-themes writes the theme class here before paint.
       suppressHydrationWarning
-      className={`${cormorant.variable} ${inter.variable}`}
+      className={`${display.variable} ${body.variable}`}
     >
       <body className="min-h-dvh bg-surface text-foreground antialiased">
         <NextIntlClientProvider>

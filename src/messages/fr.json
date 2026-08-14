@@ -18,7 +18,9 @@
     "contact": "Contact",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
-    "skipToContent": "Aller au contenu principal"
+    "skipToContent": "Aller au contenu principal",
+    "mySpace": "Mon espace",
+    "shop": "Boutique"
   },
   "common": {
     "loading": "Chargement…",
@@ -83,19 +85,17 @@
     "clear": "Vider ma sélection",
     "submit": "Finaliser ma demande",
     "submitting": "Envoi en cours…",
-    "whatsappHint": "Vous serez redirigé vers WhatsApp pour finaliser avec notre équipe.",
     "form": {
       "name": "Votre nom",
       "phone": "Téléphone",
       "email": "E-mail (facultatif)",
       "message": "Message (facultatif)"
     },
-    "whatsapp": {
-      "intro": "Bonjour CPI, je suis intéressé(e) par :",
-      "line": "• {title} — {details}",
-      "reference": "Référence : {reference}",
-      "truncated": "… et {count, plural, one {# autre bien} other {# autres biens}}. Détail complet sous la référence ci-dessous."
-    }
+    "successTitle": "Votre demande est enregistrée",
+    "successBody": "Notre équipe vous recontacte rapidement. Conservez la référence ci-dessous pour tout échange.",
+    "successReference": "Référence : {reference}",
+    "hint": "Vos coordonnées sont transmises directement à notre équipe commerciale. Aucun compte n'est nécessaire.",
+    "open": "Ma sélection"
   },
   "video": {
     "play": "Lire la vidéo",
@@ -256,6 +256,158 @@
       "countryPlaceholder": "Sénégal",
       "terms": "J'accepte d'être recontacté au sujet de ma demande.",
       "submit": "Envoyer ma demande"
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Depuis 2003",
+      "titleLead": "Champion de l'immobilier au",
+      "titleAccent": "Sénégal",
+      "subtitle": "Depuis 2003, CPI rend la propriété foncière accessible aux familles sénégalaises — avec une sécurité juridique vérifiée à chaque étape.",
+      "ctaContact": "Nous contacter",
+      "ctaShop": "Visiter la boutique",
+      "badges": {
+        "one": "Terrains viabilisés",
+        "two": "Sécurité juridique",
+        "three": "Paiement échelonné"
+      },
+      "statFamilies": "familles logées",
+      "statSites": "sites autour de Dakar"
+    },
+    "approach": {
+      "eyebrow": "Découvrir",
+      "title": "L'expérience CPI",
+      "subtitle": "Du choix de la parcelle à la remise du titre de propriété",
+      "items": {
+        "one": {
+          "title": "Certitude",
+          "body": "Chaque site est vérifié par notre cabinet juridique avant sa mise en vente."
+        },
+        "two": {
+          "title": "Accompagnement",
+          "body": "Un interlocuteur dédié suit votre dossier jusqu'aux dernières formalités."
+        },
+        "three": {
+          "title": "Accessibilité",
+          "body": "Des plans de paiement pensés pour les familles au pays et dans la diaspora."
+        }
+      }
+    },
+    "usp": {
+      "eyebrow": "Pourquoi CPI",
+      "title": "Ce qui distingue CPI",
+      "items": {
+        "one": "Terrains viabilisés et bornés",
+        "two": "Titres fonciers et baux vérifiés",
+        "three": "Cabinet juridique interne",
+        "four": "Échelonnement jusqu'à 3 ans",
+        "five": "Accompagnement de la diaspora",
+        "six": "Plus de 15 sites autour de Dakar",
+        "seven": "Géomètres et ingénieurs partenaires",
+        "eight": "Suivi digital des projets",
+        "nine": "Plus de 10 000 familles logées"
+      }
+    },
+    "metiers": {
+      "eyebrow": "Métiers CPI",
+      "kicker": "Expertise",
+      "title": "Ce que nous faisons",
+      "all": "Tous nos services",
+      "tabs": {
+        "foncier": {
+          "label": "Promotion foncière",
+          "body": "Recherche, régularisation et viabilisation de sites autour de Dakar. Une parcelle n'est mise en vente qu'une fois sa situation juridique établie."
+        },
+        "immobilier": {
+          "label": "Promotion immobilière",
+          "body": "Appartements et villas livrés clés en main, conçus avec des architectes et des bureaux de contrôle partenaires."
+        },
+        "juridique": {
+          "label": "Cabinet conseil juridique",
+          "body": "Droit foncier et domanial, formalités administratives et gestion de litiges. C'est ce cabinet interne qui rend la promesse de sécurité tenable."
+        }
+      }
+    },
+    "lines": {
+      "eyebrow": "Nos gammes",
+      "title": "Terrains & logements",
+      "subtitle": "Deux voies pour devenir propriétaire avec CPI",
+      "land": {
+        "title": "Terrains disponibles",
+        "body": "Des parcelles viabilisées sur nos sites stratégiques, avec accompagnement juridique complet."
+      },
+      "homes": {
+        "title": "Appartements & villas",
+        "body": "Des programmes clés en main, en cours de réalisation ou déjà livrés."
+      }
+    },
+    "projects": {
+      "eyebrow": "Projets",
+      "title": "Nos sites en images",
+      "body": "Des projets livrés, pas des images de synthèse. Chaque site suit la même méthode : terrain vérifié, viabilisé, puis accompagné jusqu’au titre.",
+      "referral": "60 % de nos ventes proviennent de recommandations de familles déjà installées."
+    },
+    "feature": {
+      "prev": "Préc.",
+      "next": "Suiv.",
+      "skip": "Passer",
+      "eyebrowFallback": "Nos sites"
+    },
+    "shop": {
+      "eyebrow": "Boutique en ligne",
+      "title": "Réserver & payer en ligne",
+      "subtitle": "Réservations, dossiers et prestations : dites-nous ce qu’il vous faut, notre équipe vous rappelle pour finaliser.",
+      "popular": "Le plus demandé",
+      "from": "dès {price}",
+      "items": {
+        "plot": {
+          "title": "Réserver une parcelle",
+          "body": "Bloquez la parcelle de votre choix. Notre équipe confirme la disponibilité et les modalités.",
+          "price": "250 000 FCFA",
+          "cta": "Réserver"
+        },
+        "documents": {
+          "title": "Dossiers & documents",
+          "body": "Titre foncier, plan de bornage, attestation de propriété — commandés et délivrés en version numérique.",
+          "price": "15 000 FCFA",
+          "cta": "Commander"
+        },
+        "advisory": {
+          "title": "Prestations conseil",
+          "body": "Étude juridique, analyse foncière, assistance notariale — réservez un créneau avec notre cabinet.",
+          "price": "50 000 FCFA",
+          "cta": "Réserver"
+        },
+        "instalment": {
+          "title": "Payer une échéance",
+          "body": "Réglez votre mensualité et suivez votre échéancier depuis votre espace client.",
+          "price": "Espace client",
+          "cta": "Ouvrir mon espace"
+        },
+        "goodies": {
+          "title": "Goodies CPI",
+          "body": "Produits dérivés : carnets, casquettes, polos — livrés à Dakar.",
+          "price": "5 000 FCFA",
+          "cta": "Demander"
+        },
+        "account": {
+          "title": "Espace client",
+          "body": "Contrats, échéancier, reçus et avancement du chantier — réservé aux clients CPI.",
+          "price": "",
+          "cta": "Se connecter"
+        }
+      }
+    },
+    "video": {
+      "kicker": "En vidéo",
+      "play": "Lire la vidéo de présentation",
+      "years": "d'expérience",
+      "families": "familles"
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Faites le premier pas",
+      "body": "Parlez-nous de votre projet. Notre équipe vous rappelle et vous orientera vers les sites correspondant à votre budget."
     }
   }
 }

@@ -4,11 +4,23 @@ import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCart } from './cart-provider'
 import { Link } from '@/i18n/routing'
-import { buildWhatsAppMessage, whatsAppUrl } from '@/lib/whatsapp'
 
-type Status = 'idle' | 'sending' | 'error'
+type Status = 'idle' | 'sending' | 'sent' | 'error'
 
-export function SelectionForm({ whatsappNumber }: { whatsappNumber: string }) {
+/**
+ * Selection checkout.
+ *
+ * The enquiry is written to Payload and stops there — CPI reads it in the
+ * admin. There is no WhatsApp handoff: the earlier flow opened `wa.me` after
+ * saving, which meant the visitor's last step happened somewhere CPI could not
+ * see, and any reply lived in one salesperson's phone rather than the shared
+ * pipeline. Persisting was always the part that mattered; it is now the whole
+ * of it.
+ *
+ * On success the reference is shown, so the visitor has something to quote and
+ * CPI can find the record instantly.
+ */
+export function SelectionForm() {
   const t = useTranslations('cart')
   const tForms = useTranslations('forms')
   const tProperty = useTranslations('property')
@@ -17,32 +29,22 @@ export function SelectionForm({ whatsappNumber }: { whatsappNumber: string }) {
   const { items, ready, remove, clear } = useCart()
 
   const [status, setStatus] = useState<Status>('idle')
+  const [reference, setReference] = useState<string | null>(null)
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setStatus('sending')
 
     const form = new FormData(event.currentTarget)
-    const name = String(form.get('name') ?? '')
-    const phone = String(form.get('phone') ?? '')
-
-    let reference: string | null = null
 
     try {
-      /**
-       * Persist FIRST, open WhatsApp second.
-       *
-       * If the visitor never presses send in WhatsApp — or the handoff fails
-       * entirely — CPI still has the enquiry. Reversing this order silently
-       * loses every abandoned conversation. See CLAUDE.md → Cart.
-       */
       const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'cart',
-          name,
-          phone,
+          name: form.get('name'),
+          phone: form.get('phone'),
           email: form.get('email') || undefined,
           message: form.get('message') || undefined,
           company: form.get('company') || undefined, // honeypot
@@ -53,31 +55,49 @@ export function SelectionForm({ whatsappNumber }: { whatsappNumber: string }) {
       })
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      reference = (await res.json()).reference ?? null
+      setReference((await res.json()).reference ?? null)
     } catch {
-      // The lead could not be saved. Do NOT hand off to WhatsApp pretending it
-      // worked — the visitor would believe CPI has their details when nobody
-      // does. Let them retry or call.
+      // Never report success we did not get: the visitor would walk away
+      // believing CPI has their details when nobody does.
       setStatus('error')
       return
     }
 
-    const message = buildWhatsAppMessage({
-      intro: t('whatsapp.intro'),
-      lines: items.map((i) => ({ title: i.title, details: i.details })),
-      referenceLabel: reference ? t('whatsapp.reference', { reference }) : '',
-      truncatedLabel: (count) => t('whatsapp.truncated', { count }),
-      contactLine: [name, phone].filter(Boolean).join(' · '),
-    })
-
+    // Only cleared once the write is confirmed, so a failed submit leaves the
+    // selection intact to retry.
     clear()
-    window.open(whatsAppUrl(whatsappNumber, message), '_blank', 'noopener,noreferrer')
+    setStatus('sent')
   }
 
   // Neutral state until localStorage has been read, so the first client render
   // matches the server's.
   if (!ready) {
     return <p className="text-foreground-muted">{tCommon('loading')}</p>
+  }
+
+  if (status === 'sent') {
+    return (
+      <div
+        role="status"
+        className="rounded-lg border border-brand-border bg-brand-muted p-10 text-center"
+      >
+        <p className="font-heading text-2xl text-brand">{t('successTitle')}</p>
+        <p className="mx-auto mt-3 max-w-md text-foreground-muted">{t('successBody')}</p>
+        {reference ? (
+          <p className="mt-6 inline-block rounded-full border border-brand-border px-5 py-2 font-mono text-sm text-brand">
+            {t('successReference', { reference })}
+          </p>
+        ) : null}
+        <div className="mt-8">
+          <Link
+            href="/terrains"
+            className="inline-flex rounded-full bg-brand-solid px-7 py-3 text-sm font-medium text-brand-solid-foreground transition-colors hover:bg-brand-solid-hover"
+          >
+            {t('emptyAction')}
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   if (!items.length) {
@@ -150,7 +170,7 @@ export function SelectionForm({ whatsappNumber }: { whatsappNumber: string }) {
           {status === 'sending' ? t('submitting') : t('submit')}
         </button>
 
-        <p className="mt-3 text-xs text-foreground-muted">{t('whatsappHint')}</p>
+        <p className="mt-3 text-xs text-foreground-muted">{t('hint')}</p>
       </form>
     </div>
   )

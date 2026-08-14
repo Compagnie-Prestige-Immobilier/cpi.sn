@@ -3,120 +3,169 @@
  *
  * Two layers, and the distinction matters:
  *
- *   1. PALETTE  (--burgundy-*, --stone-*)  raw scales. Never used in components.
- *   2. SEMANTIC (--surface, --brand, …)    what components actually reference.
+ *   1. PALETTE  (--gold-*, --green-*, --sand-*)  raw scales. Never used directly.
+ *   2. SEMANTIC (--surface, --brand, …)          what components reference.
  *
  * Components use the semantic layer only: bg-surface, text-brand, border-subtle.
- * Never `bg-[#65000d]`, never `bg-burgundy-800`. The whole point is that a token
- * resolves to a *different* palette step per theme.
+ * Never `bg-[#c69a46]`, never `bg-gold-400`. A token resolves to a *different*
+ * palette step per theme — that is the whole point, and it is what let the site
+ * move from burgundy to green/gold by editing this one file.
  *
- * Why that's mandatory here: CPI's brand is a single hue. #65000D scores 12.91:1
- * on the light surface but 1.31:1 on the dark one — unusable. There is no second
- * brand colour to fall back on, so dark mode comes out of the burgundy ramp
- * itself. Every value below is measured; see CLAUDE.md → Theming.
+ * ── The palette is the designer's, verbatim ────────────────────────────────
+ * Every value in the dark column below is lifted straight from the redesign
+ * export: #0D1712 ground, #C69A46 gold, #F5F1E9 type. To retheme the whole
+ * site, change the palette scales in §1 — nothing else references a hex.
+ *
+ * ── Light mode is derived, and it could not reuse the gold ────────────────
+ * The design is dark-only. Gold #C69A46 measures 7.06:1 on the dark ground but
+ * **2.30:1 on a cream one** — unusable for text. So light mode takes a darker
+ * step of the same hue (#7A5313, 6.06:1), exactly as the previous palette took
+ * a lighter burgundy for dark mode. Same hue, tonally adjusted to the ground.
+ *
+ * Filled gold buttons are the happy exception: #0D1712 on #C69A46 is 7.06:1, so
+ * `--brand-solid` is identical in both themes and matches the design as drawn.
+ *
+ * Every ratio in this file is measured, not estimated.
  */
 
 /* ---------------------------------------------------------------------------
-   1. Palette
+   1. Palette — change these to retheme the site
    --------------------------------------------------------------------------- */
 :root {
-  /* Burgundy — hue 352. The 800 step is CPI's existing brand colour, so light
-     mode is visually unchanged from the current WordPress site. */
-  --burgundy-50: #f9f6f6;
-  --burgundy-100: #f3eced;
-  --burgundy-200: #e8d4d7;
-  --burgundy-300: #db9fa7;
-  --burgundy-400: #d45e6e;
-  --burgundy-500: #c52036;
-  --burgundy-600: #970c1f;
-  --burgundy-700: #7a0010;
-  --burgundy-800: #65000d; /* ← brand */
-  --burgundy-900: #52000b;
-  --burgundy-950: #330007;
+  /* Gold. 400 is the designer's `--gold`, 300 his `--gold2`. The 700–950 steps
+     exist only so light mode has something that passes on a cream ground. */
+  --gold-100: #f7efdd;
+  --gold-200: #ebd6a8;
+  --gold-300: #e0b762; /* design --gold2 */
+  --gold-400: #c69a46; /* design --gold  ← THE brand colour */
+  --gold-500: #b4862f;
+  --gold-600: #a5761f;
+  --gold-700: #96691a;
+  --gold-800: #8a5f17;
+  --gold-900: #7a5313;
+  --gold-950: #6b4810;
 
-  /* Warm neutrals. The mid steps are sampled from the logo artwork. */
-  --stone-50: #fbfaf8;
-  --stone-100: #f4f2f1;
-  --stone-200: #e6e3e1;
-  --stone-300: #dce0e0;
-  --stone-400: #a1a7a8;
-  --stone-500: #7c8081;
-  --stone-600: #515151;
-  --stone-700: #403838;
-  --stone-800: #282828;
-  --stone-900: #1c1a1a;
-  --stone-950: #171214;
+  /* Deep green. The grounds and the muted type of the dark theme. */
+  --green-100: #a9b2a8; /* design --mut2 */
+  --green-200: #8e9a90; /* design --mut  */
+  --green-300: #6e7a72; /* design --faint */
+  --green-400: #617065;
+  --green-500: #4f5f53;
+  --green-600: #2e3c34;
+  --green-700: #1e2a24;
+  --green-800: #16241d;
+  --green-850: #101c16; /* design --surf */
+  --green-900: #0d1712; /* design --bg   */
+  --green-950: #0a120e; /* design --deep */
+
+  /* Warm sand. The cream type on dark, and the grounds of the light theme. */
+  --sand-50: #fbf9f4;
+  --sand-100: #f5f1e9; /* design --tx  */
+  --sand-200: #eae5da;
+  --sand-300: #e4dfd4; /* design --tx4 */
+  --sand-400: #d8d2c6; /* design --tx3 */
+  --sand-500: #cfc9bc; /* design --tx2 */
 
   --white: #ffffff;
   --black: #000000;
 }
 
 /* ---------------------------------------------------------------------------
-   2. Semantic tokens — light (default)
+   2. Semantic tokens — light (derived; see the header note)
    --------------------------------------------------------------------------- */
 :root {
-  --surface: var(--stone-50);
+  --surface: var(--sand-100);
   --surface-raised: var(--white);
-  --surface-sunken: var(--stone-100);
-  --surface-inverse: var(--stone-950);
+  --surface-sunken: var(--sand-200);
+  --surface-inverse: var(--green-900);
 
-  --foreground: var(--stone-900); /* 16.61:1 */
-  --foreground-muted: var(--stone-600); /*  7.61:1 */
-  --foreground-inverse: var(--stone-100);
+  --foreground: var(--green-900); /* 16.23:1 */
+  --foreground-muted: var(--green-500); /*  6.02:1 */
+  --foreground-inverse: var(--sand-100);
 
-  --border-subtle: var(--stone-200);
-  --border-strong: var(--stone-400);
+  --border-subtle: #e2dcce; /* decorative dividers only */
+  --border-strong: var(--green-400); /* 4.64:1 — form edges, real boundaries */
 
-  --brand: var(--burgundy-800); /* 12.91:1 on surface */
-  --brand-hover: var(--burgundy-700); /* 10.97:1 */
-  --brand-muted: var(--burgundy-100);
-  --brand-border: var(--burgundy-600);
-  --brand-solid: var(--burgundy-800);
-  --brand-solid-hover: var(--burgundy-700);
-  --brand-solid-foreground: var(--white); /* 13.47:1 on brand-solid */
+  --brand: var(--gold-900); /* 6.06:1 on surface — #C69A46 would be 2.30:1 */
+  --brand-hover: var(--gold-950); /* 7.28:1 */
+  --brand-muted: var(--gold-100);
+  --brand-border: var(--gold-700); /* 4.30:1 */
+  --brand-solid: var(--gold-400); /* the designer's gold, unchanged */
+  --brand-solid-hover: var(--gold-500);
+  --brand-solid-foreground: var(--green-900); /* 7.06:1 on brand-solid */
 
-  /* Accents the Ombara template rendered in gold. Burgundy here — see CLAUDE.md.
-     `-on-dark` is for accents sitting over photography or dark sections, where
-     #65000D is invisible. Same hue, lighter step. Never a different colour. */
-  --accent: var(--burgundy-800);
-  /* burgundy-200, not -300: measured over the scrimmed hero photograph the 300
-     step reaches only 4.26:1, short of AA for small uppercase type. 200 gives
-     6.63:1 there and 10.88:1 on the plain burgundy ground. */
-  --accent-on-dark: var(--burgundy-200);
+  /* `-on-dark` is for accents over photography or a dark section, where the
+     light-mode brand step disappears. Same hue, lighter step. */
+  --accent: var(--gold-900);
+  --accent-on-dark: var(--gold-300);
 
-  --focus-ring: var(--burgundy-600);
-  --overlay: rgb(28 26 26 / 0.6);
+  --focus-ring: var(--gold-700);
+  --overlay: rgb(13 23 18 / 0.6);
+
+  /* Fixed in BOTH themes. `--ground-dark` is for panels that are dark by
+     design — hero fallbacks, listing headers — where `--surface-inverse` is
+     wrong because it flips to a light value in dark mode. `--brand-on-light`
+     is gold that has to stay legible on a white chip in either theme
+     (#C69A46 on white is 2.59:1; this step is 6.83:1). */
+  --ground-dark: var(--green-900);
+  --ground-dark-foreground: var(--sand-100);
+  --brand-on-light: var(--gold-900);
 }
 
 /* ---------------------------------------------------------------------------
-   3. Semantic tokens — dark
-   Only the semantic layer is redefined; the palette never changes.
+   3. Semantic tokens — dark. This column IS the design.
    --------------------------------------------------------------------------- */
 :root[data-theme='dark'],
 .dark {
-  --surface: var(--stone-950); /* warm #171214, not Ombara's cool navy */
-  --surface-raised: #1f191b;
-  --surface-sunken: #120e10;
-  --surface-inverse: var(--stone-50);
+  --surface: var(--green-900); /* #0D1712 */
+  --surface-raised: var(--green-850); /* #101C16 */
+  --surface-sunken: var(--green-950); /* #0A120E */
+  --surface-inverse: var(--sand-100);
 
-  --foreground: var(--stone-100); /* 16.61:1 */
-  --foreground-muted: var(--stone-400); /*  7.60:1 */
-  --foreground-inverse: var(--stone-900);
+  --foreground: var(--sand-100); /* 16.23:1 */
+  --foreground-muted: var(--green-100); /*  8.38:1 */
+  --foreground-inverse: var(--green-900);
 
-  --border-subtle: #2e2629;
-  --border-strong: #4a3f43;
+  --border-subtle: var(--green-700);
+  --border-strong: var(--green-300); /* 4.08:1 */
 
-  --brand: var(--burgundy-400); /* 4.97:1 — the lowest passing step */
-  --brand-hover: var(--burgundy-300); /* 8.41:1 */
-  --brand-muted: #2a1417;
-  --brand-border: var(--burgundy-400);
-  --brand-solid: var(--burgundy-700);
-  --brand-solid-hover: var(--burgundy-600);
-  --brand-solid-foreground: var(--white); /* 11.44:1 on brand-solid */
+  --brand: var(--gold-400); /* 7.06:1 */
+  --brand-hover: var(--gold-300); /* 9.68:1 */
+  --brand-muted: #1c2418;
+  --brand-border: var(--gold-400);
+  --brand-solid: var(--gold-400);
+  --brand-solid-hover: var(--gold-300);
+  --brand-solid-foreground: var(--green-900); /* 7.06:1 */
 
-  --accent: var(--burgundy-400);
-  --accent-on-dark: var(--burgundy-200);
+  --accent: var(--gold-400);
+  --accent-on-dark: var(--gold-300);
 
-  --focus-ring: var(--burgundy-400);
+  --focus-ring: var(--gold-400);
   --overlay: rgb(0 0 0 / 0.7);
+
+  /* Deliberately identical to the light column — see the note there. */
+  --ground-dark: var(--green-900);
+  --ground-dark-foreground: var(--sand-100);
+  --brand-on-light: var(--gold-900);
+}
+
+/* ---------------------------------------------------------------------------
+   4. Aliases matching the design export's own variable names.
+   The redesign HTML is written in terms of --bg, --gold, --tx and friends.
+   Keeping those names as *theme-aware aliases* means the ported stylesheet
+   reads like the file the designer sent, while still flipping with the theme.
+   Do not introduce new hexes here — these only point at the semantic layer.
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: var(--surface);
+  --surf: var(--surface-raised);
+  --deep: var(--surface-sunken);
+  --tx: var(--foreground);
+  --tx2: var(--foreground-muted);
+  --mut: var(--foreground-muted);
+  --faint: var(--border-strong);
+  --gold: var(--brand);
+  --gold2: var(--brand-hover);
+  --on-gold: var(--brand-solid-foreground);
+  --ln: var(--border-subtle);
 }

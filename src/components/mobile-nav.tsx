@@ -19,7 +19,7 @@ type Item = {
  * panel dismisses on navigation (Bootstrap's did not, so tapping a link left
  * the overlay covering the page you just opened).
  */
-export function MobileNav({ items }: { items: Item[] }) {
+export function MobileNav({ items, shopHref }: { items: Item[]; shopHref?: string }) {
   const t = useTranslations('nav')
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
@@ -82,6 +82,54 @@ export function MobileNav({ items }: { items: Item[] }) {
                 ) : null}
               </div>
             ))}
+
+            {shopHref ? (
+              <a
+                href={shopHref}
+                className="flex items-center gap-2 border-b border-subtle py-4 text-sm tracking-[0.04em] text-brand"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M4 7h16l-1.4 12.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 7Z" />
+                  <path d="M9 7V5.5a3 3 0 0 1 6 0V7" />
+                </svg>
+                {t('shop')}
+              </a>
+            ) : null}
+
+            {/* The header button it mirrors is hidden below `sm`, so without
+                this the portal is unreachable on a phone — which is most of
+                CPI's traffic. A plain anchor: it leaves the site, so it must
+                not go through the locale routing map. */}
+            <a
+              href="https://monespace.cpi.sn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-solid px-5 py-3 text-sm font-medium tracking-wide text-brand-solid-foreground uppercase"
+            >
+              {t('mySpace')}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+                className="size-3.5"
+              >
+                <path d="M7 17L17 7M17 7H8m9 0v9" />
+              </svg>
+            </a>
           </nav>
         </div>
       ) : null}

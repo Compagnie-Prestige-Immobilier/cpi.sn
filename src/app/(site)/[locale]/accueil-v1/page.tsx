@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { Cormorant_Garamond, Inter } from 'next/font/google'
 import { ButtonLink } from '@/components/ui/button-link'
 import { Hero } from '@/components/ui/hero'
 import { SectionHeader } from '@/components/ui/section-header'
@@ -12,6 +13,26 @@ import { Testimonials } from '@/components/home/testimonials'
 import { getProperties, getHomePage, getTestimonials } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Media, Property } from '@/payload-types'
+
+import '@/styles/legacy-palette.css'
+
+/**
+ * This archived page keeps the typography it was designed with. Both faces are
+ * declared here rather than in the layout, so only this route loads them — the
+ * live site is on Big Shoulders Display + Manrope.
+ */
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 /**
  * The first homepage, preserved verbatim after the Ombara template replica took
@@ -70,7 +91,7 @@ export default async function HomePage({
     .filter((m): m is Media => Boolean(m?.url))
 
   return (
-    <>
+    <div className={`legacy-palette ${cormorant.variable} ${inter.variable}`}>
       <Hero
         eyebrow={home.heroEyebrow ?? t('name')}
         title={home.heroTitle ?? t('fullName')}
@@ -130,6 +151,6 @@ export default async function HomePage({
           images={galleryImages}
         />
       ) : null}
-    </>
+    </div>
   )
 }

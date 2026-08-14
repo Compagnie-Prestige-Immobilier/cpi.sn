@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin, isStaff } from '@/access'
 
 /**
- * Enquiries — both contact-form submissions and cart handoffs to WhatsApp.
+ * Enquiries — contact-form submissions and selection checkouts.
  *
  * SECURITY: this collection holds customers' names and phone numbers.
  *
@@ -15,8 +15,9 @@ import { isAdmin, isStaff } from '@/access'
  *            drive-by spam while the site's own forms still work.
  *   delete → admin only, so a lead cannot be quietly discarded.
  *
- * The cart flow persists the lead BEFORE opening WhatsApp — an abandoned
- * conversation must still reach the sales team. See CLAUDE.md → Cart.
+ * The selection flow writes here and stops. There is no WhatsApp handoff any
+ * more: this collection IS the pipeline, and CPI works it from the admin. See
+ * CLAUDE.md → Cart.
  */
 export const Leads: CollectionConfig = {
   slug: 'leads',
@@ -29,8 +30,8 @@ export const Leads: CollectionConfig = {
     defaultColumns: ['reference', 'name', 'phone', 'type', 'status', 'createdAt'],
     group: { fr: 'Commercial', en: 'Sales' },
     description: {
-      fr: 'Demandes reçues via les formulaires et les sélections WhatsApp.',
-      en: 'Enquiries received through forms and WhatsApp selections.',
+      fr: 'Demandes reçues via les formulaires et les sélections du site.',
+      en: 'Enquiries received through the site forms and selections.',
     },
   },
   defaultSort: '-createdAt',
@@ -51,8 +52,8 @@ export const Leads: CollectionConfig = {
         readOnly: true,
         position: 'sidebar',
         description: {
-          fr: 'Communiquée au client. Permet de retrouver une sélection trop longue pour WhatsApp.',
-          en: 'Given to the client. Used to recover a selection too long for WhatsApp.',
+          fr: 'Communiquée au client à la validation de sa demande. Sert de référence lors des échanges.',
+          en: 'Shown to the client on submission. Used as the reference in any follow-up.',
         },
       },
       hooks: {
@@ -77,7 +78,9 @@ export const Leads: CollectionConfig = {
       admin: { position: 'sidebar' },
       options: [
         { label: { fr: 'Formulaire', en: 'Form' }, value: 'form' },
-        { label: { fr: 'Sélection (WhatsApp)', en: 'Selection (WhatsApp)' }, value: 'cart' },
+        // The stored value stays `cart`: it is only a label, and renaming the
+        // value would need a migration and orphan every existing row.
+        { label: { fr: 'Sélection', en: 'Selection' }, value: 'cart' },
       ],
     },
     {

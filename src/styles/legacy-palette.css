@@ -1,0 +1,92 @@
+/**
+ * Frozen burgundy palette for the archived homepages.
+ *
+ * `/accueil-v1` and `/accueil-v2` are kept so the designer can ask for an
+ * earlier direction back. They are built on semantic tokens, so when the site
+ * moved to green/gold they would have silently re-rendered in the new palette —
+ * archives of the layout but not of the design, which is not what "keep the old
+ * one" means.
+ *
+ * Scoping the previous token values under `.legacy-palette` pins them. Nothing
+ * leaks: the class is applied only by those two routes, and the current site
+ * never sees these values.
+ *
+ * If burgundy is ever restored site-wide, this file is the record of what it
+ * was — copy it back into tokens.css and delete this.
+ */
+
+.legacy-palette {
+  --burgundy-100: #f3eced;
+  --burgundy-200: #e8d4d7;
+  --burgundy-300: #db9fa7;
+  --burgundy-400: #d45e6e;
+  --burgundy-600: #970c1f;
+  --burgundy-700: #7a0010;
+  --burgundy-800: #65000d;
+
+  --stone-50: #fbfaf8;
+  --stone-100: #f4f2f1;
+  --stone-200: #e6e3e1;
+  --stone-400: #a1a7a8;
+  --stone-600: #515151;
+  --stone-900: #1c1a1a;
+  --stone-950: #171214;
+
+  --surface: var(--stone-50);
+  --surface-raised: var(--white);
+  --surface-sunken: var(--stone-100);
+  --surface-inverse: var(--stone-950);
+
+  --foreground: var(--stone-900);
+  --foreground-muted: var(--stone-600);
+  --foreground-inverse: var(--stone-100);
+
+  --border-subtle: var(--stone-200);
+  --border-strong: var(--stone-400);
+
+  --brand: var(--burgundy-800);
+  --brand-hover: var(--burgundy-700);
+  --brand-muted: var(--burgundy-100);
+  --brand-border: var(--burgundy-600);
+  --brand-solid: var(--burgundy-800);
+  --brand-solid-hover: var(--burgundy-700);
+  --brand-solid-foreground: var(--white);
+
+  --accent: var(--burgundy-800);
+  --accent-on-dark: var(--burgundy-200);
+  --focus-ring: var(--burgundy-600);
+  --overlay: rgb(28 26 26 / 0.6);
+
+  /* The archived pages were typeset in Cormorant Garamond + Inter; both are
+     loaded by those routes only. */
+  --font-heading: var(--font-cormorant), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+}
+
+.dark .legacy-palette,
+:root[data-theme='dark'] .legacy-palette {
+  --surface: var(--stone-950);
+  --surface-raised: #1f191b;
+  --surface-sunken: #120e10;
+  --surface-inverse: var(--stone-50);
+
+  --foreground: var(--stone-100);
+  --foreground-muted: var(--stone-400);
+  --foreground-inverse: var(--stone-900);
+
+  --border-subtle: #2e2629;
+  --border-strong: #4a3f43;
+
+  --brand: var(--burgundy-400);
+  --brand-hover: var(--burgundy-300);
+  --brand-muted: #2a1417;
+  --brand-border: var(--burgundy-400);
+  --brand-solid: var(--burgundy-700);
+  --brand-solid-hover: var(--burgundy-600);
+  --brand-solid-foreground: var(--white);
+
+  --accent: var(--burgundy-400);
+  --accent-on-dark: var(--burgundy-200);
+  --focus-ring: var(--burgundy-400);
+  --overlay: rgb(0 0 0 / 0.7);
+}

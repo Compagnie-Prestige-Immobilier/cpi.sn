@@ -228,7 +228,7 @@ async function BlockSwitch({ block, locale }: { block: Block; locale: Locale }) 
           ) : null}
           <div
             aria-hidden
-            className={`absolute inset-0 -z-10 ${image?.url ? 'bg-black/65' : 'bg-[var(--burgundy-900)]'}`}
+            className={`absolute inset-0 -z-10 ${image?.url ? 'bg-black/65' : 'bg-[var(--ground-dark)]'}`}
           />
           <div className="container-page text-center">
             <h2 className="mx-auto max-w-2xl font-heading text-3xl text-white lg:text-4xl">
@@ -240,7 +240,7 @@ async function BlockSwitch({ block, locale }: { block: Block; locale: Locale }) 
             {block.cta?.label ? (
               <CmsLink
                 href={block.cta.href}
-                className="mt-8 inline-flex rounded-full bg-white px-7 py-3 text-sm font-medium text-[var(--burgundy-800)] transition-colors hover:bg-white/90"
+                className="mt-8 inline-flex rounded-full bg-white px-7 py-3 text-sm font-medium text-[var(--brand-on-light)] transition-colors hover:bg-white/90"
               >
                 {block.cta.label}
               </CmsLink>

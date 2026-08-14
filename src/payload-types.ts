@@ -710,7 +710,7 @@ export interface Team {
   createdAt: string;
 }
 /**
- * Enquiries received through forms and WhatsApp selections.
+ * Enquiries received through the site forms and selections.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads".
@@ -718,7 +718,7 @@ export interface Team {
 export interface Lead {
   id: number;
   /**
-   * Given to the client. Used to recover a selection too long for WhatsApp.
+   * Shown to the client on submission. Used as the reference in any follow-up.
    */
   reference?: string | null;
   type: 'form' | 'cart';
