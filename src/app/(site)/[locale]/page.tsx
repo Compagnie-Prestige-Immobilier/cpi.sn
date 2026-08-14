@@ -163,16 +163,16 @@ export default async function HomePage({
             there rather than spread evenly. */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(13_23_18/0.45)_0%,rgb(13_23_18/0.35)_35%,rgb(13_23_18/0.92)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(26_15_14/0.45)_0%,rgb(26_15_14/0.35)_35%,rgb(26_15_14/0.92)_100%)]"
         />
 
         <div className="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-16">
-          <p className="text-[11px] tracking-[0.28em] text-[var(--gold-300)] uppercase">
+          <p className="text-[11px] tracking-[0.28em] text-[var(--accent-on-dark)] uppercase">
             {t('hero.eyebrow')}
           </p>
           <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] font-bold text-white uppercase">
             {t('hero.titleLead')}{' '}
-            <span className="text-[var(--gold-300)]">{t('hero.titleAccent')}</span>
+            <span className="text-[var(--accent-on-dark)]">{t('hero.titleAccent')}</span>
           </h1>
           <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-white/80">
             {t('hero.subtitle')}
@@ -187,42 +187,51 @@ export default async function HomePage({
             </Link>
             <a
               href="#shop"
-              className="border border-white/30 px-6 py-3.5 text-[13px] font-semibold tracking-[0.03em] text-white transition-colors hover:border-[var(--gold-300)] hover:text-[var(--gold-300)]"
+              className="border border-white/30 px-6 py-3.5 text-[13px] font-semibold tracking-[0.03em] text-white transition-colors hover:border-[var(--accent-on-dark)] hover:text-[var(--accent-on-dark)]"
             >
               {t('hero.ctaShop')}
             </a>
           </div>
 
-          <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/15 pt-7">
-            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
-              {(['one', 'two', 'three'] as const).map((k) => (
-                <li
-                  key={k}
-                  className="flex items-center gap-2 text-[11px] tracking-[0.2em] text-white/70 uppercase"
-                >
-                  <span aria-hidden className="size-1 bg-[var(--gold-300)]" />
-                  {t(`hero.badges.${k}`)}
-                </li>
-              ))}
-            </ul>
-            <dl className="ms-auto flex items-end gap-8">
-              <div>
-                <dt className="sr-only">{t('hero.statFamilies')}</dt>
-                <dd className="font-heading text-4xl leading-none font-bold text-white">10 000+</dd>
-                <p className="mt-1 text-[11px] tracking-[0.14em] text-white/60 uppercase">
-                  {t('hero.statFamilies')}
-                </p>
-              </div>
-              <div>
-                <dt className="sr-only">{t('hero.statSites')}</dt>
-                <dd className="font-heading text-4xl leading-none font-bold text-white">15+</dd>
-                <p className="mt-1 text-[11px] tracking-[0.14em] text-white/60 uppercase">
-                  {t('hero.statSites')}
-                </p>
-              </div>
-            </dl>
-          </div>
+          <ul className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/15 pt-7">
+            {(['one', 'two', 'three'] as const).map((k) => (
+              <li
+                key={k}
+                className="flex items-center gap-2 text-[11px] tracking-[0.2em] text-white/70 uppercase"
+              >
+                <span aria-hidden className="size-1 bg-[var(--accent-on-dark)]" />
+                {t(`hero.badges.${k}`)}
+              </li>
+            ))}
+          </ul>
         </div>
+      </section>
+
+      {/* ── Statistics band ──────────────────────────────────────
+          Sits between the hero and s2 in the design, as its own strip — not
+          folded into the hero, which is where I first put it. Four figures,
+          not two. */}
+      <section aria-label={t('hero.eyebrow')} className="border-y border-subtle bg-surface-raised">
+        <dl className="mx-auto grid max-w-[1400px] grid-cols-2 gap-px bg-subtle lg:grid-cols-4">
+          {(
+            [
+              { value: '10 000+', label: t('hero.statFamilies') },
+              { value: '15+', label: t('hero.statSites') },
+              { value: '23', label: t('hero.statYears') },
+              { value: '60 %', label: t('hero.statReferral') },
+            ] as const
+          ).map((stat) => (
+            <div key={stat.label} className="bg-surface-raised px-6 py-9">
+              <dt className="sr-only">{stat.label}</dt>
+              <dd className="font-heading text-[clamp(2.25rem,4vw,3.25rem)] leading-none font-bold text-brand">
+                {stat.value}
+              </dd>
+              <p className="mt-2 text-[11px] tracking-[0.16em] text-foreground-muted uppercase">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* ── 2 · Approach ─────────────────────────────────────────── */}
@@ -335,7 +344,7 @@ export default async function HomePage({
               ) : null}
               <div
                 aria-hidden
-                className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(13_23_18/0.15)_0%,rgb(13_23_18/0.85)_100%)]"
+                className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(26_15_14/0.15)_0%,rgb(26_15_14/0.85)_100%)]"
               />
               {card.shot?.city ? (
                 <p className="mb-auto w-max border border-white/30 px-3 py-1 text-[11px] tracking-[0.18em] text-white uppercase">

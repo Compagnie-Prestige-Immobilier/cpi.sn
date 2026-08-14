@@ -91,7 +91,7 @@ export function FeatureGallery({
         />
 
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6">
-          <p className="text-[11px] tracking-[0.28em] text-[var(--gold-300)] uppercase">
+          <p className="text-[11px] tracking-[0.28em] text-[var(--accent-on-dark)] uppercase">
             {active.eyebrow}
           </p>
           <h2 className="mt-4 max-w-3xl font-heading text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] font-bold text-white uppercase">
@@ -116,7 +116,7 @@ export function FeatureGallery({
           <span aria-hidden className="relative h-px flex-1 bg-white/25">
             <span
               ref={fillRef}
-              className="absolute inset-0 origin-left scale-x-0 bg-[var(--gold-300)]"
+              className="absolute inset-0 origin-left scale-x-0 bg-[var(--accent-on-dark)]"
             />
           </span>
           <button

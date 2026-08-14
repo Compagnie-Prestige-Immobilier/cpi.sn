@@ -272,7 +272,9 @@
         "three": "Instalment plans"
       },
       "statFamilies": "families housed",
-      "statSites": "sites around Dakar"
+      "statSites": "sites around Dakar",
+      "statYears": "years of experience",
+      "statReferral": "of sales by referral"
     },
     "approach": {
       "eyebrow": "Discover",

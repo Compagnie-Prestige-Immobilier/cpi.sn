@@ -272,7 +272,9 @@
         "three": "Paiement échelonné"
       },
       "statFamilies": "familles logées",
-      "statSites": "sites autour de Dakar"
+      "statSites": "sites autour de Dakar",
+      "statYears": "ans d'expérience",
+      "statReferral": "des ventes par recommandation"
     },
     "approach": {
       "eyebrow": "Découvrir",

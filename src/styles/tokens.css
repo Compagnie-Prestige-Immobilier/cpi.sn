@@ -3,7 +3,7 @@
  *
  * Two layers, and the distinction matters:
  *
- *   1. PALETTE  (--gold-*, --green-*, --sand-*)  raw scales. Never used directly.
+ *   1. PALETTE  (--gold-*, --brown-*, --sand-*)  raw scales. Never used directly.
  *   2. SEMANTIC (--surface, --brand, …)          what components reference.
  *
  * Components use the semantic layer only: bg-surface, text-brand, border-subtle.
@@ -12,18 +12,21 @@
  * move from burgundy to green/gold by editing this one file.
  *
  * ── The palette is the designer's, verbatim ────────────────────────────────
- * Every value in the dark column below is lifted straight from the redesign
- * export: #0D1712 ground, #C69A46 gold, #F5F1E9 type. To retheme the whole
- * site, change the palette scales in §1 — nothing else references a hex.
+ * The dark column is lifted straight from "redesign refresh finale": #1A0F0E
+ * ground, #EBB756 gold, #F7F1E7 type, #3D3C3B on gold. To retheme the whole
+ * site, change the palette scales in §1 — nothing else references a hex. This
+ * is the third palette this file has absorbed (burgundy → green/gold → brown/
+ * gold) without touching a component.
  *
  * ── Light mode is derived, and it could not reuse the gold ────────────────
- * The design is dark-only. Gold #C69A46 measures 7.06:1 on the dark ground but
- * **2.30:1 on a cream one** — unusable for text. So light mode takes a darker
- * step of the same hue (#7A5313, 6.06:1), exactly as the previous palette took
- * a lighter burgundy for dark mode. Same hue, tonally adjusted to the ground.
+ * The design is dark-only. Gold #EBB756 measures 10.23:1 on the dark ground but
+ * **1.63:1 on a cream one** — invisible. So light mode takes a darker step of
+ * the same hue (#8A5F17, 5.01:1). Same hue, tonally adjusted to the ground.
  *
- * Filled gold buttons are the happy exception: #0D1712 on #C69A46 is 7.06:1, so
- * `--brand-solid` is identical in both themes and matches the design as drawn.
+ * Filled gold buttons are the happy exception: the designer's own #3D3C3B on
+ * #EBB756 is 6.00:1, so `--brand-solid` is identical in both themes and matches
+ * the design as drawn. (White on that gold would be 1.84:1 — his choice of a
+ * near-black label was deliberate and correct.)
  *
  * Every ratio in this file is measured, not estimated.
  */
@@ -32,39 +35,41 @@
    1. Palette — change these to retheme the site
    --------------------------------------------------------------------------- */
 :root {
-  /* Gold. 400 is the designer's `--gold`, 300 his `--gold2`. The 700–950 steps
+  /* Gold. 300 is the designer's `--gold`, 200 his `--gold2`. The 700–950 steps
      exist only so light mode has something that passes on a cream ground. */
-  --gold-100: #f7efdd;
-  --gold-200: #ebd6a8;
-  --gold-300: #e0b762; /* design --gold2 */
-  --gold-400: #c69a46; /* design --gold  ← THE brand colour */
-  --gold-500: #b4862f;
-  --gold-600: #a5761f;
+  --gold-100: #fbe9c4;
+  --gold-200: #f5cb80; /* design --gold2 */
+  --gold-300: #ebb756; /* design --gold  ← THE brand colour */
+  --gold-400: #d9a23e;
+  --gold-500: #c48a28;
+  --gold-600: #a8781f;
   --gold-700: #96691a;
   --gold-800: #8a5f17;
   --gold-900: #7a5313;
   --gold-950: #6b4810;
 
-  /* Deep green. The grounds and the muted type of the dark theme. */
-  --green-100: #a9b2a8; /* design --mut2 */
-  --green-200: #8e9a90; /* design --mut  */
-  --green-300: #6e7a72; /* design --faint */
-  --green-400: #617065;
-  --green-500: #4f5f53;
-  --green-600: #2e3c34;
-  --green-700: #1e2a24;
-  --green-800: #16241d;
-  --green-850: #101c16; /* design --surf */
-  --green-900: #0d1712; /* design --bg   */
-  --green-950: #0a120e; /* design --deep */
+  /* Warm brown. The grounds and the muted type of the dark theme. */
+  --brown-100: #c9bcb5;
+  --brown-200: #b8aaa3; /* design --mut2  */
+  --brown-300: #a2938c; /* design --mut   */
+  --brown-400: #7a6c66; /* design --faint */
+  --brown-500: #6f5d56;
+  --brown-600: #5c4b45;
+  --brown-700: #3d2a26;
+  --brown-800: #33201d;
+  --brown-850: #2a1513; /* design --surf */
+  --brown-900: #1a0f0e; /* design --bg   */
+  --brown-950: #140b0a; /* design --deep */
 
   /* Warm sand. The cream type on dark, and the grounds of the light theme. */
-  --sand-50: #fbf9f4;
-  --sand-100: #f5f1e9; /* design --tx  */
-  --sand-200: #eae5da;
-  --sand-300: #e4dfd4; /* design --tx4 */
-  --sand-400: #d8d2c6; /* design --tx3 */
-  --sand-500: #cfc9bc; /* design --tx2 */
+  --sand-50: #fdfaf5;
+  --sand-100: #f7f1e7; /* design --tx  */
+  --sand-200: #ede5dc; /* design --tx4 */
+  --sand-300: #e0d6cd; /* design --tx3 */
+  --sand-400: #d8ccc3; /* design --tx2 */
+
+  /* The designer's label colour for text on a gold fill. */
+  --on-gold-ink: #3d3c3b;
 
   --white: #ffffff;
   --black: #000000;
@@ -77,37 +82,37 @@
   --surface: var(--sand-100);
   --surface-raised: var(--white);
   --surface-sunken: var(--sand-200);
-  --surface-inverse: var(--green-900);
+  --surface-inverse: var(--brown-900);
 
-  --foreground: var(--green-900); /* 16.23:1 */
-  --foreground-muted: var(--green-500); /*  6.02:1 */
+  --foreground: var(--brown-900); /* 16.71:1 */
+  --foreground-muted: var(--brown-600); /*  7.34:1 */
   --foreground-inverse: var(--sand-100);
 
-  --border-subtle: #e2dcce; /* decorative dividers only */
-  --border-strong: var(--green-400); /* 4.64:1 — form edges, real boundaries */
+  --border-subtle: var(--sand-300); /* decorative dividers only */
+  --border-strong: var(--brown-400); /* 4.49:1 — form edges, real boundaries */
 
-  --brand: var(--gold-900); /* 6.06:1 on surface — #C69A46 would be 2.30:1 */
-  --brand-hover: var(--gold-950); /* 7.28:1 */
+  --brand: var(--gold-800); /* 5.01:1 on surface — #EBB756 would be 1.63:1 */
+  --brand-hover: var(--gold-900); /* 6.08:1 */
   --brand-muted: var(--gold-100);
-  --brand-border: var(--gold-700); /* 4.30:1 */
-  --brand-solid: var(--gold-400); /* the designer's gold, unchanged */
-  --brand-solid-hover: var(--gold-500);
-  --brand-solid-foreground: var(--green-900); /* 7.06:1 on brand-solid */
+  --brand-border: var(--gold-700); /* 4.31:1 */
+  --brand-solid: var(--gold-300); /* the designer's gold, unchanged */
+  --brand-solid-hover: var(--gold-200);
+  --brand-solid-foreground: var(--on-gold-ink); /* 6.00:1 on brand-solid */
 
   /* `-on-dark` is for accents over photography or a dark section, where the
      light-mode brand step disappears. Same hue, lighter step. */
-  --accent: var(--gold-900);
+  --accent: var(--gold-800);
   --accent-on-dark: var(--gold-300);
 
   --focus-ring: var(--gold-700);
-  --overlay: rgb(13 23 18 / 0.6);
+  --overlay: rgb(26 15 14 / 0.6);
 
   /* Fixed in BOTH themes. `--ground-dark` is for panels that are dark by
      design — hero fallbacks, listing headers — where `--surface-inverse` is
      wrong because it flips to a light value in dark mode. `--brand-on-light`
      is gold that has to stay legible on a white chip in either theme
      (#C69A46 on white is 2.59:1; this step is 6.83:1). */
-  --ground-dark: var(--green-900);
+  --ground-dark: var(--brown-900);
   --ground-dark-foreground: var(--sand-100);
   --brand-on-light: var(--gold-900);
 }
@@ -117,34 +122,34 @@
    --------------------------------------------------------------------------- */
 :root[data-theme='dark'],
 .dark {
-  --surface: var(--green-900); /* #0D1712 */
-  --surface-raised: var(--green-850); /* #101C16 */
-  --surface-sunken: var(--green-950); /* #0A120E */
+  --surface: var(--brown-900); /* #1A0F0E */
+  --surface-raised: var(--brown-850); /* #2A1513 */
+  --surface-sunken: var(--brown-950); /* #140B0A */
   --surface-inverse: var(--sand-100);
 
-  --foreground: var(--sand-100); /* 16.23:1 */
-  --foreground-muted: var(--green-100); /*  8.38:1 */
-  --foreground-inverse: var(--green-900);
+  --foreground: var(--sand-100); /* 16.71:1 */
+  --foreground-muted: var(--brown-200); /*  8.0:1  */
+  --foreground-inverse: var(--brown-900);
 
-  --border-subtle: var(--green-700);
-  --border-strong: var(--green-300); /* 4.08:1 */
+  --border-subtle: var(--brown-700);
+  --border-strong: var(--brown-400); /* 3.72:1 */
 
-  --brand: var(--gold-400); /* 7.06:1 */
-  --brand-hover: var(--gold-300); /* 9.68:1 */
-  --brand-muted: #1c2418;
-  --brand-border: var(--gold-400);
-  --brand-solid: var(--gold-400);
-  --brand-solid-hover: var(--gold-300);
-  --brand-solid-foreground: var(--green-900); /* 7.06:1 */
+  --brand: var(--gold-300); /* 10.23:1 */
+  --brand-hover: var(--gold-200); /* 12.28:1 */
+  --brand-muted: #2a1c12;
+  --brand-border: var(--gold-300);
+  --brand-solid: var(--gold-300);
+  --brand-solid-hover: var(--gold-200);
+  --brand-solid-foreground: var(--on-gold-ink); /* 6.00:1 */
 
-  --accent: var(--gold-400);
+  --accent: var(--gold-300);
   --accent-on-dark: var(--gold-300);
 
-  --focus-ring: var(--gold-400);
+  --focus-ring: var(--gold-300);
   --overlay: rgb(0 0 0 / 0.7);
 
   /* Deliberately identical to the light column — see the note there. */
-  --ground-dark: var(--green-900);
+  --ground-dark: var(--brown-900);
   --ground-dark-foreground: var(--sand-100);
   --brand-on-light: var(--gold-900);
 }
