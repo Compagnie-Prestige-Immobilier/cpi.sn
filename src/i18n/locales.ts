@@ -23,6 +23,11 @@ export interface LocaleDefinition {
   /** Writing direction. All current locales are LTR; the field exists so an
    *  RTL locale can be added without reworking layout. */
   dir: 'ltr' | 'rtl'
+  /** ISO 3166 region whose flag represents this locale in the switcher.
+   *  Optional: a locale without one falls back to a lettered badge, so adding a
+   *  language never blocks on artwork. A language is not a country — this is a
+   *  presentational shorthand the designer asked for, nothing more. */
+  flag?: string
   /** Exactly one locale must be the default. It is served without a URL prefix. */
   default?: boolean
   /** Locale to fall back to for missing content. Deliberately NOT English for
@@ -31,11 +36,11 @@ export interface LocaleDefinition {
 }
 
 export const locales = [
-  { code: 'fr', label: 'Français', dir: 'ltr', default: true },
-  { code: 'en', label: 'English', dir: 'ltr', fallback: 'fr' },
+  { code: 'fr', label: 'Français', dir: 'ltr', flag: 'FR', default: true },
+  { code: 'en', label: 'English', dir: 'ltr', flag: 'GB', fallback: 'fr' },
 
   // Planned. Uncomment + add src/messages/<code>.json to enable.
-  // { code: 'wo', label: 'Wolof', dir: 'ltr', fallback: 'fr' },
+  // { code: 'wo', label: 'Wolof', dir: 'ltr', flag: 'SN', fallback: 'fr' },
   // { code: 'ha', label: 'Hausa', dir: 'ltr', fallback: 'fr' },
 ] as const satisfies readonly LocaleDefinition[]
 

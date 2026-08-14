@@ -36,8 +36,7 @@
   "theme": {
     "toggle": "Changer de thème",
     "light": "Clair",
-    "dark": "Sombre",
-    "system": "Système"
+    "dark": "Sombre"
   },
   "language": {
     "switch": "Changer de langue",

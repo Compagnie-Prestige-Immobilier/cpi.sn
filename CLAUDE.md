@@ -94,7 +94,15 @@ an RTL locale can be added without reworking layout — use logical CSS properti
 ## Theming — dark / light mode
 
 **Locked decision: every surface, component and page must work in both themes.** Light is the
-default; the toggle offers light / dark / system.
+default.
+
+**The toggle is two-state — light / dark. There is no "system".** It was a three-way cycle
+(light → dark → system) and that is exactly what made it feel broken: a fresh visitor's stored value
+was `system`, so the first click only moved to `light`, which usually looked identical to what was
+already on screen, and reaching dark took two clicks. `ThemeProvider` therefore sets
+`defaultTheme="light"` with `enableSystem={false}`, which makes the switch a plain boolean. The cost
+— "follow my OS setting" no longer exists — is a deliberate product decision, not an oversight. Do
+not "restore" system detection without raising it first.
 
 ### Rules
 
@@ -161,6 +169,13 @@ default; the toggle offers light / dark / system.
    known and intentional — do not "fix" either to match the other.
 
 10. **Respect `prefers-reduced-motion`** on the ported Ombara reveal/parallax animations.
+
+11. **The theme switch keeps its own palette, and that is the one sanctioned exception.**
+    `src/styles/sky-toggle.css` is a day/night illustration — sky blue, night navy, a gold sun. Rule
+    2 bans gold *as a brand accent*; a burgundy sun would read as a bug. Every selector is scoped
+    under `.sky-toggle`, so nothing leaks. It is ported CSS, not styled-components: runtime CSS-in-JS
+    needs an App Router registry, ships ~15 KB, and would sit as a second styling system beside the
+    token layer.
 
 ### On the template's `dark.css`
 

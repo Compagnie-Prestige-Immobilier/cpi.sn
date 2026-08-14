@@ -36,8 +36,7 @@
   "theme": {
     "toggle": "Switch theme",
     "light": "Light",
-    "dark": "Dark",
-    "system": "System"
+    "dark": "Dark"
   },
   "language": {
     "switch": "Switch language",
