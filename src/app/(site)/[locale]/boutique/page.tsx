@@ -3,9 +3,8 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 
 import { AddToBasket } from '@/components/boutique/add-to-basket'
 import { Basket } from '@/components/boutique/basket'
-import { BoutiqueCatalogue } from '@/components/boutique/catalogue'
-import { PLOTS } from '@/components/boutique/plots'
-import { getProperties } from '@/lib/payload'
+import { BoutiqueCatalogue, type CataloguePlot } from '@/components/boutique/catalogue'
+import { getShopItems } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Media } from '@/payload-types'
 
@@ -22,79 +21,54 @@ export async function generateMetadata({ params }: Props) {
  * figures, a sticky region/sort bar, the plot grid, then documents and
  * services, the trust strip and the basket.
  *
- * The plot list is hardcoded (`plots.ts`) at the client's request — his export
- * drives this grid from a placeholder loop, and matching the page he signed off
- * mattered more than sourcing it from Payload. Photographs are still resolved
- * from the media library so the imagery stays in step with CPI's uploads.
+ * Everything on sale comes from the `shop-items` collection — names, photos,
+ * regions, prices and captions are all editable in the admin. It started as a
+ * hardcoded list to match his page exactly; `npm run seed:shop` is what moved
+ * it into the CMS.
  *
  * Nothing here charges a card. See `basket.tsx` for why the checkout submits a
  * priced quote request instead.
  */
-const SERVICES = [
-  { key: 'documents', id: -101, price: 15000 },
-  { key: 'advisory', id: -102, price: 50000 },
-  { key: 'goodies', id: -103, price: 5000 },
-] as const
 
 export default async function BoutiquePage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [t, tHome, format, everything] = await Promise.all([
+  const [t, format, items] = await Promise.all([
     getTranslations('boutique'),
-    getTranslations('home.shop'),
     getFormatter(),
-    getProperties({ locale: locale as Locale, limit: 60 }),
+    getShopItems(locale as Locale),
   ])
 
   const money = (n: number) => `${format.number(n, { maximumFractionDigits: 0 })} FCFA`
+  const mediaUrl = (v: unknown) =>
+    typeof v === 'object' && v !== null && 'url' in v ? ((v as Media).url ?? null) : null
 
-  /**
-   * Resolve each plot's photograph.
-   *
-   * The named hint wins. The fallback pool is gallery PHOTOGRAPHS only — a
-   * featured image is a marketing banner with the site name burned across it,
-   * and the first pass put "NDAYANE — Le luxe au Cœur…" on the Noflaye and
-   * Kounoune cards. Each image is claimed once so no two cards match either.
-   */
-  const featuredUrls = new Set(
-    everything
-      .map((p) => (typeof p.featuredImage === 'object' ? p.featuredImage?.url : null))
-      .filter(Boolean) as string[],
-  )
-  const photos: Media[] = everything
-    .flatMap((p) => (p.gallery ?? []).filter((m): m is Media => typeof m === 'object' && Boolean(m?.url)))
-    .filter((m) => !featuredUrls.has(m.url as string))
+  const plots: CataloguePlot[] = items
+    .filter((i) => i.kind === 'terrain')
+    .map((i) => ({
+      id: i.id,
+      title: i.title,
+      place: i.place ?? '',
+      region: i.region ?? '',
+      surface: i.surface ?? '',
+      tags: (i.tags ?? []).map((t) => t.label).filter(Boolean),
+      price: i.price ?? null,
+      priceCaption: i.priceCaption ?? '',
+      image: mediaUrl(i.image),
+      featured: Boolean(i.featured),
+    }))
 
-  const claimed = new Set<string>()
-  const images: Record<string, string | null> = {}
-  for (const plot of PLOTS) {
-    const hit = plot.imageHint
-      ? photos.find(
-          (m) =>
-            (m.filename ?? '').toLowerCase().includes(plot.imageHint!) &&
-            !claimed.has(m.url as string),
-        )
-      : undefined
-    const pick = hit ?? photos.find((m) => !claimed.has(m.url as string))
-    if (pick?.url) claimed.add(pick.url)
-    images[plot.slug] = pick?.url ?? null
-  }
-
-  const allMedia: Media[] = everything.flatMap((p) => [
-    ...((p.gallery ?? []).filter((m): m is Media => typeof m === 'object' && Boolean(m?.url))),
-    ...(typeof p.featuredImage === 'object' && p.featuredImage?.url ? [p.featuredImage as Media] : []),
-  ])
-
-  const heroImage = allMedia.find((m) => (m.filename ?? '').includes('capture-decran-2025-11-05'))
+  const services = items.filter((i) => i.kind === 'service')
+  const heroImage = plots.find((p) => p.image)?.image ?? null
 
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-subtle">
-        {heroImage?.url ? (
+        {heroImage ? (
           <Image
-            src={heroImage.url}
+            src={heroImage}
             alt=""
             fill
             priority
@@ -123,7 +97,7 @@ export default async function BoutiquePage({ params }: Props) {
           <dl className="mt-[38px] flex flex-wrap gap-7">
             {(
               [
-                { v: String(PLOTS.length), l: t('statSites') },
+                { v: String(plots.length), l: t('statSites') },
                 { v: '150–300', l: t('statParcel') },
                 { v: t('statInstalmentValue'), l: t('statInstalment') },
               ] as const
@@ -140,7 +114,7 @@ export default async function BoutiquePage({ params }: Props) {
       </section>
 
       {/* ── Sticky filter bar + plot grid ────────────────────────── */}
-      <BoutiqueCatalogue plots={PLOTS} images={images} />
+      <BoutiqueCatalogue plots={plots} />
 
       {/* ── Documents & services ─────────────────────────────────── */}
       <section id="services" className="mx-auto max-w-[1400px] px-6 pt-24">
@@ -159,30 +133,48 @@ export default async function BoutiquePage({ params }: Props) {
         </div>
 
         <div className="mt-10 grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]">
-          {SERVICES.map((s) => (
-            <article key={s.key} className="flex flex-col border border-subtle bg-surface-raised p-6">
+          {services.map((s) => (
+            <article key={s.id} className="flex flex-col border border-subtle bg-surface-raised p-6">
               <h3 className="font-heading text-xl font-semibold text-foreground uppercase">
-                {tHome(`items.${s.key}.title`)}
+                {s.title}
               </h3>
-              <p className="mt-3 flex-1 text-[13px] leading-relaxed text-foreground-muted">
-                {tHome(`items.${s.key}.body`)}
-              </p>
-              <p className="mt-5 font-heading text-2xl leading-none font-bold text-brand">
-                {money(s.price)}
-              </p>
+              {s.description ? (
+                <p className="mt-3 flex-1 text-[13px] leading-relaxed text-foreground-muted">
+                  {s.description}
+                </p>
+              ) : (
+                <span className="flex-1" />
+              )}
+              {s.price != null ? (
+                <p className="mt-5 font-heading text-2xl leading-none font-bold text-brand">
+                  {s.priceCaption ? `${s.priceCaption} ` : ''}
+                  {money(s.price)}
+                </p>
+              ) : null}
               <div className="mt-4">
-                <AddToBasket
-                  item={{
-                    id: s.id,
-                    slug: s.key,
-                    title: tHome(`items.${s.key}.title`),
-                    details: '',
-                    productLine: 'foncier',
-                    price: s.price,
-                    kind: 'service',
-                    qty: 1,
-                  }}
-                />
+                {s.action === 'portal' ? (
+                  <a
+                    href="https://monespace.cpi.sn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full border border-brand-border px-4 py-2.5 text-center text-[13px] font-semibold text-brand transition-colors hover:bg-brand-muted"
+                  >
+                    {t('cart.checkout')}
+                  </a>
+                ) : (
+                  <AddToBasket
+                    item={{
+                      id: -s.id,
+                      slug: String(s.id),
+                      title: s.title,
+                      details: '',
+                      productLine: 'foncier',
+                      price: s.price ?? null,
+                      kind: 'service',
+                      qty: 1,
+                    }}
+                  />
+                )}
               </div>
             </article>
           ))}

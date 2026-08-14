@@ -72,6 +72,7 @@ export interface Config {
     pages: Page;
     team: Team;
     testimonials: Testimonial;
+    'shop-items': ShopItem;
     leads: Lead;
     cities: City;
     amenities: Amenity;
@@ -90,6 +91,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'shop-items': ShopItemsSelect<false> | ShopItemsSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     cities: CitiesSelect<false> | CitiesSelect<true>;
     amenities: AmenitiesSelect<false> | AmenitiesSelect<true>;
@@ -710,6 +712,59 @@ export interface Team {
   createdAt: string;
 }
 /**
+ * Land and services sold in the shop. Nothing on the site takes payment — the basket submits a quote request.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop-items".
+ */
+export interface ShopItem {
+  id: number;
+  title: string;
+  /**
+   * Land shows in the filterable grid; services show under "Order online".
+   */
+  kind: 'terrain' | 'service';
+  order?: number | null;
+  /**
+   * Shows the "Most requested" badge and lifts the item in the default sort.
+   */
+  featured?: boolean | null;
+  /**
+   * Photograph of the site. Avoid artwork with burned-in text.
+   */
+  image?: (number | null) | Media;
+  place?: string | null;
+  /**
+   * Drives the shop filters. A new value creates a new filter automatically.
+   */
+  region?: string | null;
+  /**
+   * e.g. "150–300 m²".
+   */
+  surface?: string | null;
+  tags?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  description?: string | null;
+  /**
+   * Integer, no decimals. Empty renders "Price on request".
+   */
+  price?: number | null;
+  /**
+   * e.g. "Reservation deposit". Leave empty for a plain price.
+   */
+  priceCaption?: string | null;
+  /**
+   * The basket submits a quote request — no payment is taken on the site.
+   */
+  action: 'basket' | 'portal';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Enquiries received through the site forms and selections.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -783,6 +838,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'shop-items';
+        value: number | ShopItem;
       } | null)
     | ({
         relationTo: 'leads';
@@ -1121,6 +1180,32 @@ export interface TestimonialsSelect<T extends boolean = true> {
   location?: T;
   photo?: T;
   featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop-items_select".
+ */
+export interface ShopItemsSelect<T extends boolean = true> {
+  title?: T;
+  kind?: T;
+  order?: T;
+  featured?: T;
+  image?: T;
+  place?: T;
+  region?: T;
+  surface?: T;
+  tags?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  description?: T;
+  price?: T;
+  priceCaption?: T;
+  action?: T;
   updatedAt?: T;
   createdAt?: T;
 }

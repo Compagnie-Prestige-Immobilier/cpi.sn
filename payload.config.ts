@@ -20,6 +20,7 @@ import { Posts } from './src/collections/Posts'
 import { Pages } from './src/collections/Pages'
 import { Team } from './src/collections/Team'
 import { Testimonials } from './src/collections/Testimonials'
+import { ShopItems } from '@/collections/ShopItems'
 import { Leads } from './src/collections/Leads'
 
 import { SiteSettings } from './src/globals/SiteSettings'
@@ -71,6 +72,7 @@ export default buildConfig({
     Team,
     Testimonials,
     // Sales
+    ShopItems,
     Leads,
     // Taxonomies
     Cities,

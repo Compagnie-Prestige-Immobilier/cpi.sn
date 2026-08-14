@@ -177,3 +177,16 @@ export async function getNavigation(locale: Locale) {
   const payload = await payloadClient()
   return payload.findGlobal({ slug: 'navigation', locale, depth: 0 })
 }
+
+/** Boutique catalogue — land and services, in editor-defined order. */
+export async function getShopItems(locale: Locale) {
+  const payload = await payloadClient()
+  const res = await payload.find({
+    collection: 'shop-items',
+    locale,
+    depth: 1,
+    limit: 100,
+    sort: 'order',
+  })
+  return res.docs
+}

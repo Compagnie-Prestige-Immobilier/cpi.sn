@@ -5,27 +5,41 @@ import { useMemo, useState } from 'react'
 import { useFormatter, useTranslations } from 'next-intl'
 
 import { useCart } from '@/components/cart/cart-provider'
-import { REGIONS, type Plot } from './plots'
+
 
 /**
  * The plot catalogue — region filter, sort, and the card grid.
  *
- * Client-side because filtering and sorting are instant interactions on a fixed
- * list of eleven; a server round trip per filter click would be slower and no
- * more correct. The filter bar is sticky under the header, as in the export.
+ * Client-side because filtering and sorting are instant interactions on a short
+ * list; a server round trip per filter click would be slower and no more
+ * correct. The filter bar is sticky under the header, as in the export.
+ *
+ * Data comes from the `shop-items` collection, so CPI edits it in the admin.
  */
-export function BoutiqueCatalogue({
-  plots,
-  images,
-}: {
-  plots: Plot[]
-  /** slug → resolved media URL, matched on the server. */
-  images: Record<string, string | null>
-}) {
+export type CataloguePlot = {
+  id: number
+  title: string
+  place: string
+  region: string
+  surface: string
+  tags: string[]
+  price: number | null
+  priceCaption: string
+  image: string | null
+  featured: boolean
+}
+
+export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
   const t = useTranslations('boutique')
   const format = useFormatter()
   const { add, has, ready } = useCart()
 
+  // Filters come from the data, so a new region entered in the admin creates
+  // its own filter without a code change.
+  const regions = useMemo(
+    () => [...new Set(plots.map((p) => p.region).filter(Boolean))].sort(),
+    [plots],
+  )
   const [region, setRegion] = useState<string | null>(null)
   const [sort, setSort] = useState('featured')
 
@@ -35,15 +49,15 @@ export function BoutiqueCatalogue({
     const list = region ? plots.filter((p) => p.region === region) : [...plots]
     switch (sort) {
       case 'name':
-        return list.sort((a, b) => a.name.localeCompare(b.name))
+        return list.sort((a, b) => a.title.localeCompare(b.title))
       case 'surface-asc':
       case 'surface-desc':
         // Every plot carries the same published range, so this orders by name
         // rather than pretending to a precision the data does not have.
         return list.sort((a, b) =>
           sort === 'surface-asc'
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name),
+            ? a.title.localeCompare(b.title)
+            : b.title.localeCompare(a.title),
         )
       default:
         return list.sort((a, b) => Number(b.featured ?? false) - Number(a.featured ?? false))
@@ -71,7 +85,7 @@ export function BoutiqueCatalogue({
             <button type="button" onClick={() => setRegion(null)} className={chip(region === null)}>
               {t('regionAll')}
             </button>
-            {REGIONS.map((r) => (
+            {regions.map((r) => (
               <button
                 key={r}
                 type="button"
@@ -109,22 +123,22 @@ export function BoutiqueCatalogue({
         {shown.length ? (
           <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(320px,1fr))]">
             {shown.map((p) => {
-              // Negative ids keep catalogue lines from colliding with real
-              // property ids in the shared basket.
-              const cartId = -2000 - PLOT_INDEX(p.slug)
+              // Shop-item ids are negated so a catalogue line can never collide
+              // with a property id in the shared basket.
+              const cartId = -p.id
               const inBasket = ready && has(cartId)
-              const img = images[p.slug]
+              const img = p.image
 
               return (
                 <article
-                  key={p.slug}
+                  key={p.id}
                   className="flex flex-col border border-subtle bg-surface-raised"
                 >
                   <div className="relative">
                     {img ? (
                       <Image
                         src={img}
-                        alt={p.name}
+                        alt={p.title}
                         width={640}
                         height={230}
                         sizes="(min-width: 1024px) 33vw, 100vw"
@@ -149,7 +163,7 @@ export function BoutiqueCatalogue({
 
                   <div className="flex flex-1 flex-col gap-3 p-6">
                     <h3 className="font-heading text-[28px] leading-none font-bold text-foreground uppercase">
-                      {p.name}
+                      {p.title}
                     </h3>
                     <p className="flex items-center gap-2 text-[13px] text-foreground-muted">
                       <svg
@@ -181,10 +195,10 @@ export function BoutiqueCatalogue({
                     <div className="mt-auto flex items-end justify-between gap-4 border-t border-subtle pt-[18px]">
                       <span className="flex flex-col gap-[3px]">
                         <span className="text-[10px] tracking-[0.14em] text-foreground-muted uppercase">
-                          {t('deposit')}
+                          {p.priceCaption || t('deposit')}
                         </span>
                         <span className="font-heading text-2xl leading-none font-bold text-brand">
-                          {money(p.deposit)}
+                          {p.price != null ? money(p.price) : t('onRequest')}
                         </span>
                       </span>
                       <button
@@ -192,11 +206,11 @@ export function BoutiqueCatalogue({
                         onClick={() =>
                           add({
                             id: cartId,
-                            slug: p.slug,
-                            title: p.name,
+                            slug: String(p.id),
+                            title: p.title,
                             details: p.place,
                             productLine: 'foncier',
-                            price: p.deposit,
+                            price: p.price,
                             kind: 'service',
                             qty: 1,
                           })
@@ -221,23 +235,4 @@ export function BoutiqueCatalogue({
       </section>
     </>
   )
-}
-
-/** Stable index per slug, so a cart id never shifts when the list is reordered. */
-const ORDER = [
-  'ngolfagnick',
-  'lene',
-  'sangalkam',
-  'noflaye',
-  'sebikhotane',
-  'kounoune',
-  'bambilor-extension',
-  'tassette',
-  'lelo-serere',
-  'ndayanne',
-  'thieo',
-]
-const PLOT_INDEX = (slug: string) => {
-  const i = ORDER.indexOf(slug)
-  return i === -1 ? ORDER.length : i
 }
