@@ -22,7 +22,14 @@
     "mySpace": "Mon espace",
     "shop": "Shop",
     "landCount": "{count, plural, one {# site for sale} other {# sites for sale}}",
-    "allLandInShop": "See all land in the shop"
+    "allLandInShop": "See all land in the shop",
+    "shopBuy": "Buy online",
+    "shopLand": "Land for sale",
+    "shopDocs": "Documents & paperwork",
+    "shopAdvisory": "Advisory services",
+    "shopInstalment": "Pay an instalment",
+    "shopGoodies": "CPI goodies",
+    "shopBasket": "My basket"
   },
   "common": {
     "loading": "Loading…",
@@ -444,6 +451,23 @@
       "remove": "Remove",
       "increase": "Increase quantity",
       "decrease": "Decrease quantity"
-    }
+    },
+    "heroIntro": "All the sites we market, plus our documents and services — add to the basket and our team will call you back to finalise.",
+    "statInstalment": "instalments",
+    "statInstalmentValue": "3 years",
+    "region": "Region",
+    "regionAll": "All",
+    "sortLabel": "Sort",
+    "sortFeatured": "Featured",
+    "sortSurfaceAsc": "Surface ascending",
+    "sortSurfaceDesc": "Surface descending",
+    "sortName": "Name (A–Z)",
+    "results": "{count, plural, one {# plot} other {# plots}}",
+    "deposit": "Reservation deposit",
+    "servicesNote": "Fixed prices, digital delivery within 72 working hours.",
+    "openCart": "Open basket",
+    "closeCart": "Close basket",
+    "noResults": "No plot matches this filter.",
+    "popular": "Most requested"
   }
 }

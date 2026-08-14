@@ -41,6 +41,7 @@ export async function SiteHeader() {
   const items = nav.header ?? []
   const homePath = getPathname({ locale, href: '/' })
   const shopHref = `${homePath}#shop`
+  const boutiquePath = getPathname({ locale, href: '/boutique' })
   const landPath = getPathname({ locale, href: '/terrains' })
 
   /**
@@ -138,27 +139,61 @@ export async function SiteHeader() {
             </div>
           ))}
 
-          {/* Boutique — gold, the one place a visitor can transact. */}
-          <a
-            href={shopHref}
-            className="flex items-center gap-[7px] px-2.5 py-2 text-[11.5px] tracking-[0.06em] whitespace-nowrap text-brand transition-colors hover:text-brand-hover"
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
+          {/* Boutique — gold, and the only nav item with its own panel: the
+              designer's seven-item shop menu. */}
+          <div className="group relative flex items-center">
+            <a
+              href={boutiquePath}
+              className="flex items-center gap-[7px] px-2.5 py-2 text-[11.5px] tracking-[0.06em] whitespace-nowrap text-brand transition-colors hover:text-brand-hover"
             >
-              <path d="M4 7h16l-1.4 12.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 7Z" />
-              <path d="M9 7V5.5a3 3 0 0 1 6 0V7" />
-            </svg>
-            {t('shop')}
-          </a>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M4 7h16l-1.4 12.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 7Z" />
+                <path d="M9 7V5.5a3 3 0 0 1 6 0V7" />
+              </svg>
+              {t('shop')}
+              <Chevron />
+            </a>
+            <Panel>
+              <div className="min-w-[240px]">
+                <a href={boutiquePath} className={linkClass}>
+                  {t('shopBuy')}
+                </a>
+                <a href={`${boutiquePath}#catalogue`} className={linkClass}>
+                  {t('shopLand')}
+                </a>
+                <a href={`${boutiquePath}#services`} className={linkClass}>
+                  {t('shopDocs')}
+                </a>
+                <a href={`${boutiquePath}#services`} className={linkClass}>
+                  {t('shopAdvisory')}
+                </a>
+                <a
+                  href="https://monespace.cpi.sn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  {t('shopInstalment')}
+                </a>
+                <a href={`${boutiquePath}#services`} className={linkClass}>
+                  {t('shopGoodies')}
+                </a>
+                <Link href="/ma-selection" className={`${linkClass} border-t border-subtle mt-1 pt-2.5 text-brand`}>
+                  {t('shopBasket')}
+                </Link>
+              </div>
+            </Panel>
+          </div>
         </nav>
 
         <div className="ms-auto flex items-center gap-2.5 lg:ms-0">

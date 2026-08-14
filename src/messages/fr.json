@@ -22,7 +22,14 @@
     "mySpace": "Mon espace",
     "shop": "Boutique",
     "landCount": "{count, plural, one {# site à vendre} other {# sites à vendre}}",
-    "allLandInShop": "Voir tous les terrains en boutique"
+    "allLandInShop": "Voir tous les terrains en boutique",
+    "shopBuy": "Acheter en ligne",
+    "shopLand": "Terrains à vendre",
+    "shopDocs": "Dossiers & documents",
+    "shopAdvisory": "Prestations conseil",
+    "shopInstalment": "Payer une échéance",
+    "shopGoodies": "Goodies CPI",
+    "shopBasket": "Mon panier"
   },
   "common": {
     "loading": "Chargement…",
@@ -444,6 +451,23 @@
       "remove": "Retirer",
       "increase": "Augmenter la quantité",
       "decrease": "Diminuer la quantité"
-    }
+    },
+    "heroIntro": "Tous les sites que nous commercialisons, avec nos dossiers et prestations — ajoutez au panier et notre équipe vous rappelle pour finaliser.",
+    "statInstalment": "d'échelonnement",
+    "statInstalmentValue": "3 ans",
+    "region": "Région",
+    "regionAll": "Toutes",
+    "sortLabel": "Trier",
+    "sortFeatured": "Mise en avant",
+    "sortSurfaceAsc": "Surface croissante",
+    "sortSurfaceDesc": "Surface décroissante",
+    "sortName": "Nom (A–Z)",
+    "results": "{count, plural, one {# terrain} other {# terrains}}",
+    "deposit": "Acompte de réservation",
+    "servicesNote": "Tarifs fixes, délivrance numérique sous 72 h ouvrées.",
+    "openCart": "Ouvrir le panier",
+    "closeCart": "Fermer le panier",
+    "noResults": "Aucun terrain ne correspond à ce filtre.",
+    "popular": "Le plus demandé"
   }
 }

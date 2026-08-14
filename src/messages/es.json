@@ -22,7 +22,14 @@
     "mySpace": "Mon espace",
     "shop": "Tienda",
     "landCount": "{count, plural, one {# terreno en venta} other {# terrenos en venta}}",
-    "allLandInShop": "Ver todos los terrenos en la tienda"
+    "allLandInShop": "Ver todos los terrenos en la tienda",
+    "shopBuy": "Comprar en línea",
+    "shopLand": "Terrenos en venta",
+    "shopDocs": "Expedientes y documentos",
+    "shopAdvisory": "Servicios de asesoría",
+    "shopInstalment": "Pagar un vencimiento",
+    "shopGoodies": "Artículos CPI",
+    "shopBasket": "Mi carrito"
   },
   "common": {
     "loading": "Cargando…",
@@ -444,6 +451,23 @@
       "remove": "Quitar",
       "increase": "Aumentar la cantidad",
       "decrease": "Reducir la cantidad"
-    }
+    },
+    "heroIntro": "Todos los sitios que comercializamos, junto con nuestros expedientes y servicios: añada al carrito y nuestro equipo le llamará para concretarlo.",
+    "statInstalment": "de aplazamiento",
+    "statInstalmentValue": "3 años",
+    "region": "Región",
+    "regionAll": "Todas",
+    "sortLabel": "Ordenar",
+    "sortFeatured": "Destacados",
+    "sortSurfaceAsc": "Superficie ascendente",
+    "sortSurfaceDesc": "Superficie descendente",
+    "sortName": "Nombre (A–Z)",
+    "results": "{count, plural, one {# terreno} other {# terrenos}}",
+    "deposit": "Señal de reserva",
+    "servicesNote": "Precios fijos, entrega digital en 72 h laborables.",
+    "openCart": "Abrir el carrito",
+    "closeCart": "Cerrar el carrito",
+    "noResults": "Ningún terreno coincide con este filtro.",
+    "popular": "Lo más solicitado"
   }
 }
