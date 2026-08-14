@@ -163,16 +163,18 @@ export default async function HomePage({
             there rather than spread evenly. */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(26_15_14/0.45)_0%,rgb(26_15_14/0.35)_35%,rgb(26_15_14/0.92)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.45)_0%,rgb(36_11_9/0.35)_35%,rgb(36_11_9/0.92)_100%)]"
         />
 
         <div className="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-16">
           <p className="text-[11px] tracking-[0.28em] text-[var(--accent-on-dark)] uppercase">
             {t('hero.eyebrow')}
           </p>
-          <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] font-bold text-white uppercase">
-            {t('hero.titleLead')}{' '}
-            <span className="text-[var(--accent-on-dark)]">{t('hero.titleAccent')}</span>
+          {/* `block` on the accent forces "Sénégal" onto its own line rather
+              than leaving it to wrap wherever the viewport happens to break. */}
+          <h1 className="mt-5 max-w-5xl font-heading text-[clamp(3.25rem,8.5vw,7rem)] leading-[0.92] font-bold text-white uppercase">
+            {t('hero.titleLead')}
+            <span className="block text-[var(--accent-on-dark)]">{t('hero.titleAccent')}</span>
           </h1>
           <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-white/80">
             {t('hero.subtitle')}
@@ -344,7 +346,7 @@ export default async function HomePage({
               ) : null}
               <div
                 aria-hidden
-                className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(26_15_14/0.15)_0%,rgb(26_15_14/0.85)_100%)]"
+                className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.15)_0%,rgb(36_11_9/0.85)_100%)]"
               />
               {card.shot?.city ? (
                 <p className="mb-auto w-max border border-white/30 px-3 py-1 text-[11px] tracking-[0.18em] text-white uppercase">

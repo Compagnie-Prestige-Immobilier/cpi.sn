@@ -110,7 +110,25 @@ not "restore" system detection without raising it first.
    Components use `bg-surface`, `text-foreground`, `border-subtle`, `text-brand`,
    `bg-brand-solid`, `text-accent` — never `bg-[#65000d]` or `text-burgundy-700`.
 
-2. **SUPERSEDED (redesign refresh 1): the brand is now deep green + gold.**
+2. **CPI's official colours — the authority, supplied by the client.**
+
+   | Role | Hex | Token |
+   |---|---|---|
+   | Principal | `#551B18` | `--maroon-700` |
+   | Secondaire | `#EBB756` | `--gold-300` |
+   | Semi-secondaire | `#3D3C3B` | `--on-gold-ink` |
+
+   Each is used where it measures, which is the whole reason the token layer
+   exists. The principal carries text on light grounds (**12.01:1** on cream) and
+   becomes the highlight surface on dark ones, where it would otherwise vanish.
+   The gold carries text on dark (**10.15:1**) and fills buttons in both themes,
+   labelled with the semi-secondary (**6.00:1**). Page grounds are darker steps
+   derived from the principal, not neutral blacks.
+
+   Do not reintroduce the green of refresh 1 or the near-black `#1A0F0E`; both
+   were the designer's working palette, not CPI's brand.
+
+   **SUPERSEDED (redesign refresh 1): deep green + gold.**
    `#0D1712` ground, `#C69A46` gold, `#F5F1E9` type — the designer's palette,
    verbatim, in `src/styles/tokens.css` §1. Burgundy survives only in
    `legacy-palette.css`, scoped to the two archived homepages. The paragraph

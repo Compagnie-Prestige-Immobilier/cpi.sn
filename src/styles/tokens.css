@@ -11,7 +11,18 @@
  * palette step per theme — that is the whole point, and it is what let the site
  * move from burgundy to green/gold by editing this one file.
  *
- * ── The palette is the designer's, verbatim ────────────────────────────────
+ * ── CPI's official colours ─────────────────────────────────────────────────
+ *   PRINCIPAL       #551B18  --maroon-700
+ *   SECONDAIRE      #EBB756  --gold-300
+ *   SEMI-SECONDAIRE #3D3C3B  --on-gold-ink
+ *
+ * All three are used where they measure: the principal carries text on light
+ * grounds (12.01:1) and becomes the highlight surface on dark ones; the gold
+ * carries text on dark (10.15:1) and fills buttons in both, labelled with the
+ * semi-secondary (6.00:1). The greens and near-blacks of the earlier rounds are
+ * gone.
+ *
+ * ── The layout palette came from the designer's export ─────────────────────
  * The dark column is lifted straight from "redesign refresh finale": #1A0F0E
  * ground, #EBB756 gold, #F7F1E7 type, #3D3C3B on gold. To retheme the whole
  * site, change the palette scales in §1 — nothing else references a hex. This
@@ -48,18 +59,26 @@
   --gold-900: #7a5313;
   --gold-950: #6b4810;
 
-  /* Warm brown. The grounds and the muted type of the dark theme. */
+  /* Maroon — CPI's PRINCIPAL, #551B18. The 700 step is the official colour;
+     the darker steps are grounds derived from it and the lighter ones exist so
+     the hue survives on a dark ground. */
+  --maroon-300: #d98a80;
+  --maroon-400: #c4685e;
+  --maroon-500: #a85149;
+  --maroon-600: #6d2620;
+  --maroon-700: #551b18; /* ← CPI PRINCIPAL */
+  --maroon-800: #3a1210;
+  --maroon-900: #240b09;
+  --maroon-950: #1a0806;
+
+  /* Warm neutrals, for muted type and hairlines. */
   --brown-100: #c9bcb5;
-  --brown-200: #b8aaa3; /* design --mut2  */
-  --brown-300: #a2938c; /* design --mut   */
-  --brown-400: #7a6c66; /* design --faint */
+  --brown-200: #b8aaa3;
+  --brown-300: #a2938c;
+  --brown-400: #7a6c66;
   --brown-500: #6f5d56;
   --brown-600: #5c4b45;
   --brown-700: #3d2a26;
-  --brown-800: #33201d;
-  --brown-850: #2a1513; /* design --surf */
-  --brown-900: #1a0f0e; /* design --bg   */
-  --brown-950: #140b0a; /* design --deep */
 
   /* Warm sand. The cream type on dark, and the grounds of the light theme. */
   --sand-50: #fdfaf5;
@@ -68,7 +87,7 @@
   --sand-300: #e0d6cd; /* design --tx3 */
   --sand-400: #d8ccc3; /* design --tx2 */
 
-  /* The designer's label colour for text on a gold fill. */
+  /* CPI's semi-secondary #3D3C3B — the label colour on a gold fill. */
   --on-gold-ink: #3d3c3b;
 
   --white: #ffffff;
@@ -82,19 +101,21 @@
   --surface: var(--sand-100);
   --surface-raised: var(--white);
   --surface-sunken: var(--sand-200);
-  --surface-inverse: var(--brown-900);
+  --surface-inverse: var(--maroon-900);
 
-  --foreground: var(--brown-900); /* 16.71:1 */
+  --foreground: var(--maroon-900); /* 16.59:1 */
   --foreground-muted: var(--brown-600); /*  7.34:1 */
   --foreground-inverse: var(--sand-100);
 
   --border-subtle: var(--sand-300); /* decorative dividers only */
   --border-strong: var(--brown-400); /* 4.49:1 — form edges, real boundaries */
 
-  --brand: var(--gold-800); /* 5.01:1 on surface — #EBB756 would be 1.63:1 */
-  --brand-hover: var(--gold-900); /* 6.08:1 */
-  --brand-muted: var(--gold-100);
-  --brand-border: var(--gold-700); /* 4.31:1 */
+  /* The PRINCIPAL carries text and borders — 12.01:1 on the cream ground,
+     where the secondary gold would be 1.63:1 and unusable. */
+  --brand: var(--maroon-700); /* 12.01:1 */
+  --brand-hover: var(--maroon-600); /*  9.6:1  */
+  --brand-muted: #f4e7e4;
+  --brand-border: var(--maroon-700);
   --brand-solid: var(--gold-300); /* the designer's gold, unchanged */
   --brand-solid-hover: var(--gold-200);
   --brand-solid-foreground: var(--on-gold-ink); /* 6.00:1 on brand-solid */
@@ -105,14 +126,14 @@
   --accent-on-dark: var(--gold-300);
 
   --focus-ring: var(--gold-700);
-  --overlay: rgb(26 15 14 / 0.6);
+  --overlay: rgb(36 11 9 / 0.6);
 
   /* Fixed in BOTH themes. `--ground-dark` is for panels that are dark by
      design — hero fallbacks, listing headers — where `--surface-inverse` is
      wrong because it flips to a light value in dark mode. `--brand-on-light`
      is gold that has to stay legible on a white chip in either theme
      (#C69A46 on white is 2.59:1; this step is 6.83:1). */
-  --ground-dark: var(--brown-900);
+  --ground-dark: var(--maroon-900);
   --ground-dark-foreground: var(--sand-100);
   --brand-on-light: var(--gold-900);
 }
@@ -122,21 +143,24 @@
    --------------------------------------------------------------------------- */
 :root[data-theme='dark'],
 .dark {
-  --surface: var(--brown-900); /* #1A0F0E */
-  --surface-raised: var(--brown-850); /* #2A1513 */
-  --surface-sunken: var(--brown-950); /* #140B0A */
+  --surface: var(--maroon-900); /* derived from the principal */
+  --surface-raised: var(--maroon-800);
+  --surface-sunken: var(--maroon-950);
   --surface-inverse: var(--sand-100);
 
   --foreground: var(--sand-100); /* 16.71:1 */
   --foreground-muted: var(--brown-200); /*  8.0:1  */
-  --foreground-inverse: var(--brown-900);
+  --foreground-inverse: var(--maroon-900);
 
-  --border-subtle: var(--brown-700);
+  --border-subtle: #46201c;
   --border-strong: var(--brown-400); /* 3.72:1 */
 
-  --brand: var(--gold-300); /* 10.23:1 */
-  --brand-hover: var(--gold-200); /* 12.28:1 */
-  --brand-muted: #2a1c12;
+  /* On a dark ground the principal disappears, so the SECONDARY gold carries
+     text and the principal becomes the highlight surface. Same three colours,
+     each used where it measures. */
+  --brand: var(--gold-300); /* 10.15:1 */
+  --brand-hover: var(--gold-200); /* 12.2:1  */
+  --brand-muted: var(--maroon-700); /* the principal, as a panel */
   --brand-border: var(--gold-300);
   --brand-solid: var(--gold-300);
   --brand-solid-hover: var(--gold-200);
@@ -149,7 +173,7 @@
   --overlay: rgb(0 0 0 / 0.7);
 
   /* Deliberately identical to the light column — see the note there. */
-  --ground-dark: var(--brown-900);
+  --ground-dark: var(--maroon-900);
   --ground-dark-foreground: var(--sand-100);
   --brand-on-light: var(--gold-900);
 }

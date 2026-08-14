@@ -78,7 +78,7 @@ export default async function BoutiquePage({ params }: Props) {
         ) : null}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(26_15_14/0.72)_0%,rgb(26_15_14/0.86)_60%,rgb(26_15_14/0.96)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.72)_0%,rgb(36_11_9/0.86)_60%,rgb(36_11_9/0.96)_100%)]"
         />
         <div className="relative mx-auto max-w-[1400px] px-6 py-[92px]">
           <div className="mb-[22px] flex items-center gap-3.5">
