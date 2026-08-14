@@ -103,6 +103,39 @@ else
     -f - >/dev/null
 fi
 
+# ── Re-sync every identity sequence ──────────────────────────────────────────
+# `pg_dump --data-only` writes the rows with their original ids but emits no
+# `setval`, so each sequence is left wherever it was — usually 1. The next
+# INSERT then reuses an id that already exists and Payload reports it as
+# "le champ suivant n'est pas valide : id", which is what broke the shop_items
+# migration in production: Payload records each applied migration by INSERTing
+# into payload_migrations, and that insert collided.
+#
+# Derived from the catalogue rather than a fixed list, so a collection added
+# later is covered without touching this script.
+echo "→ Re-syncing id sequences…"
+RESYNCED=$(psql "$DATABASE_URI" -tAc "
+DO \$\$
+DECLARE r RECORD; maxid BIGINT;
+BEGIN
+  FOR r IN
+    SELECT s.relname AS seq,
+           t.relname AS tbl,
+           a.attname AS col
+    FROM pg_class s
+    JOIN pg_depend d  ON d.objid = s.oid AND d.classid = 'pg_class'::regclass AND d.deptype = 'a'
+    JOIN pg_class t   ON t.oid = d.refobjid
+    JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = d.refobjsubid
+    JOIN pg_namespace n ON n.oid = s.relnamespace
+    WHERE s.relkind = 'S' AND n.nspname = 'public'
+  LOOP
+    EXECUTE format('SELECT COALESCE(MAX(%I), 0) FROM public.%I', r.col, r.tbl) INTO maxid;
+    PERFORM setval(format('public.%I', r.seq), GREATEST(maxid, 1), maxid > 0);
+  END LOOP;
+END \$\$;
+SELECT count(*) FROM pg_class WHERE relkind = 'S' AND relnamespace = 'public'::regnamespace;")
+echo "  ${RESYNCED} sequence(s) re-synced"
+
 echo "→ Verifying…"
 psql "$DATABASE_URI" -tAc "
   SELECT 'properties=' || (SELECT count(*) FROM properties)
