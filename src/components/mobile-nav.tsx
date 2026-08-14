@@ -45,7 +45,7 @@ export function MobileNav({ items, shopHref }: { items: Item[]; shopHref?: strin
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? t('closeMenu') : t('openMenu')}
         aria-expanded={open}
-        className="inline-flex size-10 items-center justify-center rounded-full border border-subtle text-foreground-muted transition-colors hover:border-brand-border hover:text-brand lg:hidden"
+        className="inline-flex size-[38px] items-center justify-center border border-strong/45 text-foreground transition-colors hover:border-brand-border hover:text-brand lg:hidden"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-5" aria-hidden>
           {open ? (
@@ -57,18 +57,36 @@ export function MobileNav({ items, shopHref }: { items: Item[]; shopHref?: strin
       </button>
 
       {open ? (
-        <div className="fixed inset-x-0 top-20 bottom-0 z-30 overflow-y-auto border-t border-subtle bg-surface lg:hidden">
+        <div className="absolute inset-x-0 top-full z-30 max-h-[calc(100dvh-100%)] overflow-y-auto border-t border-subtle bg-surface lg:hidden">
           <nav className="container-page flex flex-col gap-1 py-6" aria-label={t('openMenu')}>
-            {items.map((item) => (
-              <div key={item.label} className="border-b border-subtle py-2 last:border-0">
-                <CmsLink
-                  href={item.href}
-                  className="block py-2 text-sm font-medium tracking-[0.08em] text-foreground uppercase"
-                >
-                  {item.label}
-                </CmsLink>
-                {item.children.length ? (
-                  <div className="flex flex-col gap-1 ps-4 pb-2">
+            {/* Accordions, as the export does on small screens: a section with
+                children collapses instead of dumping every link on screen at
+                once. `<details>` rather than JS state — keyboard- and
+                screen-reader-accessible for free, and findable by in-page
+                search in browsers that expand hidden content. */}
+            {items.map((item) =>
+              item.children.length ? (
+                <details key={item.label} className="group border-b border-subtle py-1">
+                  <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-sm font-medium tracking-[0.08em] text-foreground uppercase marker:content-none">
+                    {item.label}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      aria-hidden
+                      className="size-4 text-foreground-muted transition-transform group-open:rotate-180"
+                    >
+                      <path d="m6 9.5 6 6 6-6" />
+                    </svg>
+                  </summary>
+                  <div className="flex flex-col gap-1 pb-3 ps-4">
+                    {item.href ? (
+                      <CmsLink href={item.href} className="py-1.5 text-sm text-brand">
+                        {item.label}
+                      </CmsLink>
+                    ) : null}
                     {item.children.map((child) => (
                       <CmsLink
                         key={child.label}
@@ -79,9 +97,18 @@ export function MobileNav({ items, shopHref }: { items: Item[]; shopHref?: strin
                       </CmsLink>
                     ))}
                   </div>
-                ) : null}
-              </div>
-            ))}
+                </details>
+              ) : (
+                <div key={item.label} className="border-b border-subtle">
+                  <CmsLink
+                    href={item.href}
+                    className="block py-4 text-sm font-medium tracking-[0.08em] text-foreground uppercase"
+                  >
+                    {item.label}
+                  </CmsLink>
+                </div>
+              ),
+            )}
 
             {shopHref ? (
               <a

@@ -29,7 +29,8 @@
     "shopAdvisory": "Advisory services",
     "shopInstalment": "Pay an instalment",
     "shopGoodies": "CPI goodies",
-    "shopBasket": "My basket"
+    "shopBasket": "My basket",
+    "groupMetiers": "Our disciplines"
   },
   "common": {
     "loading": "Loading…",

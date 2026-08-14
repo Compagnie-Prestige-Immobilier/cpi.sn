@@ -29,7 +29,8 @@
     "shopAdvisory": "Prestations conseil",
     "shopInstalment": "Payer une échéance",
     "shopGoodies": "Goodies CPI",
-    "shopBasket": "Mon panier"
+    "shopBasket": "Mon panier",
+    "groupMetiers": "Nos métiers"
   },
   "common": {
     "loading": "Chargement…",

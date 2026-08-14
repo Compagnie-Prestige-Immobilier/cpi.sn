@@ -49,6 +49,10 @@ export async function SiteHeader() {
    * second entry. Rendering our own alongside the global's put "Terrains
    * disponibles" in the bar twice.
    */
+  const servicesPath = getPathname({ locale, href: '/nos-services' })
+  const isServicesItem = (href?: string | null) =>
+    Boolean(href && (href === servicesPath || href.replace(/\/$/, '').endsWith('/nos-services')))
+
   const isLandItem = (href?: string | null) =>
     Boolean(href && (href === landPath || href.replace(/\/$/, '').endsWith('/terrains')))
 
@@ -126,8 +130,21 @@ export async function SiteHeader() {
                   </a>
                 </Panel>
               ) : item.children?.length ? (
+                /* Grouped panel, as the export draws it: a small gold group
+                   label above the links, and two columns once the list runs
+                   past three — which is what turns his Services menu into the
+                   block he designed rather than a plain dropdown. */
                 <Panel>
-                  <div className="min-w-[240px]">
+                  <p className="px-3 pb-2 text-[10px] tracking-[0.22em] text-brand uppercase">
+                    {isServicesItem(item.href) ? t('groupMetiers') : item.label}
+                  </p>
+                  <div
+                    className={
+                      item.children.length > 3
+                        ? 'grid w-[440px] grid-cols-2 gap-x-4'
+                        : 'min-w-[240px]'
+                    }
+                  >
                     {item.children.map((child) => (
                       <CmsLink key={child.id ?? child.label} href={child.href} className={linkClass}>
                         {child.label}

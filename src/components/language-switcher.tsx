@@ -107,7 +107,10 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean } = {}
         <ul
           role="listbox"
           aria-label={t('switch')}
-          className="absolute end-0 z-50 mt-2 min-w-44 overflow-hidden border border-subtle bg-surface-raised py-1 shadow-xl"
+          /* Anchored to the start edge on small screens: in the wrapped
+             utility bar the trigger sits near the left, so an end-anchored
+             panel ran off the side of the viewport. */
+          className="absolute start-0 z-50 mt-2 min-w-44 overflow-hidden border border-subtle bg-surface-raised py-1 shadow-xl sm:start-auto sm:end-0"
         >
           {locales.map(({ code, label, flag }) => {
             const isActive = code === active
