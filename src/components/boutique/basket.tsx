@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useFormatter, useLocale, useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useCart } from '@/components/cart/cart-provider'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
@@ -11,44 +11,38 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
  *
  * IMPORTANT — this does not take money. The design's checkout promises
  * "paiement sécurisé … reçu délivré immédiatement"; there is no payment
- * gateway, so the final action submits a **priced quote request** to Payload
- * and says so. A checkout button that charges nothing is worse than no
- * checkout, and in Senegal that reads as fraud rather than an oversight.
+ * gateway, so the final action submits a quote request to Payload and says so.
+ * A checkout button that charges nothing is worse than no checkout, and in
+ * Senegal that reads as fraud rather than an oversight.
+ *
+ * No figures are shown anywhere. Prices live in the CMS for CPI's own
+ * reference, but the Boutique quotes case by case, so a running total would be
+ * a number the visitor could hold us to — and it would contradict the "sur
+ * devis" on every card above.
  *
  * When a gateway is chosen (PayDunya and CinetPay both cover Wave + Orange
- * Money + card), this is the component it lands in — it already carries lines,
- * quantities and a total.
- *
- * Totals cover priced lines only: most CPI listings are "prix sur demande", and
- * counting them as zero would imply the land is free.
+ * Money + card), this is the component it lands in — it already carries the
+ * lines and their quantities.
  */
 export function Basket() {
   const t = useTranslations('boutique.cart')
   const tShop = useTranslations('boutique')
   const tForms = useTranslations('forms')
   const tCart = useTranslations('cart')
-  const format = useFormatter()
   const locale = useLocale()
-  const { items, ready, setQty, remove, clear, total } = useCart()
+  const { items, ready, setQty, remove, clear } = useCart()
   const [status, setStatus] = useState<Status>('idle')
   const [reference, setReference] = useState<string | null>(null)
-
-  const hasUnpriced = items.some((i) => i.price == null)
-
-  // XOF has no minor unit — never render decimals. See CLAUDE.md.
-  const money = (n: number) =>
-    `${format.number(n, { maximumFractionDigits: 0 })} FCFA`
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setStatus('sending')
     const form = new FormData(event.currentTarget)
 
-    // The quoted lines travel in the message so CPI sees exactly what was in
-    // the basket, including quantities and the indicative total.
-    const lines = items
-      .map((i) => `• ${i.title} ×${i.qty ?? 1} — ${i.price != null ? money(i.price) : tShop('onRequest')}`)
-      .join('\n')
+    // The selection travels in the message so CPI sees exactly what was in the
+    // basket. No prices: the visitor was never shown any, and echoing internal
+    // figures back into the enquiry would read as a quote they had accepted.
+    const lines = items.map((i) => `• ${i.title} ×${i.qty ?? 1}`).join('\n')
 
     try {
       const res = await fetch('/api/enquiries', {
@@ -59,9 +53,7 @@ export function Basket() {
           name: form.get('name'),
           phone: form.get('phone'),
           email: form.get('email') || undefined,
-          message: `${lines}\n\n${t('total')}: ${money(total)}${
-            form.get('message') ? `\n\n${form.get('message')}` : ''
-          }`,
+          message: `${lines}${form.get('message') ? `\n\n${form.get('message')}` : ''}`,
           company: form.get('company') || undefined, // honeypot
           items: items.filter((i) => i.kind !== 'service').map((i) => i.id),
           source: '/boutique',
@@ -116,9 +108,7 @@ export function Basket() {
               <p className="font-heading text-lg leading-tight font-semibold text-foreground uppercase">
                 {item.title}
               </p>
-              <p className="mt-1 text-[13px] text-brand">
-                {item.price != null ? money(item.price) : tShop('onRequest')}
-              </p>
+              <p className="mt-1 text-[13px] text-brand">{tShop('onQuote')}</p>
 
               <div className="mt-3 flex items-center gap-3">
                 <div className="flex items-center border border-subtle">
@@ -150,27 +140,14 @@ export function Basket() {
               </div>
             </div>
 
-            {item.price != null ? (
-              <p className="shrink-0 text-[13px] font-semibold text-foreground tabular-nums">
-                {money(item.price * (item.qty ?? 1))}
-              </p>
-            ) : null}
           </li>
         ))}
       </ul>
 
       <div className="border-t border-subtle p-5">
-        <div className="flex items-baseline justify-between">
-          <span className="text-[13px] tracking-[0.1em] text-foreground-muted uppercase">
-            {t('total')}
-          </span>
-          <span className="font-heading text-2xl font-bold text-foreground tabular-nums">
-            {money(total)}
-          </span>
-        </div>
-        {hasUnpriced ? (
-          <p className="mt-2 text-[12px] leading-relaxed text-foreground-muted">{t('quoteNote')}</p>
-        ) : null}
+        <p className="text-[13px] leading-relaxed text-foreground-muted">
+          {tShop('onQuoteHint')}
+        </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-3">
           <Field name="name" label={tCart('form.name')} required />

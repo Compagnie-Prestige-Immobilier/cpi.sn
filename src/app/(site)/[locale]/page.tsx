@@ -7,6 +7,7 @@ import { FeatureGallery, type FeatureSlide } from '@/components/home-redesign/fe
 import { VideoShowcase } from '@/components/home-redesign/video-showcase'
 import { ContactSection } from '@/components/home-redesign/contact-section'
 import { ShopGrid } from '@/components/home-redesign/shop-grid'
+import { HeroCarousel, type HeroShot } from '@/components/home-redesign/hero-carousel'
 import { Eyebrow, SectionHead } from '@/components/home-redesign/section-head'
 import { getHomePage, getProperties } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
@@ -112,12 +113,35 @@ export default async function HomePage({
   const landPhotos = photosFrom(available)
   const homePhotos = photosFrom(realised)
 
-  // Hero art is editorial only, never scavenged from a listing.
+  /**
+   * Hero carousel.
+   *
+   * `heroSlides` on the global wins — that is the editorial field, and CPI can
+   * curate the sequence there. Failing that it falls back to the single
+   * `heroImage`, then tops up from the site's own photographs so the carousel
+   * has something to rotate through rather than sitting on one frame.
+   *
+   * The top-up draws from `photos` (gallery shots), never from `banners`: a
+   * featured image is marketing artwork with the site name burned across it,
+   * and full-bleed behind the headline that reads as two competing titles.
+   */
   const heroImage = home.heroImage as Media | null
-  const heroSlide = (home.heroSlides ?? [])
+  const curated: HeroShot[] = (home.heroSlides ?? [])
     .map((s) => s.image as Media | null)
-    .find((m): m is Media => Boolean(m?.url))
-  const heroSrc = heroSlide?.url ?? heroImage?.url ?? null
+    .filter((m): m is Media => Boolean(m?.url))
+    .map((m) => ({ src: m.url as string, alt: m.alt ?? '' }))
+
+  const heroShots: HeroShot[] = curated.length
+    ? curated
+    : [
+        ...(heroImage?.url ? [{ src: heroImage.url, alt: heroImage.alt ?? '' }] : []),
+        ...photos.map((s) => ({ src: s.src, alt: s.alt })),
+      ]
+        .filter((shot, i, all) => all.findIndex((o) => o.src === shot.src) === i)
+        .slice(0, 5)
+
+  // Whatever the hero uses is claimed, so the sections below do not repeat it.
+  heroShots.forEach((shot) => claimed.add(shot.src))
 
   const approachShots = take(3)
   const metierImage = take(1)[0] ?? null
@@ -149,21 +173,17 @@ export default async function HomePage({
     <>
       {/* ── 1 · Hero ─────────────────────────────────────────────── */}
       <section id="top" className="relative flex min-h-[88vh] items-end overflow-hidden">
-        {heroSrc ? (
-          <Image
-            src={heroSrc}
-            alt={heroImage?.alt ?? ''}
-            fill
-            priority
-            sizes="100vw"
-            className="-z-20 object-cover"
-          />
-        ) : null}
+        <HeroCarousel shots={heroShots} />
         {/* The type sits at the foot of the frame, so the scrim is weighted
-            there rather than spread evenly. */}
+            there rather than spread evenly.
+            The middle stop is heavier than a single hero would need: the
+            carousel rotates through whatever CPI has, and one of those slides
+            is a pale villa wall the headline has to stay legible against. A
+            fixed scrim over rotating photography has to survive the brightest
+            frame, not the average one. */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.45)_0%,rgb(36_11_9/0.35)_35%,rgb(36_11_9/0.92)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.62)_0%,rgb(36_11_9/0.55)_35%,rgb(36_11_9/0.94)_100%)]"
         />
 
         <div className="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-16">

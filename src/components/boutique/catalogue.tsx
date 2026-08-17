@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
-import { useFormatter, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 import { useCart } from '@/components/cart/cart-provider'
 
@@ -31,7 +31,6 @@ export type CataloguePlot = {
 
 export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
   const t = useTranslations('boutique')
-  const format = useFormatter()
   const { add, has, ready } = useCart()
 
   // Filters come from the data, so a new region entered in the admin creates
@@ -42,8 +41,6 @@ export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
   )
   const [region, setRegion] = useState<string | null>(null)
   const [sort, setSort] = useState('featured')
-
-  const money = (n: number) => `${format.number(n, { maximumFractionDigits: 0 })} FCFA`
 
   const shown = useMemo(() => {
     const list = region ? plots.filter((p) => p.region === region) : [...plots]
@@ -193,12 +190,12 @@ export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
                     </div>
 
                     <div className="mt-auto flex items-end justify-between gap-4 border-t border-subtle pt-[18px]">
+                      {/* Prices are held in the CMS but not published: every
+                          plot is quoted case by case, so a figure here would be
+                          a number the visitor could hold us to. */}
                       <span className="flex flex-col gap-[3px]">
-                        <span className="text-[10px] tracking-[0.14em] text-foreground-muted uppercase">
-                          {p.priceCaption || t('deposit')}
-                        </span>
                         <span className="font-heading text-2xl leading-none font-bold text-brand">
-                          {p.price != null ? money(p.price) : t('onRequest')}
+                          {t('onQuote')}
                         </span>
                       </span>
                       <button

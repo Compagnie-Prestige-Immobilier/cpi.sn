@@ -28,7 +28,10 @@ const ITEMS = [
 ] as const
 
 export async function ShopGrid() {
-  const t = await getTranslations('home.shop')
+  const [t, tShop] = await Promise.all([
+    getTranslations('home.shop'),
+    getTranslations('boutique'),
+  ])
 
   return (
     <section id="shop" className="mx-auto max-w-[1400px] px-6 pt-[110px]">
@@ -37,12 +40,13 @@ export async function ShopGrid() {
         <h2 className="mt-4 font-heading text-[clamp(2.25rem,4vw,3.5rem)] leading-[0.95] font-bold text-foreground uppercase">
           {t('title')}
         </h2>
-        <p className="mt-5 text-[15px] leading-relaxed text-foreground-muted">{t('subtitle')}</p>
+        <p className="mt-5 text-[15px] leading-relaxed text-foreground-muted">
+          {tShop('onQuoteHint')}
+        </p>
       </div>
 
       <div className="mt-14 grid gap-px bg-subtle sm:grid-cols-2 lg:grid-cols-3">
         {ITEMS.map((item) => {
-          const price = t(`items.${item.key}.price`)
           const label = t(`items.${item.key}.cta`)
 
           return (
@@ -60,13 +64,9 @@ export async function ShopGrid() {
               </p>
 
               <div className="mt-7 flex items-center justify-between gap-4 border-t border-subtle pt-5">
-                {price ? (
-                  <p className="text-[13px] font-semibold text-brand">
-                    {item.key === 'instalment' ? price : t('from', { price })}
-                  </p>
-                ) : (
-                  <span />
-                )}
+                {/* "Sur devis", matching the Boutique. A figure here and a
+                    quote there, two clicks apart, reads as a bait price. */}
+                <p className="text-[13px] font-semibold text-brand">{tShop('onQuote')}</p>
                 {'portal' in item && item.portal ? (
                   <a
                     href="https://monespace.cpi.sn"

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { AddToBasket } from '@/components/boutique/add-to-basket'
 import { Basket } from '@/components/boutique/basket'
@@ -34,13 +34,11 @@ export default async function BoutiquePage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [t, format, items] = await Promise.all([
+  const [t, items] = await Promise.all([
     getTranslations('boutique'),
-    getFormatter(),
     getShopItems(locale as Locale),
   ])
 
-  const money = (n: number) => `${format.number(n, { maximumFractionDigits: 0 })} FCFA`
   const mediaUrl = (v: unknown) =>
     typeof v === 'object' && v !== null && 'url' in v ? ((v as Media).url ?? null) : null
 
@@ -128,7 +126,7 @@ export default async function BoutiquePage({ params }: Props) {
             </h2>
           </div>
           <p className="max-w-[34ch] text-[15px] leading-relaxed text-foreground-muted">
-            {t('servicesNote')}
+            {t('onQuoteHint')}
           </p>
         </div>
 
@@ -145,12 +143,9 @@ export default async function BoutiquePage({ params }: Props) {
               ) : (
                 <span className="flex-1" />
               )}
-              {s.price != null ? (
-                <p className="mt-5 font-heading text-2xl leading-none font-bold text-brand">
-                  {s.priceCaption ? `${s.priceCaption} ` : ''}
-                  {money(s.price)}
-                </p>
-              ) : null}
+              <p className="mt-5 font-heading text-2xl leading-none font-bold text-brand">
+                {t('onQuote')}
+              </p>
               <div className="mt-4">
                 {s.action === 'portal' ? (
                   <a

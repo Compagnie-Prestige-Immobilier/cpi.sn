@@ -284,7 +284,8 @@
       "statFamilies": "familles logées",
       "statSites": "sites autour de Dakar",
       "statYears": "ans d'expérience",
-      "statReferral": "des ventes par recommandation"
+      "statReferral": "des ventes par recommandation",
+      "slide": "Image {n}"
     },
     "approach": {
       "eyebrow": "Découvrir",
@@ -370,42 +371,35 @@
       "title": "Réserver & payer en ligne",
       "subtitle": "Réservations, dossiers et prestations : dites-nous ce qu’il vous faut, notre équipe vous rappelle pour finaliser.",
       "popular": "Le plus demandé",
-      "from": "dès {price}",
       "items": {
         "plot": {
           "title": "Réserver une parcelle",
           "body": "Bloquez la parcelle de votre choix. Notre équipe confirme la disponibilité et les modalités.",
-          "price": "250 000 FCFA",
           "cta": "Réserver"
         },
         "documents": {
           "title": "Dossiers & documents",
           "body": "Titre foncier, plan de bornage, attestation de propriété — commandés et délivrés en version numérique.",
-          "price": "15 000 FCFA",
           "cta": "Commander"
         },
         "advisory": {
           "title": "Prestations conseil",
           "body": "Étude juridique, analyse foncière, assistance notariale — réservez un créneau avec notre cabinet.",
-          "price": "50 000 FCFA",
           "cta": "Réserver"
         },
         "instalment": {
           "title": "Payer une échéance",
           "body": "Réglez votre mensualité et suivez votre échéancier depuis votre espace client.",
-          "price": "Espace client",
           "cta": "Ouvrir mon espace"
         },
         "goodies": {
           "title": "Goodies CPI",
           "body": "Produits dérivés : carnets, casquettes, polos — livrés à Dakar.",
-          "price": "5 000 FCFA",
           "cta": "Demander"
         },
         "account": {
           "title": "Espace client",
           "body": "Contrats, échéancier, reçus et avancement du chantier — réservé aux clients CPI.",
-          "price": "",
           "cta": "Se connecter"
         }
       }
@@ -446,8 +440,6 @@
     "cart": {
       "title": "Mon panier",
       "empty": "Votre panier est vide.",
-      "total": "Total indicatif",
-      "quoteNote": "Certaines lignes sont à prix sur demande : le montant final vous est confirmé par notre équipe.",
       "checkout": "Demander un devis",
       "remove": "Retirer",
       "increase": "Augmenter la quantité",
@@ -464,12 +456,12 @@
     "sortSurfaceDesc": "Surface décroissante",
     "sortName": "Nom (A–Z)",
     "results": "{count, plural, one {# terrain} other {# terrains}}",
-    "deposit": "Acompte de réservation",
-    "servicesNote": "Tarifs fixes, délivrance numérique sous 72 h ouvrées.",
     "openCart": "Ouvrir le panier",
     "closeCart": "Fermer le panier",
     "noResults": "Aucun terrain ne correspond à ce filtre.",
-    "popular": "Le plus demandé"
+    "popular": "Le plus demandé",
+    "onQuote": "Sur devis",
+    "onQuoteHint": "Chaque dossier est chiffré selon la parcelle et les modalités choisies."
   },
   "about": {
     "founder": "Le mot de la Direction"

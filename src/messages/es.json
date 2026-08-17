@@ -284,7 +284,8 @@
       "statFamilies": "familias alojadas",
       "statSites": "sitios alrededor de Dakar",
       "statYears": "años de experiencia",
-      "statReferral": "de las ventas por recomendación"
+      "statReferral": "de las ventas por recomendación",
+      "slide": "Imagen {n}"
     },
     "approach": {
       "eyebrow": "Descubrir",
@@ -370,42 +371,35 @@
       "title": "Reservar y gestionar en línea",
       "subtitle": "Reservas, expedientes y servicios: díganos qué necesita y nuestro equipo le llamará para concretarlo.",
       "popular": "Lo más solicitado",
-      "from": "desde {price}",
       "items": {
         "plot": {
           "title": "Reservar una parcela",
           "body": "Bloquee la parcela que elija. Nuestro equipo confirma la disponibilidad y las condiciones.",
-          "price": "250 000 FCFA",
           "cta": "Reservar"
         },
         "documents": {
           "title": "Expedientes y documentos",
           "body": "Título de propiedad, plano de deslinde, certificado de propiedad: solicitados y entregados en formato digital.",
-          "price": "15 000 FCFA",
           "cta": "Solicitar"
         },
         "advisory": {
           "title": "Servicios de asesoría",
           "body": "Estudio jurídico, análisis del suelo, asistencia notarial: reserve una cita con nuestro gabinete.",
-          "price": "50 000 FCFA",
           "cta": "Reservar"
         },
         "instalment": {
           "title": "Pagar un vencimiento",
           "body": "Abone su mensualidad y consulte su calendario de pagos desde su área de cliente.",
-          "price": "Área de cliente",
           "cta": "Abrir mi área"
         },
         "goodies": {
           "title": "Artículos CPI",
           "body": "Merchandising: cuadernos, gorras, polos, con entrega en Dakar.",
-          "price": "5 000 FCFA",
           "cta": "Consultar"
         },
         "account": {
           "title": "Área de cliente",
           "body": "Contratos, calendario de pagos, recibos y avance de la obra, para clientes de CPI.",
-          "price": "",
           "cta": "Iniciar sesión"
         }
       }
@@ -446,8 +440,6 @@
     "cart": {
       "title": "Mi carrito",
       "empty": "Su carrito está vacío.",
-      "total": "Total orientativo",
-      "quoteNote": "Algunas líneas tienen precio a consultar: nuestro equipo le confirmará el importe final.",
       "checkout": "Solicitar presupuesto",
       "remove": "Quitar",
       "increase": "Aumentar la cantidad",
@@ -464,12 +456,12 @@
     "sortSurfaceDesc": "Superficie descendente",
     "sortName": "Nombre (A–Z)",
     "results": "{count, plural, one {# terreno} other {# terrenos}}",
-    "deposit": "Señal de reserva",
-    "servicesNote": "Precios fijos, entrega digital en 72 h laborables.",
     "openCart": "Abrir el carrito",
     "closeCart": "Cerrar el carrito",
     "noResults": "Ningún terreno coincide con este filtro.",
-    "popular": "Lo más solicitado"
+    "popular": "Lo más solicitado",
+    "onQuote": "A consultar",
+    "onQuoteHint": "Cada expediente se presupuesta según la parcela y las condiciones elegidas."
   },
   "about": {
     "founder": "Palabras de la dirección"

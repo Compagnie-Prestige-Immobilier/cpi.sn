@@ -284,7 +284,8 @@
       "statFamilies": "families housed",
       "statSites": "sites around Dakar",
       "statYears": "years of experience",
-      "statReferral": "of sales by referral"
+      "statReferral": "of sales by referral",
+      "slide": "Image {n}"
     },
     "approach": {
       "eyebrow": "Discover",
@@ -370,42 +371,35 @@
       "title": "Reserve & arrange online",
       "subtitle": "Reservations, documents and advisory work: tell us what you need and our team will call you back to finalise.",
       "popular": "Most requested",
-      "from": "from {price}",
       "items": {
         "plot": {
           "title": "Reserve a plot",
           "body": "Hold the plot of your choice. Our team confirms availability and terms.",
-          "price": "250,000 FCFA",
           "cta": "Reserve"
         },
         "documents": {
           "title": "Documents & paperwork",
           "body": "Title deed, boundary plan, proof of ownership — ordered and delivered digitally.",
-          "price": "15,000 FCFA",
           "cta": "Order"
         },
         "advisory": {
           "title": "Advisory services",
           "body": "Legal review, land analysis, notarial assistance — book a slot with our practice.",
-          "price": "50,000 FCFA",
           "cta": "Book"
         },
         "instalment": {
           "title": "Pay an instalment",
           "body": "Settle your monthly payment and follow your schedule from your client area.",
-          "price": "Client area",
           "cta": "Open my area"
         },
         "goodies": {
           "title": "CPI goodies",
           "body": "Merchandise: notebooks, caps, polo shirts — delivered in Dakar.",
-          "price": "5,000 FCFA",
           "cta": "Enquire"
         },
         "account": {
           "title": "Client area",
           "body": "Contracts, schedules, receipts and build progress — for CPI clients.",
-          "price": "",
           "cta": "Sign in"
         }
       }
@@ -446,8 +440,6 @@
     "cart": {
       "title": "My basket",
       "empty": "Your basket is empty.",
-      "total": "Indicative total",
-      "quoteNote": "Some lines are priced on request: the final amount is confirmed by our team.",
       "checkout": "Request a quote",
       "remove": "Remove",
       "increase": "Increase quantity",
@@ -464,12 +456,12 @@
     "sortSurfaceDesc": "Surface descending",
     "sortName": "Name (A–Z)",
     "results": "{count, plural, one {# plot} other {# plots}}",
-    "deposit": "Reservation deposit",
-    "servicesNote": "Fixed prices, digital delivery within 72 working hours.",
     "openCart": "Open basket",
     "closeCart": "Close basket",
     "noResults": "No plot matches this filter.",
-    "popular": "Most requested"
+    "popular": "Most requested",
+    "onQuote": "On request",
+    "onQuoteHint": "Each file is quoted according to the plot and the terms chosen."
   },
   "about": {
     "founder": "A word from the leadership"
