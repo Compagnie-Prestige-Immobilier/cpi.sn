@@ -22,7 +22,7 @@
     "import": "tsx src/migration/import.ts",
     "check:legacy": "node scripts/check-no-legacy.mjs",
     "archive:legacy": "node scripts/archive-legacy.mjs",
-    "seed:dump": "bash -c 'pg_dump \"$DATABASE_URI\" --data-only --no-owner --no-privileges --exclude-table=users --exclude-table=users_sessions --exclude-table=payload_preferences --exclude-table=payload_preferences_rels --exclude-table=payload_locked_documents --exclude-table=payload_locked_documents_rels --exclude-table=leads --exclude-table=leads_rels --exclude-table=payload_migrations --exclude-table=payload_kv | gzip -9 > seed/cpi-seed.sql.gz && ls -lh seed/cpi-seed.sql.gz'",
+    "seed:dump": "bash scripts/seed-dump.sh",
     "seed:media": "bash -c 'rm -f seed/uploads/media.tar.gz.part-* && mkdir -p seed/uploads && tar cf - media | gzip -6 | split -b 40m - seed/uploads/media.tar.gz.part- && ls -lh seed/uploads/'",
     "seed:home": "tsx src/migration/seed-home.ts",
     "seed:about": "tsx src/migration/seed-about.ts",

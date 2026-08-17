@@ -114,21 +114,38 @@ not "restore" system detection without raising it first.
 
    | Role | Hex | Token |
    |---|---|---|
-   | Principal | `#65000D` | `--maroon-700` |
+   | Principal | `#670A11` | `--maroon-700` |
    | Secondaire | `#EBB756` | `--gold-300` |
    | Semi-secondaire | `#3D3C3B` | `--on-gold-ink` |
 
    Each is used where it measures, which is the whole reason the token layer
-   exists. The principal carries text on light grounds (**11.99:1** on cream) and
-   becomes the highlight surface on dark ones, where it would otherwise vanish.
-   The gold carries text on dark (**10.31:1**) and fills buttons in both themes,
-   labelled with the semi-secondary (**6.00:1**). Page grounds are darker steps
-   derived from the principal, not neutral blacks.
+   exists. The principal carries text on light grounds (**11.48:1** on cream)
+   and returns as filled accents on dark ones. The gold carries text on the dark
+   ground (**8.78:1**) and fills buttons in both themes, labelled with the
+   semi-secondary (**6.00:1**).
 
-   `#65000D` is CPI's own red, and the same value the site launched on before
-   the redesign rounds — the palette has come back to it. Do not reintroduce the
-   green of refresh 1, the near-black `#1A0F0E`, or the interim `#551B18`; none
-   of them were CPI's brand.
+   **Two scales — read this before changing the dark background.**
+
+   - `--maroon-*` is the brand red at full chroma (`#670A11`, H355 S82%, L22%).
+     Accents, filled panels, badges, and all brand text in light mode.
+   - `--ground-*` is the dark theme's surfaces: near-black reds at **L9%**
+     (`#2C0006` page, `#3A050C` raised, `#1C0004` sunken).
+
+   **Three grounds were tried, in this order, and only the first survived:**
+
+   | Ground | | Outcome |
+   |---|---|---|
+   | `#2C0006` L9% | near-black red | current |
+   | `#670A11` L22% | the brand red itself | rejected — "too aggressive" |
+   | `#3E1216` L16% | brand hue, chroma reduced | rejected — still too aggressive |
+
+   The lesson is about **lightness, not hue**: anything with real lightness in
+   it is tiring across a full page, however faithful the colour. At L9% the hue
+   reads as warmth behind the content, and the brand red does its work in the
+   accents, where it is small and welcome.
+
+   Do not raise the ground's lightness to "show the brand better" — that is
+   exactly the change that was made twice and reverted twice.
 
    **SUPERSEDED (redesign refresh 1): deep green + gold.**
    `#0D1712` ground, `#C69A46` gold, `#F5F1E9` type — the designer's palette,

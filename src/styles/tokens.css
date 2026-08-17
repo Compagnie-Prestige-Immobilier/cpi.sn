@@ -12,13 +12,14 @@
  * move from burgundy to green/gold by editing this one file.
  *
  * ── CPI's official colours ─────────────────────────────────────────────────
- *   PRINCIPAL       #65000D  --maroon-700
+ *   PRINCIPAL       #670A11  --maroon-700
  *   SECONDAIRE      #EBB756  --gold-300
  *   SEMI-SECONDAIRE #3D3C3B  --on-gold-ink
  *
  * All three are used where they measure: the principal carries text on light
- * grounds (11.99:1) and becomes the highlight surface on dark ones; the gold
- * carries text on dark (10.31:1) and fills buttons in both, labelled with the
+ * grounds (11.48:1) and returns as filled accents on dark ones, where the page
+ * itself is a near-black red. The gold carries text on that ground (10.31:1)
+ * and fills buttons in both, labelled with the
  * semi-secondary (6.00:1). The greens and near-blacks of the earlier rounds are
  * gone.
  *
@@ -59,17 +60,27 @@
   --gold-900: #7a5313;
   --gold-950: #6b4810;
 
-  /* Maroon — CPI's PRINCIPAL, #65000D. The 700 step is the official colour;
-     the darker steps are page grounds derived from it, the lighter ones exist
-     for borders and hovers. */
+  /* Maroon — CPI's PRINCIPAL, #670A11, at full chroma. Used where the brand
+     red should be unmistakable: text and borders on light grounds, filled
+     accents and highlight panels on dark ones. */
   --maroon-300: #d4606f;
   --maroon-400: #c4283e;
   --maroon-500: #a61228;
-  --maroon-600: #4a0009; /* darker than 700 on purpose: light-mode hover */
-  --maroon-700: #65000d; /* ← CPI PRINCIPAL */
-  --maroon-800: #3a0007;
-  --maroon-900: #2c0006;
-  --maroon-950: #180003;
+  --maroon-600: #7a0d16;
+  --maroon-700: #670a11; /* ← CPI PRINCIPAL */
+  --maroon-800: #4e070e;
+  --maroon-900: #3a050c;
+  --maroon-950: #2a0409;
+
+  /* Dark grounds. Deliberately near-black reds rather than the brand colour
+     itself: the page is a very large surface, and anything with real lightness
+     in it — #670A11 at L22%, or the muted #3E1216 at L16% — was tiring to look
+     at across a whole screen. At L9% the hue reads as warmth behind the content
+     instead of a field of colour, and the brand red does its work in the
+     accents. Both brighter options were tried and rejected. */
+  --ground-700: #3a050c; /* raised: cards, header */
+  --ground-800: #2c0006; /* the dark page ground */
+  --ground-900: #1c0004; /* sunken */
 
   /* Warm neutrals, for muted type and hairlines. */
   --brown-100: #c9bcb5;
@@ -101,9 +112,9 @@
   --surface: var(--sand-100);
   --surface-raised: var(--white);
   --surface-sunken: var(--sand-200);
-  --surface-inverse: var(--maroon-900);
+  --surface-inverse: var(--maroon-700);
 
-  --foreground: var(--maroon-900); /* 16.59:1 */
+  --foreground: var(--maroon-900); /* 15.49:1 */
   --foreground-muted: var(--brown-600); /*  7.34:1 */
   --foreground-inverse: var(--sand-100);
 
@@ -112,8 +123,8 @@
 
   /* The PRINCIPAL carries text and borders — 12.01:1 on the cream ground,
      where the secondary gold would be 1.63:1 and unusable. */
-  --brand: var(--maroon-700); /* 11.99:1 */
-  --brand-hover: var(--maroon-600); /* 14.43:1 */
+  --brand: var(--maroon-700); /* 11.48:1 */
+  --brand-hover: var(--maroon-800); /* 13.74:1 */
   --brand-muted: #f7e6e7;
   --brand-border: var(--maroon-700);
   --brand-solid: var(--gold-300); /* the designer's gold, unchanged */
@@ -133,7 +144,7 @@
      wrong because it flips to a light value in dark mode. `--brand-on-light`
      is gold that has to stay legible on a white chip in either theme
      (#C69A46 on white is 2.59:1; this step is 6.83:1). */
-  --ground-dark: var(--maroon-900);
+  --ground-dark: var(--maroon-700);
   --ground-dark-foreground: var(--sand-100);
   --brand-on-light: var(--gold-900);
 }
@@ -143,16 +154,16 @@
    --------------------------------------------------------------------------- */
 :root[data-theme='dark'],
 .dark {
-  --surface: var(--maroon-900); /* derived from the principal */
-  --surface-raised: var(--maroon-800);
-  --surface-sunken: var(--maroon-950);
+  --surface: var(--ground-800); /* near-black red — see §1 */
+  --surface-raised: var(--ground-700);
+  --surface-sunken: var(--ground-900);
   --surface-inverse: var(--sand-100);
 
   --foreground: var(--sand-100); /* 16.71:1 */
   --foreground-muted: var(--brown-200); /*  8.0:1  */
-  --foreground-inverse: var(--maroon-900);
+  --foreground-inverse: var(--maroon-700);
 
-  --border-subtle: #4a0010;
+  --border-subtle: #4a1017;
   --border-strong: var(--brown-400); /* 3.72:1 */
 
   /* On a dark ground the principal disappears, so the SECONDARY gold carries
@@ -160,7 +171,7 @@
      each used where it measures. */
   --brand: var(--gold-300); /* 10.31:1 */
   --brand-hover: var(--gold-200); /* 12.4:1  */
-  --brand-muted: var(--maroon-700); /* the principal, as a panel */
+  --brand-muted: var(--maroon-700); /* the pure brand red, as a highlight panel */
   --brand-border: var(--gold-300);
   --brand-solid: var(--gold-300);
   --brand-solid-hover: var(--gold-200);
@@ -173,7 +184,7 @@
   --overlay: rgb(0 0 0 / 0.7);
 
   /* Deliberately identical to the light column — see the note there. */
-  --ground-dark: var(--maroon-900);
+  --ground-dark: var(--maroon-700);
   --ground-dark-foreground: var(--sand-100);
   --brand-on-light: var(--gold-900);
 }

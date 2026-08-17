@@ -140,12 +140,13 @@ async function main() {
 
   // Founder portrait, supplied by CPI. Imported from the repo root rather than
   // the legacy archive: `legacy-archive/…/founder.jpg` is Houzez stock showing
-  // a different person entirely.
-  const portraitPath = path.resolve(process.cwd(), 'founder.png')
+  // a different person entirely. `AG.png` superseded the earlier `founder.png`,
+  // which was a still pulled from the video.
+  const portraitPath = path.resolve(process.cwd(), 'AG.png')
   const portraitId = existsSync(portraitPath)
     ? await importLocalFile(payload, portraitPath, 'Aminata Sall SY, fondatrice de CPI')
     : null
-  if (!portraitId) console.warn('  ⚠ founder.png not found — portrait left unset')
+  if (!portraitId) console.warn('  ⚠ AG.png not found — portrait left unset')
 
   const gaindePosterId = await importPoster(
     payload,
