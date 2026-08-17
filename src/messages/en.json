@@ -470,5 +470,8 @@
     "closeCart": "Close basket",
     "noResults": "No plot matches this filter.",
     "popular": "Most requested"
+  },
+  "about": {
+    "founder": "A word from the leadership"
   }
 }

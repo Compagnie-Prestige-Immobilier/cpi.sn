@@ -470,5 +470,8 @@
     "closeCart": "Cerrar el carrito",
     "noResults": "Ningún terreno coincide con este filtro.",
     "popular": "Lo más solicitado"
+  },
+  "about": {
+    "founder": "Palabras de la dirección"
   }
 }

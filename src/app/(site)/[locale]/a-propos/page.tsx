@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { RenderBlocks } from '@/blocks/render'
 import { SectionHeader } from '@/components/ui/section-header'
+import { FounderIntro } from '@/components/about/founder-intro'
 import { ServicesGrid } from '@/components/about/services-grid'
 import { TeamGrid } from '@/components/about/team-grid'
 import { getPage, getPageOr404, pageMetadata, PAGE_SLUGS } from '@/lib/pages'
@@ -28,6 +29,10 @@ export default async function AboutPage({ params }: Props) {
           <SectionHeader eyebrow="CPI" title={page.title} align="start" />
         </div>
       </div>
+
+      {/* The Administratrice Générale, straight after the hero: she is the
+          reason the company reads as trustworthy, so she leads the page. */}
+      <FounderIntro />
 
       {/* Blocks carry the narrative: intro, chiffres, parcours, valeurs,
           expertise, CTA. Services and team are collections, so they are

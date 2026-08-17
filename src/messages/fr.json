@@ -470,5 +470,8 @@
     "closeCart": "Fermer le panier",
     "noResults": "Aucun terrain ne correspond à ce filtre.",
     "popular": "Le plus demandé"
+  },
+  "about": {
+    "founder": "Le mot de la Direction"
   }
 }
