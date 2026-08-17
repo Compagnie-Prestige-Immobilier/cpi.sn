@@ -12,13 +12,13 @@
  * move from burgundy to green/gold by editing this one file.
  *
  * ── CPI's official colours ─────────────────────────────────────────────────
- *   PRINCIPAL       #551B18  --maroon-700
+ *   PRINCIPAL       #65000D  --maroon-700
  *   SECONDAIRE      #EBB756  --gold-300
  *   SEMI-SECONDAIRE #3D3C3B  --on-gold-ink
  *
  * All three are used where they measure: the principal carries text on light
- * grounds (12.01:1) and becomes the highlight surface on dark ones; the gold
- * carries text on dark (10.15:1) and fills buttons in both, labelled with the
+ * grounds (11.99:1) and becomes the highlight surface on dark ones; the gold
+ * carries text on dark (10.31:1) and fills buttons in both, labelled with the
  * semi-secondary (6.00:1). The greens and near-blacks of the earlier rounds are
  * gone.
  *
@@ -59,17 +59,17 @@
   --gold-900: #7a5313;
   --gold-950: #6b4810;
 
-  /* Maroon — CPI's PRINCIPAL, #551B18. The 700 step is the official colour;
-     the darker steps are grounds derived from it and the lighter ones exist so
-     the hue survives on a dark ground. */
-  --maroon-300: #d98a80;
-  --maroon-400: #c4685e;
-  --maroon-500: #a85149;
-  --maroon-600: #6d2620;
-  --maroon-700: #551b18; /* ← CPI PRINCIPAL */
-  --maroon-800: #3a1210;
-  --maroon-900: #240b09;
-  --maroon-950: #1a0806;
+  /* Maroon — CPI's PRINCIPAL, #65000D. The 700 step is the official colour;
+     the darker steps are page grounds derived from it, the lighter ones exist
+     for borders and hovers. */
+  --maroon-300: #d4606f;
+  --maroon-400: #c4283e;
+  --maroon-500: #a61228;
+  --maroon-600: #4a0009; /* darker than 700 on purpose: light-mode hover */
+  --maroon-700: #65000d; /* ← CPI PRINCIPAL */
+  --maroon-800: #3a0007;
+  --maroon-900: #2c0006;
+  --maroon-950: #180003;
 
   /* Warm neutrals, for muted type and hairlines. */
   --brown-100: #c9bcb5;
@@ -112,9 +112,9 @@
 
   /* The PRINCIPAL carries text and borders — 12.01:1 on the cream ground,
      where the secondary gold would be 1.63:1 and unusable. */
-  --brand: var(--maroon-700); /* 12.01:1 */
-  --brand-hover: var(--maroon-600); /*  9.6:1  */
-  --brand-muted: #f4e7e4;
+  --brand: var(--maroon-700); /* 11.99:1 */
+  --brand-hover: var(--maroon-600); /* 14.43:1 */
+  --brand-muted: #f7e6e7;
   --brand-border: var(--maroon-700);
   --brand-solid: var(--gold-300); /* the designer's gold, unchanged */
   --brand-solid-hover: var(--gold-200);
@@ -126,7 +126,7 @@
   --accent-on-dark: var(--gold-300);
 
   --focus-ring: var(--gold-700);
-  --overlay: rgb(36 11 9 / 0.6);
+  --overlay: rgb(44 0 6 / 0.6);
 
   /* Fixed in BOTH themes. `--ground-dark` is for panels that are dark by
      design — hero fallbacks, listing headers — where `--surface-inverse` is
@@ -152,14 +152,14 @@
   --foreground-muted: var(--brown-200); /*  8.0:1  */
   --foreground-inverse: var(--maroon-900);
 
-  --border-subtle: #46201c;
+  --border-subtle: #4a0010;
   --border-strong: var(--brown-400); /* 3.72:1 */
 
   /* On a dark ground the principal disappears, so the SECONDARY gold carries
      text and the principal becomes the highlight surface. Same three colours,
      each used where it measures. */
-  --brand: var(--gold-300); /* 10.15:1 */
-  --brand-hover: var(--gold-200); /* 12.2:1  */
+  --brand: var(--gold-300); /* 10.31:1 */
+  --brand-hover: var(--gold-200); /* 12.4:1  */
   --brand-muted: var(--maroon-700); /* the principal, as a panel */
   --brand-border: var(--gold-300);
   --brand-solid: var(--gold-300);

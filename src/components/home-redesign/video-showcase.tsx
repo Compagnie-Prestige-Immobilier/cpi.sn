@@ -47,7 +47,7 @@ export function VideoShowcase({
             aria-label={playLabel}
             onClick={() => setLoaded(true)}
             disabled={!videoId}
-            className="group absolute inset-0 grid place-items-center bg-[rgb(36_11_9/0.25)] transition-colors hover:bg-[rgb(36_11_9/0.35)]"
+            className="group absolute inset-0 grid place-items-center bg-[rgb(44_0_6/0.25)] transition-colors hover:bg-[rgb(44_0_6/0.35)]"
           >
             <span className="grid size-20 place-items-center bg-brand-solid text-brand-solid-foreground transition-transform duration-300 group-hover:scale-110">
               <svg viewBox="0 0 24 24" fill="currentColor" className="ms-1 size-7" aria-hidden>

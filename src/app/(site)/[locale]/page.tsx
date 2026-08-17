@@ -183,7 +183,7 @@ export default async function HomePage({
             frame, not the average one. */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.62)_0%,rgb(36_11_9/0.55)_35%,rgb(36_11_9/0.94)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(44_0_6/0.62)_0%,rgb(44_0_6/0.55)_35%,rgb(44_0_6/0.94)_100%)]"
         />
 
         <div className="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-16">
@@ -366,7 +366,7 @@ export default async function HomePage({
               ) : null}
               <div
                 aria-hidden
-                className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(36_11_9/0.15)_0%,rgb(36_11_9/0.85)_100%)]"
+                className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(44_0_6/0.15)_0%,rgb(44_0_6/0.85)_100%)]"
               />
               {card.shot?.city ? (
                 <p className="mb-auto w-max border border-white/30 px-3 py-1 text-[11px] tracking-[0.18em] text-white uppercase">

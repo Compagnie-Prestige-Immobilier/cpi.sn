@@ -149,7 +149,7 @@ export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
                     )}
                     <div
                       aria-hidden
-                      className="absolute inset-0 bg-[linear-gradient(180deg,rgb(36_11_9/0)_45%,rgb(36_11_9/0.75)_100%)]"
+                      className="absolute inset-0 bg-[linear-gradient(180deg,rgb(44_0_6/0)_45%,rgb(44_0_6/0.75)_100%)]"
                     />
                     {p.featured ? (
                       <span className="absolute start-3.5 top-3.5 bg-brand-solid px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-brand-solid-foreground uppercase">

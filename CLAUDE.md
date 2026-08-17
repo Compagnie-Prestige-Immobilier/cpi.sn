@@ -114,19 +114,21 @@ not "restore" system detection without raising it first.
 
    | Role | Hex | Token |
    |---|---|---|
-   | Principal | `#551B18` | `--maroon-700` |
+   | Principal | `#65000D` | `--maroon-700` |
    | Secondaire | `#EBB756` | `--gold-300` |
    | Semi-secondaire | `#3D3C3B` | `--on-gold-ink` |
 
    Each is used where it measures, which is the whole reason the token layer
-   exists. The principal carries text on light grounds (**12.01:1** on cream) and
+   exists. The principal carries text on light grounds (**11.99:1** on cream) and
    becomes the highlight surface on dark ones, where it would otherwise vanish.
-   The gold carries text on dark (**10.15:1**) and fills buttons in both themes,
+   The gold carries text on dark (**10.31:1**) and fills buttons in both themes,
    labelled with the semi-secondary (**6.00:1**). Page grounds are darker steps
    derived from the principal, not neutral blacks.
 
-   Do not reintroduce the green of refresh 1 or the near-black `#1A0F0E`; both
-   were the designer's working palette, not CPI's brand.
+   `#65000D` is CPI's own red, and the same value the site launched on before
+   the redesign rounds — the palette has come back to it. Do not reintroduce the
+   green of refresh 1, the near-black `#1A0F0E`, or the interim `#551B18`; none
+   of them were CPI's brand.
 
    **SUPERSEDED (redesign refresh 1): deep green + gold.**
    `#0D1712` ground, `#C69A46` gold, `#F5F1E9` type — the designer's palette,
