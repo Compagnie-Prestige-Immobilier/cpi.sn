@@ -28,7 +28,6 @@
     "shopDocs": "Expedientes y documentos",
     "shopAdvisory": "Servicios de asesoría",
     "shopInstalment": "Pagar un vencimiento",
-    "shopGoodies": "Artículos CPI",
     "shopBasket": "Mi carrito",
     "groupMetiers": "Nuestras actividades"
   },
@@ -391,11 +390,6 @@
           "title": "Pagar un vencimiento",
           "body": "Abone su mensualidad y consulte su calendario de pagos desde su área de cliente.",
           "cta": "Abrir mi área"
-        },
-        "goodies": {
-          "title": "Artículos CPI",
-          "body": "Merchandising: cuadernos, gorras, polos, con entrega en Dakar.",
-          "cta": "Consultar"
         },
         "account": {
           "title": "Área de cliente",

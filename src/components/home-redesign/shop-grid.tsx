@@ -23,7 +23,6 @@ const ITEMS = [
   { key: 'documents', popular: false, href: '/contact' },
   { key: 'advisory', popular: false, href: '/contact' },
   { key: 'instalment', popular: false, portal: true },
-  { key: 'goodies', popular: false, href: '/contact' },
   { key: 'account', popular: false, portal: true },
 ] as const
 

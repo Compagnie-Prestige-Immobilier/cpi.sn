@@ -202,9 +202,6 @@ export async function SiteHeader() {
                 >
                   {t('shopInstalment')}
                 </a>
-                <a href={`${boutiquePath}#services`} className={linkClass}>
-                  {t('shopGoodies')}
-                </a>
                 <Link href="/ma-selection" className={`${linkClass} border-t border-subtle mt-1 pt-2.5 text-brand`}>
                   {t('shopBasket')}
                 </Link>

@@ -100,7 +100,7 @@ export function TemplateRegisterForm() {
             name="dialCode"
             aria-label={t('dialCode')}
             defaultValue="+221"
-            className={`${field} w-auto min-w-24`}
+            className={`${field} w-auto min-w-24 [&>option]:bg-surface-raised [&>option]:text-foreground`}
           >
             {DIAL_CODES.map((code) => (
               <option key={code} value={code}>

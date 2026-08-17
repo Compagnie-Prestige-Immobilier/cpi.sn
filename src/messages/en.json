@@ -28,7 +28,6 @@
     "shopDocs": "Documents & paperwork",
     "shopAdvisory": "Advisory services",
     "shopInstalment": "Pay an instalment",
-    "shopGoodies": "CPI goodies",
     "shopBasket": "My basket",
     "groupMetiers": "Our disciplines"
   },
@@ -391,11 +390,6 @@
           "title": "Pay an instalment",
           "body": "Settle your monthly payment and follow your schedule from your client area.",
           "cta": "Open my area"
-        },
-        "goodies": {
-          "title": "CPI goodies",
-          "body": "Merchandise: notebooks, caps, polo shirts — delivered in Dakar.",
-          "cta": "Enquire"
         },
         "account": {
           "title": "Client area",

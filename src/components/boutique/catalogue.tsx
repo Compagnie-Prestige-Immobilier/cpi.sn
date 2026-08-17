@@ -105,7 +105,10 @@ export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
               id="boutique-sort"
               value={sort}
               onChange={(e) => setSort(e.target.value)}
-              className="border border-subtle bg-transparent px-3 py-1.5 text-[12px] text-foreground outline-none focus:border-brand-border"
+              /* `[&>option]` is load-bearing: a native option inherits no
+                 background, so the popup was painting cream-on-transparent and
+                 the choices were unreadable in dark mode. */
+              className="border border-subtle bg-surface-raised px-3 py-1.5 text-[12px] text-foreground outline-none focus:border-brand-border [&>option]:bg-surface-raised [&>option]:text-foreground"
             >
               <option value="featured">{t('sortFeatured')}</option>
               <option value="surface-asc">{t('sortSurfaceAsc')}</option>

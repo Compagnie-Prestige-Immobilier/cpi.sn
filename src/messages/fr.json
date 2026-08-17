@@ -28,7 +28,6 @@
     "shopDocs": "Dossiers & documents",
     "shopAdvisory": "Prestations conseil",
     "shopInstalment": "Payer une échéance",
-    "shopGoodies": "Goodies CPI",
     "shopBasket": "Mon panier",
     "groupMetiers": "Nos métiers"
   },
@@ -391,11 +390,6 @@
           "title": "Payer une échéance",
           "body": "Réglez votre mensualité et suivez votre échéancier depuis votre espace client.",
           "cta": "Ouvrir mon espace"
-        },
-        "goodies": {
-          "title": "Goodies CPI",
-          "body": "Produits dérivés : carnets, casquettes, polos — livrés à Dakar.",
-          "cta": "Demander"
         },
         "account": {
           "title": "Espace client",

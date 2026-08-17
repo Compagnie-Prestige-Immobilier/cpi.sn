@@ -64,13 +64,6 @@ const ITEMS: Seed[] = [
     priceCaption: 'dès',
   },
   {
-    title: 'Goodies CPI',
-    kind: 'service',
-    description: 'Produits dérivés : carnets, casquettes, polos — livrés à Dakar.',
-    price: 5_000,
-    priceCaption: 'dès',
-  },
-  {
     title: 'Payer une échéance',
     kind: 'service',
     description: 'Réglez votre mensualité et suivez votre échéancier depuis votre espace client.',
