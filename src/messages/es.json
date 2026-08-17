@@ -455,7 +455,8 @@
     "noResults": "Ningún terreno coincide con este filtro.",
     "popular": "Lo más solicitado",
     "onQuote": "A consultar",
-    "onQuoteHint": "Cada expediente se presupuesta según la parcela y las condiciones elegidas."
+    "onQuoteHint": "Cada expediente se presupuesta según la parcela y las condiciones elegidas.",
+    "photoSoon": "Foto próximamente"
   },
   "about": {
     "founder": "Palabras de la dirección"

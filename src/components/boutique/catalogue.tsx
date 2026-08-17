@@ -145,7 +145,16 @@ export function BoutiqueCatalogue({ plots }: { plots: CataloguePlot[] }) {
                         className="h-[230px] w-full object-cover"
                       />
                     ) : (
-                      <div className="h-[230px] w-full bg-surface-sunken" />
+                      /* Deliberately empty rather than filled with a stand-in.
+                         Most of CPI's site imagery has the place name burned
+                         across it, and an unrelated photograph under a named
+                         plot claims to be that plot. Labelled so it reads as
+                         pending rather than broken. */
+                      <div className="grid h-[230px] w-full place-items-center bg-surface-sunken">
+                        <span className="text-[11px] tracking-[0.2em] text-foreground-muted uppercase">
+                          {t('photoSoon')}
+                        </span>
+                      </div>
                     )}
                     <div
                       aria-hidden

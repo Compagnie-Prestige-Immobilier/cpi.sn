@@ -455,7 +455,8 @@
     "noResults": "Aucun terrain ne correspond à ce filtre.",
     "popular": "Le plus demandé",
     "onQuote": "Sur devis",
-    "onQuoteHint": "Chaque dossier est chiffré selon la parcelle et les modalités choisies."
+    "onQuoteHint": "Chaque dossier est chiffré selon la parcelle et les modalités choisies.",
+    "photoSoon": "Photo à venir"
   },
   "about": {
     "founder": "Le mot de la Direction"

@@ -455,7 +455,8 @@
     "noResults": "No plot matches this filter.",
     "popular": "Most requested",
     "onQuote": "On request",
-    "onQuoteHint": "Each file is quoted according to the plot and the terms chosen."
+    "onQuoteHint": "Each file is quoted according to the plot and the terms chosen.",
+    "photoSoon": "Photo coming soon"
   },
   "about": {
     "founder": "A word from the leadership"

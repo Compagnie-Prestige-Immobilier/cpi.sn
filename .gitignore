@@ -35,3 +35,16 @@ legacy-archive
 
 CPI site redesign refresh 1
 CPI site redesign refresh finale
+
+# One-off image drops imported into Payload from the project root. Once
+# imported they live in the (ignored) /media volume and ship to production
+# inside seed/uploads/media.tar.gz.part-*, which IS committed — so keeping the
+# loose originals here would duplicate several MB of binaries in git history.
+#
+# `founder.png` is the deliberate exception: `npm run seed:home` reads it from
+# the project root on every run, so it has to stay tracked.
+/*.webp
+/*.jpg
+/*.jpeg
+/*.png
+!/founder.png

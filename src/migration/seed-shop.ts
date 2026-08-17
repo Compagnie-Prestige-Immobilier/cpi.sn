@@ -1,6 +1,15 @@
 /**
  * Seeds the Boutique catalogue.
  *
+ * NOTE on photographs: CPI has since supplied clean aerials for Sangalkam,
+ * Thiéo and Tassette, which replaced artwork that had the place name burned
+ * across it. Ndayanne still has only a banner, so its card shows a "photo à
+ * venir" placeholder — do not re-point it at `ndayane-1.webp`.
+ *
+ * `tassete.webp` is byte-identical to `thieo.webp`: CPI had no Tassette
+ * photograph and supplied the Thiéo one as a stand-in. Those two cards show the
+ * same image on purpose.
+ *
  *   npm run seed:shop
  *
  * Moves what was hardcoded in `src/components/boutique/plots.ts` into the
@@ -35,16 +44,16 @@ type Seed = {
 const ITEMS: Seed[] = [
   // ── Land, as the designer listed it in the header menu ──
   { title: 'Ngolfagnick', kind: 'terrain', place: 'Notto Gouye Diama', region: 'Thiès', imageHint: 'ngolfagnick', tags: ['Viabilisé', 'Titre foncier'], featured: true },
-  { title: 'Léne', kind: 'terrain', place: 'Lène, Thiès', region: 'Thiès', imageHint: 'lene', tags: ['Viabilisé', 'Bornage réalisé'] },
-  { title: 'Sangalkam', kind: 'terrain', place: 'Sangalkam, Rufisque', region: 'Rufisque', imageHint: 'sangalkam', tags: ['Viabilisé', 'Titre foncier'], featured: true },
+  // "Léne" and "Lélo Sérère" were the same site listed twice — merged.
+  { title: 'Lélo Lène', kind: 'terrain', place: 'Lélo Lène, Thiès', region: 'Thiès', imageHint: 'lene-22', tags: ['Viabilisé', 'Bornage réalisé'] },
+  { title: 'Sangalkam', kind: 'terrain', place: 'Sangalkam, Rufisque', region: 'Rufisque', imageHint: 'sangalkam.webp', tags: ['Viabilisé', 'Titre foncier'], featured: true },
   { title: 'Noflaye', kind: 'terrain', place: 'Noflaye, Rufisque', region: 'Rufisque', tags: ['Viabilisé', 'Accès bitumé'] },
   { title: 'Sébikhotane', kind: 'terrain', place: 'Sébikhotane, Rufisque', region: 'Rufisque', imageHint: 'sebikhotane', tags: ['Viabilisé', 'Titre foncier'] },
   { title: 'Kounoune', kind: 'terrain', place: 'Kounoune, Rufisque', region: 'Rufisque', tags: ['Viabilisé', 'Bornage réalisé'] },
   { title: 'Bambilor Extension', kind: 'terrain', place: 'Bambilor, Rufisque', region: 'Rufisque', tags: ['Viabilisé', 'Accès bitumé'] },
-  { title: 'Tassette', kind: 'terrain', place: 'Tassette, Thiès', region: 'Thiès', imageHint: 'tassette', tags: ['Viabilisé', 'Titre foncier'] },
-  { title: 'Lélo Sérère', kind: 'terrain', place: 'Lélo Sérère, Thiès', region: 'Thiès', tags: ['Viabilisé', 'Bornage réalisé'] },
-  { title: 'Ndayanne', kind: 'terrain', place: 'Ndayane, Popenguine', region: 'Mbour', imageHint: 'ndayane', tags: ['Viabilisé', 'Proche mer'], featured: true },
-  { title: 'Thiéo', kind: 'terrain', place: 'Thiéo, Thiès', region: 'Thiès', imageHint: 'thieo', tags: ['Viabilisé', 'Proche AIBD'] },
+  { title: 'Tassette', kind: 'terrain', place: 'Tassette, Thiès', region: 'Thiès', imageHint: 'tassete', tags: ['Viabilisé', 'Titre foncier'] },
+  { title: 'Ndayanne', kind: 'terrain', place: 'Ndayane, Popenguine', region: 'Mbour', tags: ['Viabilisé', 'Proche mer'], featured: true },
+  { title: 'Thiéo', kind: 'terrain', place: 'Thiéo, Thiès', region: 'Thiès', imageHint: 'thieo-', tags: ['Viabilisé', 'Proche AIBD'] },
 
   // ── Fixed-price services ──
   {
