@@ -7,12 +7,16 @@ import { TeamGrid } from '@/components/about/team-grid'
 import { getPage, getPageOr404, pageMetadata, PAGE_SLUGS } from '@/lib/pages'
 import { getTeam } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  return pageMetadata(await getPage(PAGE_SLUGS.about, locale as Locale))
+  return {
+    ...pageMetadata(await getPage(PAGE_SLUGS.about, locale as Locale)),
+    alternates: localeAlternates(locale as Locale, '/a-propos'),
+  }
 }
 
 export default async function AboutPage({ params }: Props) {

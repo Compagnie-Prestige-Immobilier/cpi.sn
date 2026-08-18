@@ -7,6 +7,8 @@ import { ButtonLink } from '@/components/ui/button-link'
 import { CmsLink } from '@/components/ui/cms-link'
 import { PropertyCard } from '@/components/property/property-card'
 import { ContactForm } from '@/components/forms/contact-form'
+import { JsonLd } from '@/components/seo/json-ld'
+import { faqJsonLd, graph, lexicalToText } from '@/lib/json-ld'
 import { getProperties } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Page, Media, Property } from '@/payload-types'
@@ -190,9 +192,22 @@ async function BlockSwitch({ block, locale }: { block: Block; locale: Locale }) 
       )
     }
 
-    case 'faq':
+    case 'faq': {
+      /* FAQPage markup, emitted from the block itself so it appears the moment
+         CPI adds an FAQ in the admin — nothing to remember to wire up. Google
+         narrowed FAQ *rich results* to authoritative sites in 2023, so this is
+         for the other engines and for assistants reading the page, not for
+         stars in the SERP. */
+      const faq = faqJsonLd(
+        (block.items ?? []).map((item) => ({
+          question: item.question ?? '',
+          answer: lexicalToText(item.answer),
+        })),
+      )
+
       return (
         <section className="container-page py-16">
+          {faq ? <JsonLd data={graph(faq)} /> : null}
           {block.heading ? <SectionHeader title={block.heading} align="start" /> : null}
           <div className="mt-10 max-w-3xl">
             {(block.items ?? []).map((item, i) => (
@@ -218,6 +233,7 @@ async function BlockSwitch({ block, locale }: { block: Block; locale: Locale }) 
           </div>
         </section>
       )
+    }
 
     case 'cta': {
       const image = block.backgroundImage as Media | null

@@ -3,6 +3,47 @@
 Environment values live in `.env.prod` (gitignored). Paste them into Dokploy's environment
 manager — never bake them into the image.
 
+### `SITE_URL` is an SEO switch, not just a config value
+
+Set it to the origin the site is actually served from — `https://cpi.sn` in production, the
+staging hostname on a staging deploy. It drives every canonical URL, `hreflang` tag, Open Graph
+image, JSON-LD `@id`, `robots.txt`, `llms.txt` and the sitemap.
+
+If it is left unset, the app **serves `robots.txt` as `Disallow: /`, marks every page `noindex`
+and returns 503 for `llms.txt`**. That is deliberate: a staging copy indexed under the wrong
+origin is duplicate content competing with the live site, and CPI's French ranking is the thing
+this rebuild is trying to preserve. So a production deploy that forgets this variable will not be
+indexed at all — check `curl https://cpi.sn/robots.txt` after the first deploy.
+
+> **Do not rename any of these to `NEXT_PUBLIC_*`.** That prefix means "substitute this value into
+> the code at build time", and the image is built with none of them present (the build runs on
+> placeholder secrets and never reaches the database). Under a public name the value would freeze
+> at the localhost default and nothing set in Dokploy could override it — the site would ship a
+> robots.txt banning every crawler while looking completely healthy. Every consumer is
+> server-side, so plain runtime variables are correct here.
+> `NEXT_PUBLIC_SERVER_URL` is still read as a fallback, for local development only.
+
+### Analytics and Search Console
+
+Both are optional and read at runtime — set them in Dokploy and redeploy, no rebuild:
+
+| Variable | Value | Effect when blank |
+|---|---|---|
+| `GA_MEASUREMENT_ID` | GA4 id, `G-XXXXXXXXXX` | no gtag script, no third-party request at all |
+| `GOOGLE_SITE_VERIFICATION` | token from Search Console's "HTML tag" method | no verification `<meta>` |
+
+`GA_MEASUREMENT_ID` is validated: a Tag Manager container (`GTM-…`) or a legacy Universal
+Analytics property (`UA-…`) is rejected and logged rather than silently measuring nothing.
+
+Verify all four after cutover:
+
+```bash
+curl -s https://cpi.sn/robots.txt          # must NOT be "Disallow: /"
+curl -s https://cpi.sn/sitemap.xml | head  # URLs must start https://cpi.sn
+curl -s https://cpi.sn/llms.txt | head     # must be 200, not 503
+curl -s https://cpi.sn/ | grep gtag        # only once GA_MEASUREMENT_ID is set
+```
+
 ---
 
 ## Migrations run themselves

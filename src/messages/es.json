@@ -118,7 +118,8 @@
     "publishedOn": "Publicado el {date}",
     "categories": "Categorías",
     "relatedPosts": "Artículos relacionados",
-    "empty": "Todavía no hay artículos."
+    "empty": "Todavía no hay artículos.",
+    "categoryMeta": "Todos los artículos de Compagnie Prestige Immobilier clasificados en «{category}»: consejos, noticias y análisis del mercado inmobiliario senegalés."
   },
   "forms": {
     "required": "Este campo es obligatorio",

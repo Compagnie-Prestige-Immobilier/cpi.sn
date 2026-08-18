@@ -8,8 +8,13 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { CartProvider } from '@/components/cart/cart-provider'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { getDirection, localeCodes } from '@/i18n/locales'
-import { routing } from '@/i18n/routing'
+import { GoogleAnalytics } from '@/components/analytics/google-analytics'
+import { JsonLd } from '@/components/seo/json-ld'
+import { getSiteSettings } from '@/lib/payload'
+import { graph, organizationJsonLd, websiteJsonLd } from '@/lib/json-ld'
+import { absoluteUrl, IS_PLACEHOLDER_ORIGIN, localeAlternates, SITE_ORIGIN } from '@/lib/seo'
+import { getDirection, localeCodes, type Locale } from '@/i18n/locales'
+import { getPathname, routing } from '@/i18n/routing'
 
 import '../../globals.css'
 
@@ -68,16 +73,40 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'site' })
+  const title = `${t('fullName')} — ${t('tagline')}`
 
   return {
-    title: {
-      default: `${t('fullName')} — ${t('tagline')}`,
-      template: `%s — ${t('name')}`,
-    },
+    title: { default: title, template: `%s — ${t('name')}` },
     description: t('description'),
-    metadataBase: process.env.NEXT_PUBLIC_SERVER_URL
-      ? new URL(process.env.NEXT_PUBLIC_SERVER_URL)
+    // Always defined, so every relative OG image and canonical resolves. The
+    // origin comes from SITE_URL at runtime — see src/lib/seo.ts.
+    metadataBase: new URL(SITE_ORIGIN),
+    applicationName: t('fullName'),
+    // Individual routes override this with their own canonical + hreflang; the
+    // layout only supplies a sane default for anything that does not.
+    alternates: localeAlternates(locale as Locale, '/'),
+    openGraph: {
+      type: 'website',
+      siteName: t('fullName'),
+      title,
+      description: t('description'),
+      url: absoluteUrl(getPathname({ locale: locale as Locale, href: '/' })),
+      locale,
+      alternateLocale: localeCodes.filter((c) => c !== locale),
+    },
+    twitter: { card: 'summary_large_image', title, description: t('description') },
+    // Search Console ownership: the token from the "HTML tag" method. Omitted
+    // entirely until set, and read at runtime — a NEXT_PUBLIC_ name would be
+    // frozen at build time, when this image has no such variable.
+    verification: process.env.GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
       : undefined,
+    // Staging and any deploy that forgot SITE_URL stay out of the
+    // index entirely — a second indexed copy of cpi.sn is the one SEO mistake
+    // this rebuild cannot afford.
+    robots: IS_PLACEHOLDER_ORIGIN
+      ? { index: false, follow: false }
+      : { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 } },
   }
 }
 
@@ -97,7 +126,25 @@ export default async function SiteLayout({
   // Required for static rendering of this locale's routes.
   setRequestLocale(locale)
 
-  const t = await getTranslations({ locale, namespace: 'nav' })
+  const [t, tSite, settings] = await Promise.all([
+    getTranslations({ locale, namespace: 'nav' }),
+    getTranslations({ locale, namespace: 'site' }),
+    getSiteSettings(locale as Locale),
+  ])
+
+  /**
+   * One organisation + website graph, emitted on every page from the layout.
+   *
+   * It lives here rather than on the homepage alone so that a visitor landing
+   * on a single land listing from search still gets CPI's identity, address and
+   * phone number in the markup — which is what a knowledge panel and local
+   * results are built from. Per-page nodes reference this one by `@id` instead
+   * of repeating it.
+   */
+  const siteGraph = graph(
+    organizationJsonLd(settings, tSite('description')),
+    websiteJsonLd(tSite('fullName'), locale as Locale),
+  )
 
   return (
     <html
@@ -108,6 +155,8 @@ export default async function SiteLayout({
       className={`${display.variable} ${body.variable}`}
     >
       <body className="min-h-dvh bg-surface text-foreground antialiased">
+        <JsonLd data={siteGraph} />
+        <GoogleAnalytics />
         <NextIntlClientProvider>
           <ThemeProvider>
             <CartProvider>

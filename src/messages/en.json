@@ -118,7 +118,8 @@
     "publishedOn": "Published on {date}",
     "categories": "Categories",
     "relatedPosts": "Related articles",
-    "empty": "No articles yet."
+    "empty": "No articles yet.",
+    "categoryMeta": "Every Compagnie Prestige Immobilier article filed under “{category}”: advice, news and analysis of the Senegalese property market."
   },
   "forms": {
     "required": "This field is required",

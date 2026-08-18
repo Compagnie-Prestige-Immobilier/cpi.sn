@@ -2,12 +2,16 @@ import { setRequestLocale } from 'next-intl/server'
 import { CmsPage } from '@/components/cms-page'
 import { getPage, getPageOr404, pageMetadata, PAGE_SLUGS } from '@/lib/pages'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  return pageMetadata(await getPage(PAGE_SLUGS.privacy, locale as Locale))
+  return {
+    ...pageMetadata(await getPage(PAGE_SLUGS.privacy, locale as Locale)),
+    alternates: localeAlternates(locale as Locale, '/politique-de-confidentialite'),
+  }
 }
 
 export default async function CmsRoute({ params }: Props) {

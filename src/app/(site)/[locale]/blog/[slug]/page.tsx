@@ -8,6 +8,10 @@ import { PropertyCard } from '@/components/property/property-card'
 import { getPostBySlug, getPosts } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Media, Category, Property } from '@/payload-types'
+import { alternatesForSlugs, absoluteUrl } from '@/lib/seo'
+import { JsonLd } from '@/components/seo/json-ld'
+import { articleJsonLd, breadcrumbJsonLd, graph } from '@/lib/json-ld'
+import { getPathname } from '@/i18n/routing'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
@@ -23,6 +27,8 @@ export async function generateMetadata({ params }: Props) {
     openGraph: og?.url
       ? { type: 'article', images: [{ url: og.url, alt: og.alt ?? '' }] }
       : { type: 'article' },
+    alternates: alternatesForSlugs(locale as Locale, '/blog/[slug]', { [locale as Locale]: slug }),
+    robots: post.seo?.noIndex ? { index: false, follow: false } : undefined,
   }
 }
 
@@ -44,8 +50,24 @@ export default async function PostPage({ params }: Props) {
   const { docs: more } = await getPosts({ locale: locale as Locale, limit: 4 })
   const others = more.filter((p) => p.id !== post.id).slice(0, 3)
 
+  const url = absoluteUrl(
+    getPathname({ locale: locale as Locale, href: { pathname: '/blog/[slug]', params: { slug } } }),
+  )
+  const data = graph(
+    articleJsonLd(post, url, locale as Locale),
+    breadcrumbJsonLd([
+      { name: 'CPI', url: absoluteUrl(getPathname({ locale: locale as Locale, href: '/' })) },
+      {
+        name: t('title'),
+        url: absoluteUrl(getPathname({ locale: locale as Locale, href: '/blog' })),
+      },
+      { name: post.title, url },
+    ]),
+  )
+
   return (
     <article>
+      <JsonLd data={data} />
       <header className="container-page pt-16 lg:pt-24">
         <div className="mx-auto max-w-3xl">
           {category ? (

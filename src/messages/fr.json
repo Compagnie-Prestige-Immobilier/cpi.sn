@@ -118,7 +118,8 @@
     "publishedOn": "Publié le {date}",
     "categories": "Catégories",
     "relatedPosts": "Articles similaires",
-    "empty": "Aucun article pour le moment."
+    "empty": "Aucun article pour le moment.",
+    "categoryMeta": "Tous les articles de la Compagnie Prestige Immobilier classés dans « {category} » : conseils, actualités et analyses du marché immobilier sénégalais."
   },
   "forms": {
     "required": "Ce champ est obligatoire",

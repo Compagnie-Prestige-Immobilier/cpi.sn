@@ -6,12 +6,16 @@ import { ContactDetails } from '@/components/contact/contact-details'
 import { ContactChannels } from '@/components/contact/contact-channels'
 import { getPage, getPageOr404, pageMetadata, PAGE_SLUGS } from '@/lib/pages'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
-  return pageMetadata(await getPage(PAGE_SLUGS.contact, locale as Locale))
+  return {
+    ...pageMetadata(await getPage(PAGE_SLUGS.contact, locale as Locale)),
+    alternates: localeAlternates(locale as Locale, '/contact'),
+  }
 }
 
 /**

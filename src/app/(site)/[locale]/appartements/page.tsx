@@ -4,13 +4,14 @@ import { Reveal } from '@/components/ui/reveal'
 import { PropertyCard } from '@/components/property/property-card'
 import { getProperties } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'nav' })
-  return { title: t('apartments') }
+  return { title: t('apartments'), alternates: localeAlternates(locale as Locale, '/appartements') }
 }
 
 export default async function ApartmentsPage({ params }: Props) {

@@ -5,13 +5,18 @@ import { PostCard } from '@/components/blog/post-card'
 import { Link } from '@/i18n/routing'
 import { getPosts, getCategories } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'blog' })
-  return { title: t('title'), description: t('subtitle') }
+  return {
+    title: t('title'),
+    description: t('subtitle'),
+    alternates: localeAlternates(locale as Locale, '/blog'),
+  }
 }
 
 export default async function BlogPage({ params }: Props) {

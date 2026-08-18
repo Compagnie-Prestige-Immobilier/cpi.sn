@@ -5,6 +5,7 @@ import { SectionHeader } from '@/components/ui/section-header'
 import { ContactForm } from '@/components/forms/contact-form'
 import { getPage, pageMetadata, REQUEST_SLUGS } from '@/lib/pages'
 import { localeCodes, type Locale } from '@/i18n/locales'
+import { alternatesForSlugs } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
@@ -17,7 +18,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props) {
   const { locale, slug } = await params
   const pageSlug = REQUEST_SLUGS[slug]
-  return pageSlug ? pageMetadata(await getPage(pageSlug, locale as Locale)) : {}
+  return pageSlug
+    ? {
+        ...pageMetadata(await getPage(pageSlug, locale as Locale)),
+        alternates: alternatesForSlugs(locale as Locale, '/demande/[slug]', { [locale as Locale]: slug }),
+      }
+    : {}
 }
 
 export default async function RequestPage({ params }: Props) {

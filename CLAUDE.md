@@ -346,6 +346,60 @@ slots still show text-in-image. The fix is CPI uploading photographs — `heroSl
 
 ---
 
+## SEO
+
+Everything below is generated from Payload or `site-settings`. Nothing is hand-maintained, because
+a hand-maintained sitemap or summary goes stale the first time CPI sells a plot.
+
+| Surface | Where |
+|---|---|
+| `sitemap.xml` | `src/app/sitemap.ts` — every public route + all content, each with the full hreflang set |
+| `robots.txt` | `src/app/robots.ts` |
+| `llms.txt` | `src/app/llms.txt/route.ts` — the llmstxt.org convention |
+| JSON-LD | `src/lib/json-ld.ts` builders, `src/components/seo/json-ld.tsx` renderer |
+| canonical + hreflang | `src/lib/seo.ts` → `localeAlternates` / `alternatesForSlugs` |
+| GA4 | `src/components/analytics/google-analytics.tsx` |
+
+1. **`SITE_URL` must never become `NEXT_PUBLIC_SITE_URL`.** This one has teeth. `NEXT_PUBLIC_*`
+   means "inline this value into the code at build time", and `docker build` runs with none of
+   these variables set — it carries placeholder secrets and never reaches the database. Under a
+   public name the origin freezes at the `http://localhost:3000` fallback, which is the branch that
+   serves **`robots.txt` as `Disallow: /`**, and nothing Dokploy sets at runtime can override it.
+   The site would ship banning every crawler while looking perfectly healthy. Every consumer is
+   server-side, so plain runtime variables are correct. Same for `GA_MEASUREMENT_ID` and
+   `GOOGLE_SITE_VERIFICATION`. `NEXT_PUBLIC_SERVER_URL` survives as a local-dev fallback only.
+
+2. **`robots.ts` is `force-dynamic`, and that is load-bearing** for the same reason — prerendered,
+   it would bake the disallow-everything branch into the image. Next prints it as `ƒ` in the build
+   output; if it ever shows `○`, the regression is back.
+
+3. **An unconfigured origin blocks indexing on purpose.** No `SITE_URL` → `Disallow: /`, `noindex`
+   on every page, and `llms.txt` returns 503. A staging copy indexed under the wrong origin is
+   duplicate content against cpi.sn, and the French ranking is the thing this rebuild exists to
+   preserve. Do not "fix" this by defaulting to the production host.
+
+4. **Never hardcode the production hostname in `src/`** — `npm run check:legacy` fails the build on
+   it, since for the whole rebuild that string meant "still pointing at the old WordPress install".
+   The guard cannot tell the two apart. Document the value in `.env.example` / `DEPLOY.md` instead.
+
+5. **JSON-LD states only what CPI has actually supplied.** No invented coordinates, no
+   `aggregateRating` without reviews, and **a price only when `showPrice` is set** — most listings
+   are deliberately "Prix sur demande", and publishing the hidden figure in the markup would both
+   contradict the page and leak commercial information. Structured data is served to Google as a
+   factual claim about a real company; a plausible-looking invention there is a manual action.
+
+6. **hreflang sets must stay complete and self-referential.** Every page lists all three locales
+   plus `x-default` → French. A page naming only its own language is worse than no annotation.
+
+7. **Sold listings stay in the sitemap** at lower priority, with `availability: SoldOut` in the
+   offer. They are proof of delivery; they must not read as inventory.
+
+8. **`/llms.txt` says explicitly that CPI takes no online payment and publishes few prices.**
+   Without that, an assistant reading a page with a basket and a "dès 250 000 FCFA" strapline
+   concludes the opposite and tells a prospective buyer they can pay on the site.
+
+---
+
 ## Deployment — self-hosted VPS via Dokploy
 
 **Not Vercel.** Two Docker containers: `web` (Next.js + Payload in one process) and `db`

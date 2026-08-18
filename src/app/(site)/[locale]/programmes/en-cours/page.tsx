@@ -1,13 +1,17 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { ProgrammesList } from '@/components/property/programmes-list'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'nav' })
-  return { title: t('developmentsOngoing') }
+  return {
+    title: t('developmentsOngoing'),
+    alternates: localeAlternates(locale as Locale, '/programmes/en-cours'),
+  }
 }
 
 export default async function Page({ params }: Props) {

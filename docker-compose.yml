@@ -9,7 +9,12 @@
 # against a local Postgres instead.
 #
 # Environment comes from Dokploy's manager; see .env.prod for the values:
-#   DATABASE_URI · PAYLOAD_SECRET · NEXT_PUBLIC_SERVER_URL
+#   DATABASE_URI · PAYLOAD_SECRET · SITE_URL
+# Optional:
+#   GA_MEASUREMENT_ID · GOOGLE_SITE_VERIFICATION
+# All are read at RUNTIME, so a change takes effect on redeploy without a
+# rebuild. None may be renamed to NEXT_PUBLIC_* — that prefix inlines the value
+# at build time, and this image is built without any of them.
 
 services:
   web:
@@ -21,7 +26,11 @@ services:
       NODE_ENV: production
       DATABASE_URI: ${DATABASE_URI}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
+      SITE_URL: ${SITE_URL}
+      # Blank until CPI supplies them — the app renders no analytics script and
+      # no verification tag rather than an empty one.
+      GA_MEASUREMENT_ID: ${GA_MEASUREMENT_ID:-}
+      GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-}
       MEDIA_DIR: /app/media
     volumes:
       # The ONLY copy of client uploads. Include it in Dokploy's backup set

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { findBySlugWithFallback } from './payload'
+import { lexicalToText } from './json-ld'
 import type { Locale } from '@/i18n/locales'
 import type { Page, Media } from '@/payload-types'
 
@@ -61,6 +62,31 @@ export async function getPageOr404(slug: string, locale: Locale): Promise<Page> 
 }
 
 /**
+ * First readable sentence(s) of a page, for use as a meta description.
+ *
+ * Most migrated pages have no SEO override — Yoast was left blank on the old
+ * site — which left them with no `<meta name="description">` at all. Google
+ * then writes its own snippet from whatever is on screen, which on these pages
+ * is often a heading or a nav label. Deriving from the page's own first
+ * paragraph is both truthful and better than that.
+ *
+ * Deliberately not falling back to the site-wide description: the same sentence
+ * on forty pages tells a search engine they are interchangeable.
+ */
+function describeFromBlocks(page: Page): string | undefined {
+  for (const block of page.blocks ?? []) {
+    if (block.blockType !== 'richText') continue
+    const text = lexicalToText(block.content)
+    if (text.length < 40) continue
+    // 155 chars is where Google truncates; cut on a word boundary.
+    if (text.length <= 155) return text
+    const cut = text.slice(0, 155)
+    return `${cut.slice(0, cut.lastIndexOf(' ')).trimEnd()}…`
+  }
+  return undefined
+}
+
+/**
  * Metadata from a page's SEO group, falling back to its title.
  *
  * Most of the migrated pages have no SEO override — Yoast was left blank on the
@@ -73,7 +99,7 @@ export function pageMetadata(page: Page | null, fallbackTitle?: string): Metadat
 
   return {
     title: page.seo?.title || page.title || fallbackTitle,
-    description: page.seo?.description || undefined,
+    description: page.seo?.description || describeFromBlocks(page) || undefined,
     robots: page.seo?.noIndex ? { index: false, follow: false } : undefined,
     openGraph: ogImage?.url
       ? { images: [{ url: ogImage.url, alt: ogImage.alt ?? '' }] }

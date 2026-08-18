@@ -7,13 +7,14 @@ import { BoutiqueCatalogue, type CataloguePlot } from '@/components/boutique/cat
 import { getShopItems } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
 import type { Media } from '@/payload-types'
+import { localeAlternates } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'boutique' })
-  return { title: t('title') }
+  return { title: t('title'), alternates: localeAlternates(locale as Locale, '/boutique') }
 }
 
 /**

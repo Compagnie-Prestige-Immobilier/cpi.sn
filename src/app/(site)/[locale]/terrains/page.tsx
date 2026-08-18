@@ -5,6 +5,7 @@ import { Reveal } from '@/components/ui/reveal'
 import { PropertyCard } from '@/components/property/property-card'
 import { getProperties } from '@/lib/payload'
 import type { Locale } from '@/i18n/locales'
+import { localeAlternates } from '@/lib/seo'
 
 export async function generateMetadata({
   params,
@@ -13,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'nav' })
-  return { title: t('land') }
+  return { title: t('land'), alternates: localeAlternates(locale as Locale, '/terrains') }
 }
 
 export default async function TerrainsPage({
