@@ -460,5 +460,26 @@
   },
   "about": {
     "founder": "Le mot de la Direction"
+  },
+  "contact": {
+    "eyebrow": "Nous parler",
+    "lead": "Une question sur un terrain, un projet de construction ou un dossier en cours ? Écrivez-nous, appelez-nous, ou passez nous voir aux Almadies.",
+    "detailsTitle": "Nos coordonnées",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "hours": "Horaires",
+    "directions": "Obtenir un itinéraire",
+    "formTitle": "Écrivez-nous",
+    "formLead": "Décrivez votre besoin en quelques lignes. Nous répondons sous 48 heures ouvrées.",
+    "channelsTitle": "Autres façons de nous joindre",
+    "callTitle": "Nous appeler",
+    "callText": "Du lundi au dimanche, aux horaires d'ouverture.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappText": "Envoyez photos et documents directement depuis votre téléphone.",
+    "visitTitle": "Nous rendre visite",
+    "visitText": "Ngor, Almadies — nos équipes vous reçoivent sur place.",
+    "portalTitle": "Espace client",
+    "portalText": "Contrats, échéancier et avancement du chantier, si vous êtes déjà client."
   }
 }

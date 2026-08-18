@@ -460,5 +460,26 @@
   },
   "about": {
     "founder": "Palabras de la dirección"
+  },
+  "contact": {
+    "eyebrow": "Hablemos",
+    "lead": "¿Una pregunta sobre un terreno, una construcción o un expediente en curso? Escríbanos, llámenos o visítenos en Almadies.",
+    "detailsTitle": "Nuestros datos",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "hours": "Horario",
+    "directions": "Cómo llegar",
+    "formTitle": "Escríbanos",
+    "formLead": "Describa su necesidad en unas líneas. Respondemos en un plazo de 48 horas hábiles.",
+    "channelsTitle": "Otras formas de contactarnos",
+    "callTitle": "Llámenos",
+    "callText": "De lunes a domingo, en horario de apertura.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappText": "Envíe fotos y documentos directamente desde su teléfono.",
+    "visitTitle": "Visítenos",
+    "visitText": "Ngor, Almadies — nuestros equipos le atienden en persona.",
+    "portalTitle": "Área de clientes",
+    "portalText": "Contratos, calendario de pagos y avance de la obra, si ya es cliente."
   }
 }

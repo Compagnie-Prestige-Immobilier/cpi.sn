@@ -593,6 +593,32 @@ These are documented in `content-audit/INVENTORY.md` and must not be re-imported
 - 17 overlapping property types collapse to `productLine` (2) × `kind` (6) × `status` (4).
 - All 4 existing testimonials are empty placeholders — real quotes still need collecting.
 
+### One public e-mail: `contact@cpi.sn`
+
+`commercial@cpi.sn` and `marketing@cpi.sn` are **retired**. Both survived only inside the
+contact page's imported WordPress body, which is why three things now hold the line together:
+
+1. **`site-settings.email` is the single source** — every rendered address reads it. `import.ts`
+   pins it to `contact@cpi.sn` rather than taking `navigation.json`'s first scraped `mailto:`.
+2. **`contactez-nous` is in `TITLE_ONLY_PAGES`** (`import.ts`) — title, slug and SEO are imported,
+   the body is not. A re-import would otherwise restore both addresses.
+3. **`src/migration/clean-contact-page.ts`** empties that body on databases seeded before the
+   above, versions included — leaving the version rows would keep the addresses one "restore"
+   away, and inside the seed dump.
+
+Do not add a second public address without changing all three.
+
+### `/contact` is composed, not CMS-rendered
+
+Like `/a-propos`, the route builds its own sections — `ContactDetails` and `ContactChannels`,
+both reading `site-settings` — instead of rendering an imported body. `RenderBlocks` still runs
+last, so CPI can append an FAQ or CTA from the admin.
+
+**There is deliberately no embedded map.** A Google Maps iframe is ~1 MB and third-party cookies
+on a page whose job is a phone number and a form; the address plus a directions link built from
+`site-settings.address` does the same work. If CPI wants the map, build it as a click-to-load
+facade like `VideoModal` — never an eager iframe.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

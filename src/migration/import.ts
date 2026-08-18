@@ -262,12 +262,37 @@ async function main() {
     'inscription-au-programme-immobilier-ngolfagny', 'clients',
   ]
 
+  /**
+   * Pages kept for their title, slug and SEO, but *not* their imported body —
+   * the route composes its own sections instead.
+   *
+   * /contact reads `site-settings` and renders the enquiry form; its WordPress
+   * body was two identical <h1>s, the address three times, and commercial@ and
+   * marketing@, both retired. Importing it would put those addresses back below
+   * the new layout, which is the one thing this list exists to prevent.
+   */
+  const TITLE_ONLY_PAGES = ['contactez-nous']
+
   const auditPages = await readJson<Array<{ id: number; title: string; slug: string; file: string; chars: number; seoTitle?: string; seoDesc?: string }>>('pages.json')
   let pageCount = 0
   let pageSkipped = 0
 
   for (const pg of auditPages) {
     if (!KEEP_PAGES.includes(pg.slug)) continue
+
+    if (TITLE_ONLY_PAGES.includes(pg.slug)) {
+      await upsert(payload, 'pages', pg.slug, {
+        title: pg.title,
+        blocks: [],
+        seo: {
+          title: pg.seoTitle || undefined,
+          description: pg.seoDesc ? pg.seoDesc.slice(0, 200) : undefined,
+        },
+        _status: 'published',
+      })
+      pageCount++
+      continue
+    }
 
     const html = await sourceHtml('page', pg.id)
     if (!html.trim()) {
@@ -331,7 +356,10 @@ async function main() {
     data: {
       siteName: 'Compagnie Prestige Immobilier',
       tagline: "Champion de l'immobilier au Sénégal",
-      email: nav.mails?.[0] ?? 'contact@cpi.sn',
+      // Pinned, not scraped. CPI has retired commercial@ and marketing@ — this
+      // is the only address the site publishes, and taking whichever mailto the
+      // old theme happened to list first could quietly bring one of them back.
+      email: 'contact@cpi.sn',
       whatsappNumber: '221764508374',
       phones: [
         { label: 'Commercial', number: '77 664 94 00' },
@@ -362,13 +390,22 @@ async function main() {
             { label: 'Projets réalisés', href: '/programmes/realises' },
           ],
         },
-        { label: 'Terrains disponibles', href: '/terrains' },
+        {
+          // Promotion immobilière lives here rather than under Nos services:
+          // it is what CPI builds on the land, so visitors look for it beside
+          // the sites. The rest of the Terrains panel is generated from the
+          // inventory in `site-header.tsx`.
+          label: 'Terrains disponibles',
+          href: '/terrains',
+          children: [
+            { label: 'Promotion immobilière', href: '/nos-services/promotion-immobiliere' },
+          ],
+        },
         {
           label: 'Nos services',
           href: '/nos-services',
           children: [
             { label: 'Promotion foncière', href: '/nos-services/promotion-fonciere' },
-            { label: 'Promotion immobilière', href: '/nos-services/promotion-immobiliere' },
             { label: 'Intermédiation', href: '/nos-services/intermediation' },
             { label: 'Construction', href: '/nos-services/construction' },
             { label: 'Cabinet conseil juridique', href: '/nos-services/conseil-juridique' },

@@ -122,6 +122,31 @@ export async function SiteHeader() {
                       </Link>
                     ))}
                   </div>
+                  {/* Editorial children of the Terrains item — currently
+                      "Promotion immobilière", moved here from Nos services.
+                      The generated list is inventory; these are pages, so they
+                      sit under their own label rather than among the sites. */}
+                  {item.children?.length ? (
+                    <div className="mt-3 border-t border-subtle pt-3">
+                      {/* "Nos services", not the Services panel's "Nos
+                          métiers": the same label on two adjacent menus reads
+                          as a duplicate, and these entries link into
+                          /nos-services/. */}
+                      <p className="px-3 pb-1.5 text-[10px] tracking-[0.22em] text-brand uppercase">
+                        {t('services')}
+                      </p>
+                      {item.children.map((child) => (
+                        <CmsLink
+                          key={child.id ?? child.label}
+                          href={child.href}
+                          className={linkClass}
+                        >
+                          {child.label}
+                        </CmsLink>
+                      ))}
+                    </div>
+                  ) : null}
+
                   <a
                     href={shopHref}
                     className="mt-2 block border-t border-subtle px-3 pt-3 text-[13px] font-semibold text-brand transition-colors hover:text-brand-hover"

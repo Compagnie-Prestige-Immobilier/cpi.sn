@@ -460,5 +460,26 @@
   },
   "about": {
     "founder": "A word from the leadership"
+  },
+  "contact": {
+    "eyebrow": "Talk to us",
+    "lead": "A question about a plot, a build, or a file already under way? Write, call, or come and see us in Almadies.",
+    "detailsTitle": "Our details",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "hours": "Opening hours",
+    "directions": "Get directions",
+    "formTitle": "Write to us",
+    "formLead": "Describe what you need in a few lines. We reply within 48 working hours.",
+    "channelsTitle": "Other ways to reach us",
+    "callTitle": "Call us",
+    "callText": "Monday to Sunday, during opening hours.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappText": "Send photos and documents straight from your phone.",
+    "visitTitle": "Visit us",
+    "visitText": "Ngor, Almadies — our teams will see you on site.",
+    "portalTitle": "Client portal",
+    "portalText": "Contracts, payment schedule and build progress, if you are already a client."
   }
 }
